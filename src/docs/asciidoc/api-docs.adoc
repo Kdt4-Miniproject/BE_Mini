@@ -1,0 +1,22 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+:member: member-controller-test
+:post: post-controller-test
+
+= REST API
+:toc: left
+:toclevels: 2
+:source-highlighter: highlightjs
+
+
+
+
+== 사용자 회원가입
+=== 요청
+include::{snippets}/{member}/test_main/http-request.adoc[]
+
+=== 응답
+
+include::{snippets}/{member}/test_main/http-response.adoc[]

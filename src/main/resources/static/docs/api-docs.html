@@ -445,10 +445,29 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_사용자_회원가입">사용자 회원가입</a>
+<li><a href="#_사용자_회원가입성공시">사용자 회원가입(성공시)</a>
 <ul class="sectlevel2">
 <li><a href="#_요청">요청</a></li>
 <li><a href="#_응답">응답</a></li>
+</ul>
+</li>
+<li><a href="#_사용자_로그인성공시">사용자 로그인(성공시)</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_2">요청</a></li>
+<li><a href="#_응답_2">응답</a></li>
+</ul>
+</li>
+<li><a href="#_로그인_에러들">로그인 에러들</a></li>
+<li><a href="#_사용자_정보_변환성공시_추후_데이터_변환이_필요함">사용자 정보 변환(성공시) - 추후 데이터 변환이 필요함</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_3">요청</a></li>
+<li><a href="#_응답_3">응답</a></li>
+</ul>
+</li>
+<li><a href="#_사용자_정보_자세히보기성공시_추후_데이터_변환이_필요함">사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요함</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_4">요청</a></li>
+<li><a href="#_응답_4">응답</a></li>
 </ul>
 </li>
 </ul>
@@ -456,25 +475,27 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_사용자_회원가입">사용자 회원가입</h2>
+<h2 id="_사용자_회원가입성공시">사용자 회원가입(성공시)</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_요청">요청</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/join HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 165
+Content-Length: 211
 Host: localhost:8080
 
 {
   "username" : "admin",
   "password" : "1234",
+  "name" : "김독자",
   "email" : "test@naver.com",
-  "employeeNumber" : "2300329",
   "birthDate" : "2023-04-26",
-  "years" : "3"
+  "years" : "3",
+  "department" : "개발",
+  "position" : "대리"
 }</code></pre>
 </div>
 </div>
@@ -505,11 +526,184 @@ Content-Length: 66
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_사용자_로그인성공시">사용자 로그인(성공시)</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_2">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/login HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Content-Length: 52
+Host: localhost:8080
+
+{
+  "username" : "admin",
+  "password" : "1234"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_2">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwiZXhwIjoxNjgyODMxMDE1LCJ1c2VybmFtZSI6ImFkbWluIn0.2sSaziDgEtTdNP-TivbJTFnPpSkhV3WOQLAoirZ9Vzf02Sm_A3itpRNMKIRu1rr6bicMPSBd6RGOsa_hTe5qcQ
+X-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwiZXhwIjoxNjgxMDQxNjQ3LCJ1c2VybmFtZSI6ImFkbWluIn0.jHGxZFXlQY8Xf39cpAzupU7KyBVG9d-f-9xOUTb8lGN1y_ndsgNLQG797n23fi1wkCSKweuSDegDCLv6A_5xDg
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_로그인_에러들">로그인 에러들</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">토큰에 수정이 있을 경우/ 토큰 조작, 만료, 서명실패, 디코딩 실패시 같은 status이고, message만 다름
+{
+    "status": 403,
+    "message": "Malformed Token",
+    "data": false
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">토큰이 없거나 너무 짧은 경우
+{
+    "status": 401,
+    "message": "Token is null or too short",
+    "data": false
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_사용자_정보_변환성공시_추후_데이터_변환이_필요함">사용자 정보 변환(성공시) - 추후 데이터 변환이 필요함</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_3">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/member/modify HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwiZXhwIjoxNjgyODI5OTMxLCJ1c2VybmFtZSI6ImFkbWluIn0.xYlExakeRHLrNErB8j6PrpbIQgBWxwX4BsAC2OxHmABOELoBN4f4LBvshjZEAAyQyNVTy8aX66uipWnwCucQuQ
+Content-Length: 118
+Host: localhost:8080
+
+{
+  "year" : "4",
+  "email" : "test@naver.com",
+  "phoneNumber" : "010-1234-1234",
+  "employeeNumber" : "20220"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_3">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_사용자_정보_자세히보기성공시_추후_데이터_변환이_필요함">사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요함</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_4">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/member/detail HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwiZXhwIjoxNjgyODI5OTMxLCJ1c2VybmFtZSI6ImFkbWluIn0.xYlExakeRHLrNErB8j6PrpbIQgBWxwX4BsAC2OxHmABOELoBN4f4LBvshjZEAAyQyNVTy8aX66uipWnwCucQuQ
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_4">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 427
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : {
+    "username" : "admin",
+    "role" : "ADMIN",
+    "fileName" : "3b84ee38-0ec5-48aa-a3f2-b1f4f4f6db6d_data.jpg",
+    "email" : "admin@naver.com",
+    "employeeNumber" : "202304281234",
+    "phoneNumber" : "010-1234-1234",
+    "birthDate" : "2023-04-28",
+    "years" : "15",
+    "name" : "김독자",
+    "updatedAt" : "2023-04-29T14:03:34.8732458"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-04-26 23:22:04 +0900
+Last updated 2023-04-29 14:03:12 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

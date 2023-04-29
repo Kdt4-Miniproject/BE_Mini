@@ -13,10 +13,50 @@ endif::[]
 
 
 
-== 사용자 회원가입
+== 사용자 회원가입(성공시)
 === 요청
-include::{snippets}/{member}/test_main/http-request.adoc[]
-
+include::{snippets}/{member}/member_register/http-request.adoc[]
 === 응답
+include::{snippets}/{member}/member_register/http-response.adoc[]
 
-include::{snippets}/{member}/test_main/http-response.adoc[]
+
+== 사용자 로그인(성공시)
+=== 요청
+include::{snippets}/{member}/member_login_success/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_login_success/http-response.adoc[]
+
+== 로그인 에러들
+
+```
+토큰에 수정이 있을 경우/ 토큰 조작, 만료, 서명실패, 디코딩 실패시 같은 status이고, message만 다름
+{
+    "status": 403,
+    "message": "Malformed Token",
+    "data": false
+}
+```
+
+```
+토큰이 없거나 너무 짧은 경우
+{
+    "status": 401,
+    "message": "Token is null or too short",
+    "data": false
+}
+
+```
+
+
+
+== 사용자 정보 변환(성공시) - 추후 데이터 변환이 필요함
+=== 요청
+include::{snippets}/{member}/member_dto_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_dto_modify/http-response.adoc[]
+
+== 사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요함
+=== 요청
+include::{snippets}/{member}/member_detail_info/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_detail_info/http-response.adoc[]

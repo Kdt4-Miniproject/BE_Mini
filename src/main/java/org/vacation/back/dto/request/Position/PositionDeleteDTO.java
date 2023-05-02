@@ -11,5 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PositionDeleteDTO {
 
+    private Long id;
+
     private boolean deleted;
 }

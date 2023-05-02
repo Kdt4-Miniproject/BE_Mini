@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -56,7 +57,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -77,7 +77,25 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .get("/api/v1/position/detail")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        // then
+        actions.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200));
+
+        actions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+
+    @DisplayName("/api/v1/position/list")
+    @Test
+    public void position_findAll() throws Exception {
+        // given
+
+        // when
+        ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
+                        .get("/api/v1/position/list")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .header("Authorization",token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -96,6 +114,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
                 .position(PositionStatus.ASSISTANT_MANAGER)
                 .vacation("2")
                 .years("2")
+                .deleted(false)
                 .build();
 
         // when
@@ -105,7 +124,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -132,7 +150,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 

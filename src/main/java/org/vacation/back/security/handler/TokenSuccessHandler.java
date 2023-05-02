@@ -35,7 +35,7 @@ public class TokenSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtUtils.create(memberDTO,true);
 
         response.setHeader("Authorization",accessToken);
-        response.setHeader("X-Refresh-Token",refreshToken);
+        response.setHeader("X-Auth-Refresh-Token",refreshToken);
 
         Gson gson = new Gson();
         CommonResponse commonResponse = CommonResponse.builder()

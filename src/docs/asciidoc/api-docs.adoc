@@ -49,14 +49,44 @@ include::{snippets}/{member}/member_login_success/http-response.adoc[]
 
 
 
-== 사용자 정보 변환(성공시) - 추후 데이터 변환이 필요함
+== 사용자 정보 변환(성공시) - 추후 데이터 변환이 필요할 수 있음
 === 요청
 include::{snippets}/{member}/member_dto_modify/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_dto_modify/http-response.adoc[]
 
-== 사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요함
+== 사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요할 수 있음
 === 요청
 include::{snippets}/{member}/member_detail_info/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_detail_info/http-response.adoc[]
+
+
+== 사용자 비밀번호 수정하기 - 추후 데이터 변환이 필요할 수 있음
+=== 요청
+include::{snippets}/{member}/member_pwd_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_pwd_modify/http-response.adoc[]
+
+
+== 사용자의 모든 정보수정하기 (관리자만 가능) - 추후 데이터 변환이 필요할 수 있음
+=== 요청
+include::{snippets}/{member}/admin_member_modify_member/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/admin_member_modify_member/http-response.adoc[]
+
+
+
+== 사용자의 권한 변경하기 (관리자만 가능) - 추후 데이터 변환이 필요할 수 있음
+=== 요청
+include::{snippets}/{member}/member_role_change_admin/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_role_change_admin/http-response.adoc[]
+
+
+== 사용자의 만일 관리자 권한이 필요한 곳에 일반 사용자가 접근할 경우
+=== 데이터가 아니라 토큰으로 권한을 판별함
+=== 요청
+include::{snippets}/{member}/member_role_change_admin_failure/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_role_change_admin_failure/http-response.adoc[]

@@ -38,18 +38,22 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        if(!refreshPath.equals(refreshPath)){
-            log.info("Skip refresh token filter......");
-            filterChain.doFilter(request,response);
+
+
+        if (!refreshPath.equals(request.getRequestURI())) {
+            log.info("skip refresh token filter.....");
+            filterChain.doFilter(request, response);
             return;
         }
+
         if(!request.getMethod().equalsIgnoreCase("POST")){
-            filterChain.doFilter(request,response);
+            log.info("skip refresh token filter.....");
+            filterChain.doFilter(request, response);
             return;
         }
 
         log.info("=== REFRESH FILTER ===");
-        String refreshToken = request.getHeader("X-Refresh-Token").substring(7);
+        String refreshToken = request.getHeader("X-Auth-Refresh-Token").substring(7);
 
         System.out.println(refreshToken);
       try{

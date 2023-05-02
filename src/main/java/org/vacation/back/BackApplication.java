@@ -28,6 +28,18 @@ public class BackApplication {
 								.phoneNumber("010-1234-1234")
 								.deleted(false)
 						.build());
+
+				memberRepository.save(Member.builder()
+						.username("user")
+						.password(passwordEncoder.encode("1234"))
+						.role(Role.STAFF)
+						.birthdate("2022-33-12")
+						.email("test@naver.com")
+						.years("14")
+						.employeeNumber("202212341234")
+						.phoneNumber("010-1234-1234")
+						.deleted(false)
+						.build());
 		};
 	}
 

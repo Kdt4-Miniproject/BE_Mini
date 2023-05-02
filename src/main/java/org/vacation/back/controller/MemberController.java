@@ -5,13 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Permission;
 import org.vacation.back.domain.Role;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.MemberDTO;
-import org.vacation.back.dto.request.member.LoginRequestDTO;
-import org.vacation.back.dto.request.member.MemberModifyDTO;
-import org.vacation.back.dto.request.member.RegisterMemberDTO;
+import org.vacation.back.dto.request.member.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -117,6 +116,66 @@ public class MemberController {
                         .codeEnum(CodeEnum.SUCCESS)
                         .data(true).build());
     }
+
+    @PostMapping("/api/v1/member/pwd/modify")
+    public ResponseEntity<CommonResponse> pwdModify(
+            @RequestBody PasswordModifyRequest passwordModifyRequest,
+            HttpServletRequest request
+    ){
+        /*
+        * TODO: request로 토큰을 조회하여 해당 토큰에 사용자의 정보를 조회하고 들어온 PWD로 변경한다
+        * */
+
+        return ResponseEntity.ok()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SUCCESS)
+                        .data(true).build());
+    }
+
+    /**
+     * 추가 적인 API 설명 그리고 어떻게 구성할건지 작성필요 그리고 해당 API는 관리자권한으로 사용자의 모든 걸 수정한다.
+     *
+     * */
+    @Permission
+    @PostMapping("/api/v1/member/admin/modify")
+    public ResponseEntity<CommonResponse> adminMNodify(
+            @RequestBody AdminMemberModifyRequest adminMemberModifyRequest,
+            HttpServletRequest request){
+
+        /*
+         들어온 데이터에 username으로 사용자를 조회하여 해당 사용자를 다른 모든 데이터로 변환할 예정임
+        * 성공시 아래 값을 리턴하고 실패시 다른 값을 리턴하도록 할 예쩡임
+        * 아직 코드는 만드지 않았지만 만들예정
+        * */
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(true)
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+    }
+    @Permission
+    @PostMapping("/api/v1/member/admin/role/modify")
+    public ResponseEntity<CommonResponse> roleChange(@RequestBody RoleChangeRequest request){
+
+        /*
+        * TODO: request에 Username을 통해 해당 데이터를 조회하고 데이터가 존재하고 해당 데이터의 값을 권한을 확인한 후 들어온 role이랑 다르면 수정
+        *
+        * */
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(true)
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+    }
+
 
 
 

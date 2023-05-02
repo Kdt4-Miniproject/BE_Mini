@@ -39,7 +39,9 @@ class MemberControllerTest extends MyWithRTestDoc {
 
     @Autowired
     ObjectMapper objectMapper;
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NDI2MzUzLCJ1c2VybmFtZSI6ImFkbWluIn0.c64_UFFi4mcrFi5P4f9hmghou26kL6_kMP6Xo12ZMmy6c7gdobhccrKpN0_M4cEh47smZBanMq_5uJwIRxpEMg";
+
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgyOTk1NDkyLCJ1c2VybmFtZSI6ImFkbWluIn0._DQ368olV8SJ6U9eljW2LeKlBAYe_srMg2PAvXI3igL0HgLeTbxXuk0rDD84tKzJhS29ROzdk-QKgaKtymyqMg";
+
 
     @Test
     @DisplayName("/api/v1/join")
@@ -96,6 +98,7 @@ class MemberControllerTest extends MyWithRTestDoc {
 
         resultActions.andExpect(header().exists(HttpHeaders.AUTHORIZATION));
         resultActions.andExpect(header().exists("X-Auth-Refresh-Token"));
+
 
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
 

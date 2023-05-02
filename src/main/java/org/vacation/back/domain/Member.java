@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -39,5 +41,10 @@ public class Member extends BaseEntity {
     private String name;
 
     private boolean deleted;
+
+
+
+    @OneToMany(mappedBy = "member")
+    private List<VacationTemp> vacationTemps = new ArrayList<>();
 
 }

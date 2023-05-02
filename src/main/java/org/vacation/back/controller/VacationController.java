@@ -15,6 +15,7 @@ import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationOkAndRejectedDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class VacationController {
     @GetMapping("/api/v1/vacation/detail/{id}")
     public ResponseEntity<CommonResponse> detail(
             @PathVariable(value = "id") Long id,
-            Principal principal){
+            HttpServletRequest request){
         //TODO: 조회하는 유저가 정보 확인
         VacationTempDTO dto = VacationTempDTO.builder()
                 .id(1L)
@@ -57,7 +58,7 @@ public class VacationController {
 
     @GetMapping("/api/v1/vacation/list")
     public ResponseEntity<CommonResponse> vacationList(
-            Principal principal){
+            HttpServletRequest request){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
         List<VacationTempDTO> vacationTempDTOList = new ArrayList<>();
         vacationTempDTOList.add(VacationTempDTO.builder()
@@ -98,7 +99,7 @@ public class VacationController {
     @GetMapping("/api/v1/vacation/delete/{id}")
     public ResponseEntity<CommonResponse> delete(
             @PathVariable(value = "id") Long id,
-            Principal principal){
+            HttpServletRequest request){
         //TODO: 연차신청 취소시에 사용(관리자 X)
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)

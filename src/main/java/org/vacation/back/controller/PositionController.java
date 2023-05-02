@@ -22,7 +22,6 @@ import org.vacation.back.dto.request.Position.PositionSaveDTO;
 public class PositionController {
 
     // TODO: 직급 생성 (관리자)
-    @PreAuthorize("hasRole('admin')")
     @PostMapping("/api/v1/position/save") // 회원가입
     public ResponseEntity<CommonResponse> save(@RequestBody PositionSaveDTO dto) {
 
@@ -38,7 +37,7 @@ public class PositionController {
 
         PositionDTO dto = PositionDTO.builder()
                 .id(1L)
-                .position(PositionStatus.사원)
+                .position(PositionStatus.ASSISTANT_MANAGER)
                 .vacation("1")
                 .years("1")
                 .build();
@@ -51,7 +50,6 @@ public class PositionController {
     }
 
     // TODO: 직급 수정 (관리자)
-    @PreAuthorize("hasRole('admin')")
     @PostMapping("/api/v1/position/modify") // 관리자 페이지
     public ResponseEntity<CommonResponse> modify(@RequestBody PositionModifyDTO dto) {
 
@@ -62,7 +60,6 @@ public class PositionController {
     }
 
     // TODO: 직급 삭제 (관리자)
-    @PreAuthorize("hasRole('admin')")
     @PostMapping("/api/v1/position/delete") // 관리자 페이지 -
     public ResponseEntity<CommonResponse> delete(@RequestBody PositionDeleteDTO dto) {
 

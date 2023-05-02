@@ -43,7 +43,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
 //        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
 
         PositionSaveDTO positionDTO = PositionSaveDTO.builder()
-                .position(PositionStatus.사원)
+                .position(PositionStatus.STAFF)
                 .vacation("1")
                 .years("1")
                 .deleted(false)
@@ -93,7 +93,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
         // given
 
         PositionModifyDTO positionDTO = PositionModifyDTO.builder()
-                .position(PositionStatus.대리)
+                .position(PositionStatus.ASSISTANT_MANAGER)
                 .vacation("2")
                 .years("2")
                 .build();

@@ -68,7 +68,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto))
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -91,7 +90,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .get("/api/v1/vacation/detail/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -111,7 +109,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .get("/api/v1/vacation/list")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -141,7 +138,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto))
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -163,7 +159,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .post("/api/v1/vacation/delete/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -187,7 +182,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .post("/api/v1/vacation/ok/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -211,7 +205,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .post("/api/v1/vacation/rejected/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 

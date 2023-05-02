@@ -3,7 +3,8 @@ ifndef::snippets[]
 endif::[]
 
 :member: member-controller-test
-:post: post-controller-test
+:position: position-controller-test
+:vacation: vacation-controller-test
 
 = REST API
 :toc: left
@@ -90,3 +91,85 @@ include::{snippets}/{member}/member_role_change_admin/http-response.adoc[]
 include::{snippets}/{member}/member_role_change_admin_failure/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_role_change_admin_failure/http-response.adoc[]
+
+
+= 직급(Position) - 수정, 삭제, 저장은 관리자만 가능
+
+== 직급 생성
+=== 요청
+include::{snippets}/{position}/position_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_save/http-response.adoc[]
+
+== 직급 보기
+=== 요청
+include::{snippets}/{position}/position_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_detail/http-response.adoc[]
+
+== 직급 수정
+=== 요청
+include::{snippets}/{position}/position_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_modify/http-response.adoc[]
+
+
+== 직급 삭제
+=== 요청
+include::{snippets}/{position}/position_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_delete/http-response.adoc[]
+
+
+= 연차(vacation)
+
+== 연차 생성
+=== 요청
+include::{snippets}/{vacation}/vacation_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_save/http-response.adoc[]
+
+== 연차 자세히보기
+=== 요청
+include::{snippets}/{vacation}/vacation_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_detail/http-response.adoc[]
+
+== 연차 리스트보기
+=== 요청
+include::{snippets}/{vacation}/vacation_list/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_list/http-response.adoc[]
+
+== 연차 수정하기
+=== 요청
+include::{snippets}/{vacation}/vacation_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_modify/http-response.adoc[]
+
+
+== 연차 삭제하기
+=== 요청
+include::{snippets}/{vacation}/vacation_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_delete/http-response.adoc[]
+
+== 연차 승인확인 (승인되면 true)
+=== 요청
+include::{snippets}/{vacation}/vacation_ok/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_ok/http-response.adoc[]
+
+== 연차 반려확인 (승인되면 true)
+=== 요청
+include::{snippets}/{vacation}/vacation_rejected/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_rejected/http-response.adoc[]
+
+
+
+
+
+
+
+

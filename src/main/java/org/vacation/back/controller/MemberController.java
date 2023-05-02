@@ -11,9 +11,12 @@ import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
+import org.vacation.back.dto.response.PageResponseDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -23,9 +26,50 @@ import java.util.UUID;
 public class MemberController {
 
 
-    @GetMapping("/api/v1/member/search")
-    public ResponseEntity<CommonResponse> page(){
-        return null;
+    @GetMapping("/api/v1/member/page/search")
+    public ResponseEntity<CommonResponse> page(@RequestParam(required = false) String text){
+
+        MemberDTO dto = MemberDTO.builder()
+                .username("admin")
+                .role(Role.ADMIN)
+                .birthDate("2023-04-28")
+                .email("admin@naver.com")
+                .years("15")
+                .employeeNumber("202304281234")
+                .updatedAt(LocalDateTime.now())
+                .phoneNumber("010-1234-1234")
+                .name("김독자")
+                .fileName(UUID.randomUUID().toString()+"_data.jpg")
+                .build();
+
+        MemberDTO dto2 = MemberDTO.builder()
+                .username("admin")
+                .role(Role.ADMIN)
+                .birthDate("2023-04-28")
+                .email("admin@naver.com")
+                .years("15")
+                .employeeNumber("202304281234")
+                .updatedAt(LocalDateTime.now())
+                .phoneNumber("010-1234-1234")
+                .name("김독자")
+                .fileName(UUID.randomUUID().toString()+"_data.jpg")
+                .build();
+
+        List<MemberDTO> list = new ArrayList<>();
+        list.add(dto);
+        list.add(dto2);
+
+        PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
+                .total(2)
+                .first(true)
+                .last(false)
+                .content(list)
+                .build();
+
+         return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(pageResponseDTO)
+                .build());
     }
 
     @GetMapping("/api/v1/member/detail")

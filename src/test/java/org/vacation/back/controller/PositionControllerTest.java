@@ -56,7 +56,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -77,7 +76,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .get("/api/v1/position/detail")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -105,7 +103,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -132,7 +129,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(positionDTO))
                         .header("Authorization",token)
-                        .header("X-Refresh-Token", RefreshToken)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 

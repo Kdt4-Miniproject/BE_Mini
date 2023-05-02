@@ -45,6 +45,35 @@ class MemberControllerTest extends MyWithRTestDoc {
 
 
     @Test
+    @DisplayName("성공시")
+    void member_username_checking() throws Exception {
+        // given
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.get("/api/v1/join/check")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .param("username","jaewoo@naver.com")
+                )
+                .andExpect(status().isOk());
+        // then
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+    @Test
+    @DisplayName("실패시")
+    void member_username_checking_failure() throws Exception {
+        // given
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.get("/api/v1/join/check")
+                        .param("username","jaewoo")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(status().isBadRequest());
+        // then
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+
+    @Test
     @DisplayName("/api/v1/member/page/search")
     void member_page_request() throws Exception {
         // given
@@ -52,6 +81,8 @@ class MemberControllerTest extends MyWithRTestDoc {
         // when
         ResultActions resultActions =  mockMvc
                 .perform(RestDocumentationRequestBuilders.get("/api/v1/member/page/search")
+                        .param("page","0")
+                        .param("size","10")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization",token)
                 )
@@ -63,6 +94,7 @@ class MemberControllerTest extends MyWithRTestDoc {
         resultActions.andExpect(jsonPath("$.data.last").value(false));
         resultActions.andExpect(jsonPath("$.data..content.length()").value(2));
 
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
 
     }
 

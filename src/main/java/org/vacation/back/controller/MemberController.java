@@ -4,6 +4,7 @@ package org.vacation.back.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.domain.Role;
@@ -12,12 +13,17 @@ import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.exception.EmailNotValidException;
+import org.vacation.back.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 @Slf4j
@@ -25,9 +31,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MemberController {
 
+    private final MemberService memberService;
 
+    /**
+     * TODO: API 설명 작성예정
+     * */
+    @GetMapping("/api/v1/join/check")
+    public ResponseEntity<CommonResponse<?>> checking(@RequestParam @Email String username){
+        // TODO: PathVariable로 들어온 username이 PK로 겹치는게 있는지 확인한다.
+
+        if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
+        boolean result = memberService.exist(username);
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(result)
+                .build());
+    }
+
+    /**
+     * TODO: API 설명 작성예정
+     * */
     @GetMapping("/api/v1/member/page/search")
-    public ResponseEntity<CommonResponse> page(@RequestParam(required = false) String text){
+    public ResponseEntity<CommonResponse<?>> page(@RequestParam(required = false) String text,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size){
 
         MemberDTO dto = MemberDTO.builder()
                 .username("admin")
@@ -71,9 +99,11 @@ public class MemberController {
                 .data(pageResponseDTO)
                 .build());
     }
-
+    /**
+     * TODO: API 설명 작성예정
+     * */
     @GetMapping("/api/v1/member/detail")
-    public ResponseEntity<CommonResponse> detail(@RequestHeader("Authorization") String token){
+    public ResponseEntity<CommonResponse<?>> detail(@RequestHeader("Authorization") String token){
         //TODO: 토큰 디코딩이 필요하다. 디코딩해서 username을 데이터 조회하는데 사용한다.
         //TODO: 토큰 만료 상태인지 그런거 체크 필요
 
@@ -104,7 +134,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @PostMapping("/api/v1/join")
-    public ResponseEntity<CommonResponse> join(@RequestBody RegisterMemberDTO registerMemberDTO){
+    public ResponseEntity<CommonResponse<?>> join(@RequestBody RegisterMemberDTO registerMemberDTO){
 
         //TODO: 파라미터에서 Valid가 필요하고,
         //TODO: 등록시 실패 Exception 처리가 필요하고,
@@ -121,7 +151,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @PostMapping("/api/v1/loginTest")
-    public ResponseEntity<CommonResponse> login(@RequestBody LoginRequestDTO loginRequestDTO){
+    public ResponseEntity<CommonResponse<?>> login(@RequestBody LoginRequestDTO loginRequestDTO){
         String jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
                 "eyJzdWIiOiIxMjM0NTY3ODkwIiwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTUxNjIzOTAyMn0." +
                 "lI7kQCfzQVDjl5WZaApceqqWwlEsKbL4-ECONjArLBE";
@@ -143,7 +173,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @PostMapping("/api/v1/member/modify")
-    public ResponseEntity<CommonResponse> modify(
+    public ResponseEntity<CommonResponse<?>> modify(
             @RequestBody MemberModifyDTO memberModifyDTO,
             HttpServletRequest request
             ){
@@ -162,7 +192,7 @@ public class MemberController {
     }
 
     @PostMapping("/api/v1/member/pwd/modify")
-    public ResponseEntity<CommonResponse> pwdModify(
+    public ResponseEntity<CommonResponse<?>> pwdModify(
             @RequestBody PasswordModifyRequest passwordModifyRequest,
             HttpServletRequest request
     ){
@@ -182,7 +212,7 @@ public class MemberController {
      * */
     @Permission
     @PostMapping("/api/v1/member/admin/modify")
-    public ResponseEntity<CommonResponse> adminMNodify(
+    public ResponseEntity<CommonResponse<?>> adminMNodify(
             @RequestBody AdminMemberModifyRequest adminMemberModifyRequest,
             HttpServletRequest request){
 
@@ -203,7 +233,7 @@ public class MemberController {
     }
     @Permission
     @PostMapping("/api/v1/member/admin/role/modify")
-    public ResponseEntity<CommonResponse> roleChange(@RequestBody RoleChangeRequest request){
+    public ResponseEntity<CommonResponse<?>> roleChange(@RequestBody RoleChangeRequest request){
 
         /*
         * TODO: request에 Username을 통해 해당 데이터를 조회하고 데이터가 존재하고 해당 데이터의 값을 권한을 확인한 후 들어온 role이랑 다르면 수정
@@ -221,7 +251,30 @@ public class MemberController {
     }
 
 
+    /*
+    *   이메일 주소는 @ 기호를 포함해야 합니다.
+        @ 기호 앞의 문자열은 영문자, 숫자, 밑줄, 더하기 기호, 별표, 마이너스 기호를 포함할 수 있습니다.
+        @ 기호 뒤의 도메인 이름은 영문자, 숫자, 하이픈으로 이루어진 문자열이어야 하며, 점(.)으로 구분된 최소한 하나 이상의 레이블을 포함해야 합니다.
+        도메인 이름의 마지막 레이블은 최소한 2자 이상의 영문자로 이루어져야 합니다.
+    * */
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
 
+    @ExceptionHandler(EmailNotValidException.class)
+    public ResponseEntity<CommonResponse<?>> exception(EmailNotValidException ex) {
+        System.out.println(ex.getMessage());
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                .build());
+    }
 
 
 }

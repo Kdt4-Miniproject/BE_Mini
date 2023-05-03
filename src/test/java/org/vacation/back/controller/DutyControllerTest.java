@@ -63,7 +63,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dutySaveRequestDTO))
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -86,7 +85,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .get("/api/v1/duty/detail/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -106,7 +104,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .get("/api/v1/duty/list")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -135,7 +132,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dutyModifyDTO))
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -157,7 +153,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .post("/api/v1/duty/delete/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -181,7 +176,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .post("/api/v1/duty/ok/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 
@@ -205,7 +199,6 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .post("/api/v1/duty/rejected/{id}", id)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
-                .header("X-Refresh-Token", RefreshToken)
         ).andExpect(status().isOk());
 
 

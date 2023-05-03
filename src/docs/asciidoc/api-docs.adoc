@@ -3,12 +3,48 @@ ifndef::snippets[]
 endif::[]
 
 :member: member-controller-test
-:post: post-controller-test
+:position: position-controller-test
+:vacation: vacation-controller-test
+:duty: duty-controller-test
 
 = REST API
 :toc: left
 :toclevels: 2
 :source-highlighter: highlightjs
+
+
+```
+
+ 명세서를 통해 못 알아보거나 혹은 수정이 필요하다면 담당자에게 연락주세요
+
+= 김우람 - 연차 관련
+= 김재완 - 직급 관련
+= 이경환 - 당직 관련
+= 김재우(팀장) - 사용자 관련 그리고 나머지 모든 것
+
+
+```
+
+
+= 사용자
+
+== 사용자 전체보기(페이징)
+
+size는 기본값 10 변경가능
+page는 기본값 0 변경가능
+
+=== 요청
+include::{snippets}/{member}/member_page_request/http-request.adoc[]
+
+=== 응답
+include::{snippets}/{member}/member_page_request/http-response.adoc[]
+
+
+== 사용자 username 체크(성공시)
+=== 요청
+include::{snippets}/{member}/member_username_checking/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_username_checking/http-response.adoc[]
 
 
 
@@ -49,27 +85,27 @@ include::{snippets}/{member}/member_login_success/http-response.adoc[]
 
 
 
-== 사용자 정보 변환(성공시) - 추후 데이터 변환이 필요할 수 있음
+== 사용자 정보 변환(성공시)
 === 요청
 include::{snippets}/{member}/member_dto_modify/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_dto_modify/http-response.adoc[]
 
-== 사용자 정보 자세히보기(성공시) - 추후 데이터 변환이 필요할 수 있음
+== 사용자 정보 자세히보기(성공시)
 === 요청
 include::{snippets}/{member}/member_detail_info/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_detail_info/http-response.adoc[]
 
 
-== 사용자 비밀번호 수정하기 - 추후 데이터 변환이 필요할 수 있음
+== 사용자 비밀번호 수정하기
 === 요청
 include::{snippets}/{member}/member_pwd_modify/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_pwd_modify/http-response.adoc[]
 
 
-== 사용자의 모든 정보수정하기 (관리자만 가능) - 추후 데이터 변환이 필요할 수 있음
+== 사용자의 모든 정보수정하기 (관리자만 가능)
 === 요청
 include::{snippets}/{member}/admin_member_modify_member/http-request.adoc[]
 === 응답
@@ -77,7 +113,7 @@ include::{snippets}/{member}/admin_member_modify_member/http-response.adoc[]
 
 
 
-== 사용자의 권한 변경하기 (관리자만 가능) - 추후 데이터 변환이 필요할 수 있음
+== 사용자의 권한 변경하기 (관리자만 가능)
 === 요청
 include::{snippets}/{member}/member_role_change_admin/http-request.adoc[]
 === 응답
@@ -90,3 +126,136 @@ include::{snippets}/{member}/member_role_change_admin/http-response.adoc[]
 include::{snippets}/{member}/member_role_change_admin_failure/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_role_change_admin_failure/http-response.adoc[]
+
+
+= 직급(Position) - 수정, 삭제, 저장은 관리자만 가능
+
+== 직급 전체보기
+=== 요청
+include::{snippets}/{position}/position_find_all/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_find_all/http-response.adoc[]
+
+
+== 직급 생성
+=== 요청
+include::{snippets}/{position}/position_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_save/http-response.adoc[]
+
+== 직급 보기
+=== 요청
+include::{snippets}/{position}/position_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_detail/http-response.adoc[]
+
+== 직급 수정
+=== 요청
+include::{snippets}/{position}/position_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_modify/http-response.adoc[]
+
+
+== 직급 삭제
+=== 요청
+include::{snippets}/{position}/position_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{position}/position_delete/http-response.adoc[]
+
+
+= 연차(vacation)
+
+== 연차 생성
+=== 요청
+include::{snippets}/{vacation}/vacation_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_save/http-response.adoc[]
+
+== 연차 자세히보기
+=== 요청
+include::{snippets}/{vacation}/vacation_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_detail/http-response.adoc[]
+
+== 연차 리스트보기
+=== 요청
+include::{snippets}/{vacation}/vacation_list/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_list/http-response.adoc[]
+
+== 연차 수정하기
+=== 요청
+include::{snippets}/{vacation}/vacation_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_modify/http-response.adoc[]
+
+
+== 연차 삭제하기
+=== 요청
+include::{snippets}/{vacation}/vacation_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_delete/http-response.adoc[]
+
+== 연차 승인(승인 성공시 true) - 관리자권한
+=== 요청
+include::{snippets}/{vacation}/vacation_ok/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_ok/http-response.adoc[]
+
+== 연차 반려(반려되면 true) - 관리자권한
+=== 요청
+include::{snippets}/{vacation}/vacation_rejected/http-request.adoc[]
+=== 응답
+include::{snippets}/{vacation}/vacation_rejected/http-response.adoc[]
+
+
+
+= 당직(duty)
+
+== 당직 저장
+=== 요청
+include::{snippets}/{duty}/duty_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_save/http-response.adoc[]
+
+
+== 당직 단건 조회
+=== 요청
+include::{snippets}/{duty}/duty_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_detail/http-response.adoc[]
+
+== 당직 리스트 조회
+=== 요청
+include::{snippets}/{duty}/duty_list/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_list/http-response.adoc[]
+
+
+== 당직 수정
+=== 요청
+include::{snippets}/{duty}/duty_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_modify/http-response.adoc[]
+
+
+== 당직 삭제
+=== 요청
+include::{snippets}/{duty}/duty_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_delete/http-response.adoc[]
+
+== 당직요청 승인(승인시 true) - 관리자권한
+=== 요청
+include::{snippets}/{duty}/duty_ok/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_ok/http-response.adoc[]
+
+== 당직반려 승인(반려시 true) - 관리자권한만
+=== 요청
+include::{snippets}/{duty}/duty_rejected/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_rejected/http-response.adoc[]
+
+
+

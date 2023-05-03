@@ -8,25 +8,28 @@ import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Builder
-public class DutyTemp {
+public class DutyTemp extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "member_username")
     private Member member;
 
-    private String day;
+    @Column(name = "duty_day")
+    private LocalDate day;
 
     private boolean deleted;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "duty_status")
     private DutyStatus status;
 }

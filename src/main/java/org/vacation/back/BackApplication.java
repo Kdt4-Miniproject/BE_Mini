@@ -23,10 +23,9 @@ public class BackApplication {
 								.role(Role.ADMIN)
 								.birthdate("2022-33-12")
 								.email("test@naver.com")
-								.years("14")
+								.years(14)
 								.employeeNumber("202212341234")
 								.phoneNumber("010-1234-1234")
-								.deleted(false)
 						.build());
 
 				memberRepository.save(Member.builder()
@@ -35,10 +34,9 @@ public class BackApplication {
 						.role(Role.STAFF)
 						.birthdate("2022-33-12")
 						.email("test@naver.com")
-						.years("14")
+						.years(15)
 						.employeeNumber("202212341234")
 						.phoneNumber("010-1234-1234")
-						.deleted(false)
 						.build());
 		};
 	}

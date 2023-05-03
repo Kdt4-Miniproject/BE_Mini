@@ -1,42 +1,38 @@
 package org.vacation.back.domain;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.vacation.back.common.PositionStatus;
+import org.vacation.back.common.DepartmentStatus;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
-public class Position extends BaseEntity {
+public class Department {
 
     @Id
-    private String positionName; // 직급 id
+    private String departmentName;
 
+    private Integer vacationLimit; //휴가인원
 
+    private Integer departmentPersonal; //부서총인원
 
-    @Column(name = "position_vacation")
-    private String vacation; // 직급에 맞는 휴가 개수
+    @Enumerated(EnumType.STRING)
+    private DepartmentStatus status;
 
-
-    @Column(name = "position_status")
-    private PositionStatus status;
-
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "department")
     @Builder.Default
     private List<Member> memberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "positionName")
+    @OneToMany(mappedBy = "departmentName")
     @Builder.Default
     private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
-
-
 }

@@ -4,6 +4,7 @@ package org.vacation.back.domain;
 import lombok.*;
 import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Component;
+import org.vacation.back.common.MemberStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,12 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Where(clause = "deleted = false")
 public class Member extends BaseEntity {
 
 
     @Id
     private String username;
 
+    @Column(columnDefinition = "TEXT")
     private String password;
 
     private String email;
@@ -36,15 +39,39 @@ public class Member extends BaseEntity {
 
     private String birthdate;
 
-    private String years;
+    private Integer totalYears;
 
+    private Integer years;
+
+    private String fileName;
+
+
+    @Enumerated(EnumType.STRING)
+    private MemberStatus memberStatus;
     private String name;
 
-    private boolean deleted;
-
-
+    private String joinYear;
 
     @OneToMany(mappedBy = "member")
-    private List<VacationTemp> vacationTemps = new ArrayList<>();
+    @Builder.Default
+    private List<Vacation> vacationTemps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Duty> duties = new ArrayList<>();
+
+
+    @ManyToOne
+    @JoinColumn(name = "position_name")
+    private Position position;
+
+
+    @ManyToOne
+    @JoinColumn(name = "department_name")
+    private Department department;
+
+
+
+
 
 }

@@ -55,7 +55,6 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
         log.info("=== REFRESH FILTER ===");
         String refreshToken = request.getHeader("X-Auth-Refresh-Token").substring(7);
 
-        System.out.println(refreshToken);
       try{
           DecodedJWT decodedRefresh = jwtUtils.verify(refreshToken);
 

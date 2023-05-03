@@ -16,7 +16,5 @@ public class PositionSaveDTO {
 
     private String vacation;
 
-    private String years;
-
-    private boolean deleted;
+    private boolean deleted; // 등록 : false
 }

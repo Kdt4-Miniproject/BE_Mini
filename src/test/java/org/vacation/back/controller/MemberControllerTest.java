@@ -14,6 +14,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.vacation.back.MyWithRTestDoc;
 import org.vacation.back.domain.Role;
@@ -40,7 +41,62 @@ class MemberControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgyOTk1NDkyLCJ1c2VybmFtZSI6ImFkbWluIn0._DQ368olV8SJ6U9eljW2LeKlBAYe_srMg2PAvXI3igL0HgLeTbxXuk0rDD84tKzJhS29ROzdk-QKgaKtymyqMg";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw";
+
+
+    @Test
+    @DisplayName("성공시")
+    void member_username_checking() throws Exception {
+        // given
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.get("/api/v1/join/check")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .param("username","jaewoo@naver.com")
+                )
+                .andExpect(status().isOk());
+        // then
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+    @Test
+    @DisplayName("실패시")
+    void member_username_checking_failure() throws Exception {
+        // given
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.get("/api/v1/join/check")
+                        .param("username","jaewoo")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                )
+                .andExpect(status().isBadRequest());
+        // then
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+
+    @Test
+    @DisplayName("/api/v1/member/page/search")
+    void member_page_request() throws Exception {
+        // given
+
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.get("/api/v1/member/page/search")
+                        .param("page","0")
+                        .param("size","10")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization",token)
+                )
+                .andExpect(status().isOk());
+        // then
+        resultActions.andExpect(jsonPath("$.status").value(200));
+        resultActions.andExpect(jsonPath("$.data.total").value(2));
+        resultActions.andExpect(jsonPath("$.data.first").value(true));
+        resultActions.andExpect(jsonPath("$.data.last").value(false));
+        resultActions.andExpect(jsonPath("$.data..content.length()").value(2));
+
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+
+    }
 
 
     @Test

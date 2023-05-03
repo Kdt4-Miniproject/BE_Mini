@@ -33,7 +33,7 @@ public class MemberDTO{
     private String phoneNumber;
 
     private String birthDate;
-    private String years;
+    private Integer years;
     private String name;
     private LocalDateTime updatedAt;
 

@@ -19,7 +19,7 @@ public class VacationTemp {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "member_username")
     private Member member;
 
     @OneToOne

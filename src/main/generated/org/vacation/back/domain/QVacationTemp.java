@@ -54,7 +54,7 @@ public class QVacationTemp extends EntityPathBase<VacationTemp> {
 
     public QVacationTemp(Class<? extends VacationTemp> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
         this.vacation = inits.isInitialized("vacation") ? new QVacation(forProperty("vacation"), inits.get("vacation")) : null;
     }
 

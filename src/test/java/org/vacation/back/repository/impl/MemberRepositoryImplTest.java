@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.config.EnableConfig;
 import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Role;
@@ -34,7 +35,7 @@ class MemberRepositoryImplTest {
                 .role(Role.ADMIN)
                 .birthdate("2022-33-12")
                 .email("test@naver.com")
-                .years("14")
+                .years(14)
                 .employeeNumber("202212341234")
                 .phoneNumber("010-1234-1234")
                 .deleted(false)
@@ -60,6 +61,36 @@ class MemberRepositoryImplTest {
         Assertions.assertThat(checking1).isTrue(); //해당 아이디가 존재할 경우
         Assertions.assertThat(checking2).isFalse(); //해당 아이디가 존재하지 않을 경우
 
+    }
+
+
+    /**
+     * deleted는 자동 where , insert 가능
+     * memberStatus는 수정사항도 많기 때문에 저장할 때 지정이 필요하고 수정도 자주 이루어져야 한다.
+     * */
+    @Test
+    @DisplayName("where 테스트")
+    void member_deleted_auto() {
+        // given
+        memberRepository.save(Member.builder()
+                .username("admin")
+                .password(encoder.encode("1234"))
+                .role(Role.ADMIN)
+                .birthdate("2022-33-12")
+                .memberStatus(MemberStatus.WAITING)
+                .email("test@naver.com")
+                .years(14)
+                .employeeNumber("202212341234")
+                .phoneNumber("010-1234-1234")
+                .deleted(false)
+                .build());
+        // when
+
+         Member member =  memberRepository.findById("admin").get();
+        // then
+        Assertions.assertThat(member.getUsername()).isEqualTo("admin");
+        Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
+        Assertions.assertThat(member.isDeleted()).isFalse();
     }
 
 }

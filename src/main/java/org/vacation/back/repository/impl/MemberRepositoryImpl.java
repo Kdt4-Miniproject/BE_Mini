@@ -2,11 +2,17 @@ package org.vacation.back.repository.impl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.vacation.back.domain.Member;
+import org.vacation.back.domain.QDepartment;
+import org.vacation.back.domain.QDuty;
 import org.vacation.back.domain.QMember;
 import org.vacation.back.repository.child.CustomMemberRepository;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 
 @Repository
@@ -31,5 +37,20 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                     .fetchFirst();
 
             return fetch != null;
+        }
+
+        public Page<Member> memberPage(Pageable pageable,String username){
+            List<Member> content = queryFactory
+                    .select(member)
+                    .from(member)
+                    .innerJoin(QDuty.duty)
+                    .fetchJoin()
+                    .innerJoin(QDepartment.department)
+                    .fetchJoin()
+                    .fetchJoin()
+                    .fetch();
+
+            return null;
+
         }
 }

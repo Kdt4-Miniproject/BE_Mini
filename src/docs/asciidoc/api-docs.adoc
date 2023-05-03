@@ -5,11 +5,25 @@ endif::[]
 :member: member-controller-test
 :position: position-controller-test
 :vacation: vacation-controller-test
+:duty: duty-controller-test
 
 = REST API
 :toc: left
 :toclevels: 2
 :source-highlighter: highlightjs
+
+
+```
+
+ 명세서를 통해 못 알아보거나 혹은 수정이 필요하다면 담당자에게 연락주세요
+
+= 김우람 - 연차 관련
+= 김재완 - 직급 관련
+= 이경환 - 당직 관련
+= 김재우(팀장) - 사용자 관련 그리고 나머지 모든 것
+
+
+```
 
 
 = 사용자
@@ -182,13 +196,13 @@ include::{snippets}/{vacation}/vacation_delete/http-request.adoc[]
 === 응답
 include::{snippets}/{vacation}/vacation_delete/http-response.adoc[]
 
-== 연차 승인확인 (승인되면 true)
+== 연차 승인(승인 성공시 true) - 관리자권한
 === 요청
 include::{snippets}/{vacation}/vacation_ok/http-request.adoc[]
 === 응답
 include::{snippets}/{vacation}/vacation_ok/http-response.adoc[]
 
-== 연차 반려확인 (승인되면 true)
+== 연차 반려(반려되면 true) - 관리자권한
 === 요청
 include::{snippets}/{vacation}/vacation_rejected/http-request.adoc[]
 === 응답
@@ -196,8 +210,52 @@ include::{snippets}/{vacation}/vacation_rejected/http-response.adoc[]
 
 
 
+= 당직(duty)
+
+== 당직 저장
+=== 요청
+include::{snippets}/{duty}/duty_save/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_save/http-response.adoc[]
 
 
+== 당직 단건 조회
+=== 요청
+include::{snippets}/{duty}/duty_detail/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_detail/http-response.adoc[]
+
+== 당직 리스트 조회
+=== 요청
+include::{snippets}/{duty}/duty_list/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_list/http-response.adoc[]
+
+
+== 당직 수정
+=== 요청
+include::{snippets}/{duty}/duty_modify/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_modify/http-response.adoc[]
+
+
+== 당직 삭제
+=== 요청
+include::{snippets}/{duty}/duty_delete/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_delete/http-response.adoc[]
+
+== 당직요청 승인(승인시 true) - 관리자권한
+=== 요청
+include::{snippets}/{duty}/duty_ok/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_ok/http-response.adoc[]
+
+== 당직반려 승인(반려시 true) - 관리자권한만
+=== 요청
+include::{snippets}/{duty}/duty_rejected/http-request.adoc[]
+=== 응답
+include::{snippets}/{duty}/duty_rejected/http-response.adoc[]
 
 
 

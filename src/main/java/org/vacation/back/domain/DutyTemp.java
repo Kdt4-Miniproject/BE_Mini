@@ -20,13 +20,15 @@ public class DutyTemp {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "member_username")
     private Member member;
 
+    @Column(name = "duty_day")
     private String day;
 
     private boolean deleted;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "duty_status")
     private DutyStatus status;
 }

@@ -17,10 +17,20 @@ public class Duty extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    @Column(name = "duty_day")
     private String day;
 
 
     private boolean deleted;
+
     @Enumerated(EnumType.STRING)
+    @Column(name = "duty_status")
     private VacationStatus status;
+
+
+    @ManyToOne
+    @JoinColumn(name = "member_username")
+    private Member member;
+
 }

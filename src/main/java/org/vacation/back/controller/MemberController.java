@@ -41,11 +41,10 @@ public class MemberController {
         // TODO: PathVariable로 들어온 username이 PK로 겹치는게 있는지 확인한다.
 
         if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
-        boolean result = memberService.exist(username);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(result)
+                .data( memberService.exist(username))
                 .build());
     }
 
@@ -62,7 +61,7 @@ public class MemberController {
                 .role(Role.ADMIN)
                 .birthDate("2023-04-28")
                 .email("admin@naver.com")
-                .years("15")
+                .years(15)
                 .employeeNumber("202304281234")
                 .updatedAt(LocalDateTime.now())
                 .phoneNumber("010-1234-1234")
@@ -75,7 +74,7 @@ public class MemberController {
                 .role(Role.ADMIN)
                 .birthDate("2023-04-28")
                 .email("admin@naver.com")
-                .years("15")
+                .years(15)
                 .employeeNumber("202304281234")
                 .updatedAt(LocalDateTime.now())
                 .phoneNumber("010-1234-1234")
@@ -114,7 +113,7 @@ public class MemberController {
                 .role(Role.ADMIN)
                 .birthDate("2023-04-28")
                 .email("admin@naver.com")
-                .years("15")
+                .years(15)
                 .employeeNumber("202304281234")
                 .updatedAt(LocalDateTime.now())
                 .phoneNumber("010-1234-1234")
@@ -172,6 +171,7 @@ public class MemberController {
     /**
      * TODO: API 설명 작성예정
      * */
+
     @PostMapping("/api/v1/member/modify")
     public ResponseEntity<CommonResponse<?>> modify(
             @RequestBody MemberModifyDTO memberModifyDTO,

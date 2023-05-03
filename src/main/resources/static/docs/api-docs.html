@@ -591,10 +591,70 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 </ul>
 </li>
+<li><a href="#_당직duty">당직(duty)</a>
+<ul class="sectlevel1">
+<li><a href="#_당직_저장">당직 저장</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_23">요청</a></li>
+<li><a href="#_응답_23">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직_단건_조회">당직 단건 조회</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_24">요청</a></li>
+<li><a href="#_응답_24">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직_리스트_조회">당직 리스트 조회</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_25">요청</a></li>
+<li><a href="#_응답_25">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직_수정">당직 수정</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_26">요청</a></li>
+<li><a href="#_응답_26">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직_삭제">당직 삭제</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_27">요청</a></li>
+<li><a href="#_응답_27">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직수정_승인">당직수정 승인</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_28">요청</a></li>
+<li><a href="#_응답_28">응답</a></li>
+</ul>
+</li>
+<li><a href="#_당직승인_반려">당직승인 반려</a>
+<ul class="sectlevel2">
+<li><a href="#_요청_29">요청</a></li>
+<li><a href="#_응답_29">응답</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs"> 명세서를 통해 못 알아보거나 혹은 수정이 필요하다면 담당자에게 연락주세요
+
+= 김우람 - 연차 관련
+= 김재완 - 직급 관련
+= 이경환 - 당직 관련
+= 김재우(팀장) - 사용자 관련 그리고 나머지 모든 것</code></pre>
+</div>
+</div>
+</div>
+</div>
 <h1 id="_사용자" class="sect0">사용자</h1>
 <div class="sect1">
 <h2 id="_사용자_전체보기페이징">사용자 전체보기(페이징)</h2>
@@ -640,25 +700,25 @@ Content-Length: 926
     "content" : [ {
       "username" : "admin",
       "role" : "ADMIN",
-      "fileName" : "f4a43e2e-c515-45e5-b815-02f54a06ffd9_data.jpg",
+      "fileName" : "dad00de3-b965-4576-a9c7-1e0f5dc17a5b_data.jpg",
       "email" : "admin@naver.com",
       "employeeNumber" : "202304281234",
       "phoneNumber" : "010-1234-1234",
       "birthDate" : "2023-04-28",
       "years" : "15",
       "name" : "김독자",
-      "updatedAt" : "2023-05-02T19:43:15.3109778"
+      "updatedAt" : "2023-05-02T22:34:42.5007028"
     }, {
       "username" : "admin",
       "role" : "ADMIN",
-      "fileName" : "3ef3d089-37da-4482-bbbe-628010f4044f_data.jpg",
+      "fileName" : "b4b4f08a-33ec-4ffe-b192-37f20deb1e2b_data.jpg",
       "email" : "admin@naver.com",
       "employeeNumber" : "202304281234",
       "phoneNumber" : "010-1234-1234",
       "birthDate" : "2023-04-28",
       "years" : "15",
       "name" : "김독자",
-      "updatedAt" : "2023-05-02T19:43:15.3119781"
+      "updatedAt" : "2023-05-02T22:34:42.5007028"
     } ]
   }
 }</code></pre>
@@ -674,7 +734,7 @@ Content-Length: 926
 <h3 id="_요청_2">요청</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/join/check/jaewoo HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/join/check?username=jaewoo%40naver.com HTTP/1.1
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -694,12 +754,12 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 66
+Content-Length: 67
 
 {
   "status" : 200,
   "message" : "success",
-  "data" : true
+  "data" : false
 }</code></pre>
 </div>
 </div>
@@ -787,8 +847,8 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMTEwNTk1LCJ1c2VybmFtZSI6ImFkbWluIn0.mR7w3-AXm-uOfciBsktfEJaA5DhAWYg-fYjboR4IJjQkx4QXCRXYeoslVhvQ02HQR7VaxX9w8QMk1tkjuiWz1Q
-X-Auth-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NjE2MTk1LCJ1c2VybmFtZSI6ImFkbWluIn0.SDUJg89P3_oKNWH_0Eb2ILUPcKAI0EMjxpawFWdKMC4FJOf_6NWgCU4Xg_Glt2dLZnCKc6HjC40dXP7GVwRKQA
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMTIwODgyLCJ1c2VybmFtZSI6ImFkbWluIn0.Fs9woiM7Tjynnki8s0qGOpPtkNVrCaU4Vri1bXD3Y5O8uF1Zt-PhnEVLqtTIiLWuXLa7sf_YpmfL2wCrD32z-Q
+X-Auth-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NjI2NDgyLCJ1c2VybmFtZSI6ImFkbWluIn0.pi3Y9Lrd0UnJfRuF2sboGRiHbrGgeJdRDC7ipwU1u9-Q_2BIavV8izvk0WwzVUj_ljzB4cZP8-NVIR-Sz4-kcg
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -916,14 +976,14 @@ Content-Length: 427
   "data" : {
     "username" : "admin",
     "role" : "ADMIN",
-    "fileName" : "5490e3f2-208f-4c57-9b23-79c18fdec178_data.jpg",
+    "fileName" : "ffc5dd64-1660-4b2f-8965-231be24a4e2d_data.jpg",
     "email" : "admin@naver.com",
     "employeeNumber" : "202304281234",
     "phoneNumber" : "010-1234-1234",
     "birthDate" : "2023-04-28",
     "years" : "15",
     "name" : "김독자",
-    "updatedAt" : "2023-05-02T19:43:15.2281142"
+    "updatedAt" : "2023-05-02T22:34:42.4566907"
   }
 }</code></pre>
 </div>
@@ -1690,11 +1750,317 @@ Content-Length: 66
 </div>
 </div>
 </div>
+<h1 id="_당직duty" class="sect0">당직(duty)</h1>
+<div class="sect1">
+<h2 id="_당직_저장">당직 저장</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_23">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/save HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Content-Length: 100
+Host: localhost:8080
+
+{
+  "username" : "admin",
+  "day" : "2023-05-02",
+  "deleted" : false,
+  "status" : "WAITING"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_23">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직_단건_조회">당직 단건 조회</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_24">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/duty/detail/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_24">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 160
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : {
+    "id" : 1,
+    "day" : "2023-05-02",
+    "deleted" : false,
+    "status" : "WAITING"
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직_리스트_조회">당직 리스트 조회</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_25">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/duty/list HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_25">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 164
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : [ {
+    "id" : 1,
+    "day" : "2023-05-02",
+    "deleted" : false,
+    "status" : "WAITING"
+  } ]
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직_수정">당직 수정</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_26">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/modify/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Content-Length: 28
+Host: localhost:8080
+
+{
+  "day" : "2023-05-01"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_26">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직_삭제">당직 삭제</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_27">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/delete/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_27">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직수정_승인">당직수정 승인</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_28">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/ok/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_28">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_당직승인_반려">당직승인 반려</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_요청_29">요청</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/rejected/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_응답_29">응답</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+Content-Length: 66
+
+{
+  "status" : 200,
+  "message" : "success",
+  "data" : true
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-05-02 19:42:34 +0900
+Last updated 2023-05-02 22:06:22 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

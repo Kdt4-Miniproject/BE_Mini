@@ -24,10 +24,7 @@ public class PositionDTO {
 
     public static PositionDTO toDTO(Position position) {
         return PositionDTO.builder()
-                .id(position.getId())
-                .position(position.getPosition())
-                .vacation(position.getVacation())
-                .years(position.getYears())
+
                 .build();
     }
 }

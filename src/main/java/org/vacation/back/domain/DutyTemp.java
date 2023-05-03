@@ -8,6 +8,7 @@ import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class DutyTemp extends BaseEntity {
     private Member member;
 
     @Column(name = "duty_day")
-    private String day;
+    private LocalDate day;
 
     private boolean deleted;
 

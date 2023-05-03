@@ -14,20 +14,17 @@ import javax.persistence.Enumerated;
 @Builder
 public class PositionDTO {
 
-    private Long id;
-
     private PositionStatus position;
 
     private String vacation;
 
-    private String years;
+    private boolean deleted;
 
     public static PositionDTO toDTO(Position position) {
         return PositionDTO.builder()
-                .id(position.getId())
                 .position(position.getPosition())
                 .vacation(position.getVacation())
-                .years(position.getYears())
+                .deleted(position.isDeleted())
                 .build();
     }
 }

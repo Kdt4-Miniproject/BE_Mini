@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.vacation.back.common.PositionStatus;
 
 @Data
 @Builder
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PositionDeleteDTO {
 
-    private Long id;
+    private PositionStatus position;
 
-    private boolean deleted;
+    private boolean deleted; // 삭제 : true
 }

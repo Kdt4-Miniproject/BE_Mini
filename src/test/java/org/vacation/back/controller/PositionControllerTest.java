@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.vacation.back.MyWithRTestDoc;
+import org.vacation.back.annotation.Permission;
 import org.vacation.back.common.PositionStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
@@ -37,6 +38,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
     final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw";
     final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
 
+    @Permission
     @DisplayName("/api/v1/position/save")
     @Test
     public void position_save() throws Exception {
@@ -46,7 +48,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
         PositionSaveDTO positionDTO = PositionSaveDTO.builder()
                 .position(PositionStatus.STAFF)
                 .vacation("1")
-                .years("1")
                 .deleted(false)
                 .build();
 
@@ -86,9 +87,10 @@ public class PositionControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
+    @Permission
     @DisplayName("/api/v1/position/list")
     @Test
-    public void position_findAll() throws Exception {
+    public void position_find_all() throws Exception {
         // given
 
         // when
@@ -105,6 +107,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
+    @Permission
     @DisplayName("/api/v1/position/modify")
     @Test
     public void position_modify() throws Exception {
@@ -112,9 +115,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
 
         PositionModifyDTO positionDTO = PositionModifyDTO.builder()
                 .position(PositionStatus.ASSISTANT_MANAGER)
-                .vacation("2")
-                .years("2")
-                .deleted(false)
+                .vacation("5")
                 .build();
 
         // when
@@ -134,12 +135,14 @@ public class PositionControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
+    @Permission
     @DisplayName("/api/v1/position/delete")
     @Test
     public void position_delete() throws Exception {
         // given
 
         PositionDeleteDTO positionDTO = PositionDeleteDTO.builder()
+                .position(PositionStatus.DEPARTMENT_MANAGER)
                 .deleted(true)
                 .build();
 

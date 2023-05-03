@@ -12,13 +12,7 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionModifyDTO {
 
-    private Long id;
-
     private PositionStatus position;
 
     private String vacation;
-
-    private String years;
-
-    private boolean deleted;
 }

@@ -12,11 +12,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MemberModifyDTO {
 
-    private String year;
+
+    private String fileName;
 
     private String email;
 
-    private String phoneNumber;
 
-    private String employeeNumber;
 }

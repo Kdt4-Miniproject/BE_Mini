@@ -16,18 +16,20 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.vacation.back.MyWithRTestDoc;
 import org.vacation.back.annotation.Permission;
+import org.vacation.back.common.DepartmentStatus;
 import org.vacation.back.common.PositionStatus;
-import org.vacation.back.dto.CodeEnum;
-import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.Position.PositionDeleteDTO;
 import org.vacation.back.dto.request.Position.PositionModifyDTO;
 import org.vacation.back.dto.request.Position.PositionSaveDTO;
+import org.vacation.back.dto.request.department.DepartmentDeleteDTO;
+import org.vacation.back.dto.request.department.DepartmentModifyDTO;
+import org.vacation.back.dto.request.department.DepartmentSaveDTO;
 
-@DisplayName("직급 API")
+@DisplayName("부서 API")
 @AutoConfigureRestDocs(uriScheme = "http", uriHost = "localhost", uriPort = 8080)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class PositionControllerTest extends MyWithRTestDoc {
+public class DepartmentControllerTest extends MyWithRTestDoc {
 
     @Autowired
     MockMvc mockMvc;
@@ -35,28 +37,27 @@ public class PositionControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw";
-    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMTg0Mjg4LCJ1c2VybmFtZSI6ImFkbWluIn0.J3_AV5w2DMKawdu6eLhowA4duZc-aWR7EyoRUvh-bFx9VMi3KWwh7K9DmRaO9TP4QarvRNUlrHCb3jSD_YSvUw";
 
     @Permission
-    @DisplayName("/api/v1/position/save")
+    @DisplayName("/api/v1/department/save")
     @Test
-    public void position_save() throws Exception {
+    public void department_save() throws Exception {
         // given
-//        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
 
-        PositionSaveDTO positionDTO = PositionSaveDTO.builder()
-                .position(PositionStatus.STAFF)
-                .vacation("1")
+        DepartmentSaveDTO departmentDTO = DepartmentSaveDTO.builder()
+                .department(DepartmentStatus.HUMAN_RESOURCE)
+                .vacation_limit("3")
+                .personal("6")
                 .deleted(false)
                 .build();
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/position/save")
+                        .post("/api/v1/department/save")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(positionDTO))
+                        .content(objectMapper.writeValueAsString(departmentDTO))
                         .header("Authorization",token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -68,14 +69,14 @@ public class PositionControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @DisplayName("/api/v1/position/detail")
+    @DisplayName("/api/v1/department/detail")
     @Test
-    public void position_detail() throws Exception {
+    public void department_detail() throws Exception {
         // given
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/position/detail")
+                        .get("/api/v1/department/detail")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization",token)
                 )
@@ -88,14 +89,14 @@ public class PositionControllerTest extends MyWithRTestDoc {
     }
 
     @Permission
-    @DisplayName("/api/v1/position/list")
+    @DisplayName("/api/v1/department/list")
     @Test
-    public void position_find_all() throws Exception {
+    public void department_find_all() throws Exception {
         // given
 
         // when
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
-                        .get("/api/v1/position/list")
+                        .get("/api/v1/department/list")
                         .accept(MediaType.APPLICATION_JSON)
                         .header("Authorization",token)
                 )
@@ -108,22 +109,23 @@ public class PositionControllerTest extends MyWithRTestDoc {
     }
 
     @Permission
-    @DisplayName("/api/v1/position/modify")
+    @DisplayName("/api/v1/department/modify")
     @Test
-    public void position_modify() throws Exception {
+    public void department_modify() throws Exception {
         // given
 
-        PositionModifyDTO positionDTO = PositionModifyDTO.builder()
-                .position(PositionStatus.ASSISTANT_MANAGER)
-                .vacation("5")
+        DepartmentModifyDTO departmentDTO = DepartmentModifyDTO.builder()
+                .department(DepartmentStatus.DEVELOPMENT)
+                .vacation_limit("4")
+                .personal("10")
                 .build();
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/position/modify")
+                        .post("/api/v1/department/modify")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(positionDTO))
+                        .content(objectMapper.writeValueAsString(departmentDTO))
                         .header("Authorization",token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -135,23 +137,22 @@ public class PositionControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @Permission
-    @DisplayName("/api/v1/position/delete")
+    @DisplayName("/api/v1/department/delete")
     @Test
-    public void position_delete() throws Exception {
+    public void department_delete() throws Exception {
         // given
 
-        PositionDeleteDTO positionDTO = PositionDeleteDTO.builder()
-                .position(PositionStatus.DEPARTMENT_MANAGER)
+        DepartmentDeleteDTO departmentDTO = DepartmentDeleteDTO.builder()
+                .department(DepartmentStatus.MARKETING)
                 .deleted(true)
                 .build();
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/position/delete")
+                        .post("/api/v1/department/delete")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(positionDTO))
+                        .content(objectMapper.writeValueAsString(departmentDTO))
                         .header("Authorization",token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
@@ -162,5 +163,6 @@ public class PositionControllerTest extends MyWithRTestDoc {
 
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
+
 
 }

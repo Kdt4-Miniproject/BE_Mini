@@ -23,6 +23,7 @@ public class Member extends BaseEntity {
     @Id
     private String username;
 
+    @Column(columnDefinition = "TEXT")
     private String password;
 
     private String email;
@@ -42,18 +43,18 @@ public class Member extends BaseEntity {
 
     private Integer years;
 
+    private String fileName;
+
 
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
     private String name;
 
-    private boolean deleted;
-
-
+    private String joinYear;
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
-    private List<VacationTemp> vacationTemps = new ArrayList<>();
+    private List<Vacation> vacationTemps = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     @Builder.Default
@@ -69,10 +70,7 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "department_name")
     private Department department;
 
-    @PrePersist
-    public void preDeleted() {
-        this.deleted = false;
-    }
+
 
 
 

@@ -1,5 +1,5 @@
 package org.vacation.back.common;
 
 public enum MemberStatus {
-    APPROVAL,REFUSAL,WAITING
+    ACTIVATION,DEACTIVATION,WAITING
 }

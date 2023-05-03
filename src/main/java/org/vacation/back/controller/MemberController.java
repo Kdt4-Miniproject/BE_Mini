@@ -37,7 +37,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @GetMapping("/api/v1/join/check")
-    public ResponseEntity<CommonResponse<?>> checking(@RequestParam @Email String username){
+    public ResponseEntity<CommonResponse<?>> checking(@RequestParam String username){
         // TODO: PathVariable로 들어온 username이 PK로 겹치는게 있는지 확인한다.
 
         if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");

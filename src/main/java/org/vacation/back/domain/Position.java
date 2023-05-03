@@ -27,6 +27,8 @@ public class Position extends BaseEntity {
     private String vacation; // 직급에 맞는 휴가 개수
 
 
+    @Column(name = "position_status")
+    private PositionStatus status;
 
     @OneToMany(mappedBy = "position")
     @Builder.Default

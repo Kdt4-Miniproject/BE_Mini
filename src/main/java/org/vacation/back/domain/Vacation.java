@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -18,18 +19,17 @@ public class Vacation extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @OneToOne
-    @JoinColumn(name = "temp_id")
-    private VacationTemp vacationTemp;
-
     @Column(name = "start_date")
-
-    private String start;
+    private LocalDate start;
 
     @Column(name = "end_date")
-    private String end;
+    private LocalDate end;
 
-    private boolean deleted;
     @Enumerated(EnumType.STRING)
     private VacationStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "member_username")
+    private Member member;
+
 }

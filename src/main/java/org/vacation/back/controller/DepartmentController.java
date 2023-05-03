@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.vacation.back.common.DepartmentStatus;
 import org.vacation.back.common.PositionStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
+import org.vacation.back.dto.common.DepartmentDTO;
 import org.vacation.back.dto.common.PositionDTO;
 import org.vacation.back.dto.request.Position.PositionDeleteDTO;
 import org.vacation.back.dto.request.Position.PositionModifyDTO;
 import org.vacation.back.dto.request.Position.PositionSaveDTO;
+import org.vacation.back.dto.request.department.DepartmentDeleteDTO;
+import org.vacation.back.dto.request.department.DepartmentModifyDTO;
+import org.vacation.back.dto.request.department.DepartmentSaveDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -22,12 +27,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class PositionController {
+public class DepartmentController {
 
-    // TODO: 직급 추가 (관리자) - 새로운 직급 추가
-    @PostMapping("/api/v1/position/save")  // 관리자 페이지
+    // TODO: 부서 추가 (관리자) - 새로운 부서 추가
+    @PostMapping("/api/v1/department/save")  // 관리자 페이지
     public ResponseEntity<CommonResponse> save(
-            @RequestBody PositionSaveDTO dto,
+            @RequestBody DepartmentSaveDTO dto,
             HttpServletRequest request) {
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -36,14 +41,14 @@ public class PositionController {
                 .build());
     }
 
-    // TODO: 직급 조회 (멤버) - 본인 직급 확인
-    @GetMapping("/api/v1/position/detail") // 유저 페이지 - detail
+    // TODO: 부서 조회 (멤버) - 본인 부서 확인
+    @GetMapping("/api/v1/department/detail") // 유저 페이지
     public ResponseEntity<CommonResponse> detail() {
 
-        PositionDTO dto = PositionDTO.builder()
-                .position(PositionStatus.ASSISTANT_MANAGER)
-                .vacation("1")
-                .build();
+        DepartmentDTO dto = new DepartmentDTO();
+        dto.setDepartment(DepartmentStatus.MARKETING);
+        dto.setVacation_limit("4");
+        dto.setPersonal("6");
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -52,20 +57,23 @@ public class PositionController {
         );
     }
 
-    // TODO: 직급 조회 (관리자) - 직급 테이블 모두보기
-    @GetMapping("/api/v1/position/list") // 관리자 페이지
+
+    // TODO: 부서 조회 (관리자) - 부서 테이블 모두보기
+    @GetMapping("/api/v1/department/list") // 관리자 페이지
     public ResponseEntity<CommonResponse> find_all(HttpServletRequest request) {
-        List<PositionDTO> dtoList = new ArrayList<>();
-        dtoList.add(PositionDTO.builder()
-                .position(PositionStatus.STAFF)
-                .vacation("1")
-                .deleted(false)
-                .build());
-        dtoList.add(PositionDTO.builder()
-                .position(PositionStatus.MANAGER)
-                .vacation("3")
-                .deleted(false)
-                .build());
+        List<DepartmentDTO> dtoList = new ArrayList<>();
+        DepartmentDTO dto1 = new DepartmentDTO();
+        dto1.setDepartment(DepartmentStatus.MARKETING);
+        dto1.setVacation_limit("4");
+        dto1.setPersonal("6");
+        dto1.setDeleted(true);
+        dtoList.add(dto1);
+        DepartmentDTO dto2 = new DepartmentDTO();
+        dto2.setDepartment(DepartmentStatus.DEVELOPMENT);
+        dto2.setVacation_limit("5");
+        dto2.setPersonal("10");
+        dto2.setDeleted(true);
+        dtoList.add(dto2);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -74,10 +82,10 @@ public class PositionController {
     }
 
 
-    // TODO: 직급 수정 (관리자) - 명칭, 직급별 휴가 수
-    @PostMapping("/api/v1/position/modify") // 관리자 페이지
+    // TODO: 부서 수정 (관리자) - 명칭, 부서별 휴가제한 수, 부서 총원
+    @PostMapping("/api/v1/department/modify") // 관리자 페이지
     public ResponseEntity<CommonResponse> modify(
-            @RequestBody PositionModifyDTO dto,
+            @RequestBody DepartmentModifyDTO dto,
             HttpServletRequest request) {
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -86,10 +94,10 @@ public class PositionController {
                 .build());
     }
 
-    // TODO: 직급 삭제 (관리자) - 안쓰는 직급 비활성화
-    @PostMapping("/api/v1/position/delete") // 관리자 페이지
+    // TODO: 부서 삭제 (관리자) - 안쓰는 부서 비활성화
+    @PostMapping("/api/v1/department/delete") // 관리자 페이지
     public ResponseEntity<CommonResponse> delete(
-            @RequestBody PositionDeleteDTO dto,
+            @RequestBody DepartmentDeleteDTO dto,
             HttpServletRequest request) {
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -97,6 +105,42 @@ public class PositionController {
                 .data(true)
                 .build());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

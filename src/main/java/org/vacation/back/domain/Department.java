@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.vacation.back.common.DepartmentStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,9 @@ public class Department {
     private Integer vacationLimit; //휴가인원
 
     private Integer departmentPersonal; //부서총인원
+
+    @Enumerated(EnumType.STRING)
+    private DepartmentStatus status;
 
     @OneToMany(mappedBy = "department")
     @Builder.Default

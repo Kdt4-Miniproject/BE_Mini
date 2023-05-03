@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
@@ -21,8 +22,6 @@ public class Duty extends BaseEntity{
     @Column(name = "duty_day")
     private String day;
 
-
-    private boolean deleted;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "duty_status")

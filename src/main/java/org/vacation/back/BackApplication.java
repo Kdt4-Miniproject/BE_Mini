@@ -26,7 +26,6 @@ public class BackApplication {
 								.years(14)
 								.employeeNumber("202212341234")
 								.phoneNumber("010-1234-1234")
-								.deleted(false)
 						.build());
 
 				memberRepository.save(Member.builder()
@@ -38,7 +37,6 @@ public class BackApplication {
 						.years(15)
 						.employeeNumber("202212341234")
 						.phoneNumber("010-1234-1234")
-						.deleted(false)
 						.build());
 		};
 	}

@@ -14,6 +14,8 @@ import org.vacation.back.dto.common.VacationTempDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationOkAndRejectedDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.repository.VacationTempRepository;
+import org.vacation.back.service.VacationTempService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -25,6 +27,8 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class VacationController {
+
+    private final VacationTempService vacationTempService;
 
     @PostMapping("/api/v1/vacation/save")
     public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto){
@@ -79,11 +83,15 @@ public class VacationController {
                 .data(vacationTempDTOList)
                 .build());
     }
+    /**
+     * week를 몇주인지로 받을 때
+     * 그냥 날짜로 받으면 내가 몇 주인지 구하면 됨
+     * */
 
     @PostMapping("/api/v1/vacation/modify/{id}")
     public ResponseEntity<CommonResponse> modify(
             @PathVariable(value = "id") Long id,
-            @RequestBody VacationModifyDTO dto, Principal principal){
+            @RequestBody VacationModifyDTO dto, HttpServletRequest request){
         //TODO: 연차 시작일 or 끝나는일 수정 가능(추후 변경가능)
 
         return ResponseEntity.ok(CommonResponse.builder()

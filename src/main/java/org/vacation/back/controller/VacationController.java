@@ -6,18 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.vacation.back.common.VacationStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
-import org.vacation.back.dto.common.VacationTempDTO;
+import org.vacation.back.dto.common.VacationDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
-import org.vacation.back.dto.request.vacation.VacationOkAndRejectedDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
-
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +37,7 @@ public class VacationController {
             @PathVariable(value = "id") Long id,
             HttpServletRequest request){
         //TODO: 조회하는 유저가 정보 확인
-        VacationTempDTO dto = VacationTempDTO.builder()
-                .id(1L)
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build();
+        VacationDTO dto = new VacationDTO();
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(dto)
@@ -59,21 +48,8 @@ public class VacationController {
     public ResponseEntity<CommonResponse> vacationList(
             HttpServletRequest request){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
-        List<VacationTempDTO> vacationTempDTOList = new ArrayList<>();
-        vacationTempDTOList.add(VacationTempDTO.builder()
-                .id(1L)
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build());
-        vacationTempDTOList.add(VacationTempDTO.builder()
-                .id(2L)
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build());
+        List<VacationDTO> vacationTempDTOList = new ArrayList<>();
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(vacationTempDTOList)

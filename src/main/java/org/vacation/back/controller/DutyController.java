@@ -10,7 +10,7 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.DutyDTO;
-import org.vacation.back.dto.common.VacationTempDTO;
+
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;

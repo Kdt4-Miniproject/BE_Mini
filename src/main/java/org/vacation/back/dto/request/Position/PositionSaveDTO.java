@@ -12,9 +12,9 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionSaveDTO {
 
-    private PositionStatus position;
+    private String positionName;
 
     private String vacation;
 
-    private boolean deleted; // 등록 : false
+    private PositionStatus status;
 }

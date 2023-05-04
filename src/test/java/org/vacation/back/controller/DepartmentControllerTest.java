@@ -37,7 +37,7 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMTg0Mjg4LCJ1c2VybmFtZSI6ImFkbWluIn0.J3_AV5w2DMKawdu6eLhowA4duZc-aWR7EyoRUvh-bFx9VMi3KWwh7K9DmRaO9TP4QarvRNUlrHCb3jSD_YSvUw";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjc3ODU5LCJ1c2VybmFtZSI6ImFkbWluIn0.1PotkL6P3Q8knj_G9aQvVAC8O0vOK-nCouZKmIR13PErg0UAkp_AP-9apSGEGHG2-V3FSLeIQENIiCCSYi1-ig";
 
     @Permission
     @DisplayName("/api/v1/department/save")
@@ -46,10 +46,10 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         // given
 
         DepartmentSaveDTO departmentDTO = DepartmentSaveDTO.builder()
-                .department(DepartmentStatus.HUMAN_RESOURCE)
-                .vacation_limit("3")
-                .personal("6")
-                .deleted(false)
+                .departmentName("HUMAN_RESOURCE")
+                .vacationLimit("3")
+                .departmentPersonal("6")
+                .status(DepartmentStatus.ACTIVATION)
                 .build();
 
         // when
@@ -115,9 +115,10 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         // given
 
         DepartmentModifyDTO departmentDTO = DepartmentModifyDTO.builder()
-                .department(DepartmentStatus.DEVELOPMENT)
-                .vacation_limit("4")
-                .personal("10")
+                .departmentName("DEVELOPMENT")
+                .vacationLimit("4")
+                .departmentPersonal("10")
+                .status(DepartmentStatus.ACTIVATION)
                 .build();
 
         // when
@@ -143,8 +144,8 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         // given
 
         DepartmentDeleteDTO departmentDTO = DepartmentDeleteDTO.builder()
-                .department(DepartmentStatus.MARKETING)
-                .deleted(true)
+                .departmentName("MARKETING")
+                .status(DepartmentStatus.DEACTIVATION)
                 .build();
 
         // when

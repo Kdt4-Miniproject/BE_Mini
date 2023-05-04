@@ -12,9 +12,11 @@ import org.vacation.back.common.DepartmentStatus;
 @AllArgsConstructor
 public class DepartmentModifyDTO {
 
-    private DepartmentStatus department;
+    private String departmentName;
 
-    private String vacation_limit; // 부서별 휴가 최대 인원
+    private String vacationLimit;
 
-    private String personal; // 총원
+    private String departmentPersonal;
+
+    private DepartmentStatus status;
 }

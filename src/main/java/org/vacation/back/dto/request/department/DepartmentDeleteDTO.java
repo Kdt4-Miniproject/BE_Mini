@@ -12,7 +12,7 @@ import org.vacation.back.common.DepartmentStatus;
 @AllArgsConstructor
 public class DepartmentDeleteDTO {
 
-    private DepartmentStatus department;
+    private String departmentName;
 
-    private boolean deleted; // 삭제 : true
+    private DepartmentStatus status;
 }

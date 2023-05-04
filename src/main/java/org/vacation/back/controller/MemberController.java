@@ -143,20 +143,12 @@ public class MemberController {
         //TODO: 해당 username이 PK인지 체크 조회,
         //TODO: Exception은 ExceptionHandler로 처리할 것임
 
-        Calendar calendar = Calendar.getInstance();
 
-        Integer year = calendar.get(Calendar.YEAR) + 1;
-        Integer temp  = Integer.parseInt(registerMemberDTO.getJoiningDay().substring(0,4));
 
-        Integer years = year - temp;
-
-        registerMemberDTO.setYears(years.toString());
-
-        System.out.println(registerMemberDTO);
 
         return ResponseEntity.ok(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
-                        .data(true)
+                        .data(memberService.join(registerMemberDTO))
                 .build());
     }
 

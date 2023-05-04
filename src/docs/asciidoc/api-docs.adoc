@@ -73,6 +73,7 @@ include::{snippets}/{member}/member_login_success/http-response.adoc[]
 }
 ```
 
+
 ```
 토큰이 없거나 너무 짧은 경우
 {
@@ -82,6 +83,25 @@ include::{snippets}/{member}/member_login_success/http-response.adoc[]
 }
 
 ```
+
+
+
+
+== RefreshToken 발급(성공시)
+
+
+Refresh토큰을 받는 곳 /api/v1/refresh
+위와 같이 403 과 message가 나오면 요청을 보낸다.
+
+
+=== 요청
+include::{snippets}/{member}/member_refresh_token/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_refresh_token/http-response.adoc[]
+
+
+
+
 
 
 

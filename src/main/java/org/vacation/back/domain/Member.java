@@ -16,6 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 public class Member extends BaseEntity {
 
@@ -41,7 +42,6 @@ public class Member extends BaseEntity {
 
     private Integer totalYears;
 
-    private Integer years;
 
     private String fileName;
 
@@ -52,26 +52,39 @@ public class Member extends BaseEntity {
 
     private LocalDate joiningDay;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Vacation> vacationTemps = new ArrayList<>();
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Duty> duties = new ArrayList<>();
 
-
+    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "position_name")
+    @JoinColumn(name = "position_name",insertable = false,updatable = false)
     private Position position;
-
-
+    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "department_name")
+    @JoinColumn(name = "department_name",insertable = false,updatable = false)
     private Department department;
 
 
 
+    @Column(name = "department_name")
+    public String departmentName;
 
+    @Column(name = "position_name")
+    public String positionName;
+
+
+    public void changePassword(String pwdData){
+        this.password = pwdData;
+    }
+    public void assignEmNumber(String number){
+        this.employeeNumber = number;
+    }
 
 }

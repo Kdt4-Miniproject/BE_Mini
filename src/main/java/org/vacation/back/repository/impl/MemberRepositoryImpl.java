@@ -39,6 +39,26 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
             return fetch != null;
         }
 
+        public boolean existsByEmployNumber(String number){
+            Integer fetch = queryFactory
+                    .selectOne()
+                    .from(member)
+                    .where(member.employeeNumber.eq(number))
+                    .fetchFirst();
+
+            return fetch != null;
+        }
+
+        public Integer maxEmployeeNumber(){
+           String number = queryFactory
+                  .select(member.employeeNumber.max())
+                  .from(member)
+                  .fetchOne();
+
+           return Integer.parseInt(number);
+
+        }
+
         public Page<Member> memberPage(Pageable pageable,String username){
             List<Member> content = queryFactory
                     .select(member)

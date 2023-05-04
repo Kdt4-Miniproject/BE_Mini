@@ -49,7 +49,6 @@ public class MemberDTO{
                 .employeeNumber(member.getEmployeeNumber())
                 .phoneNumber(member.getPhoneNumber())
                 .birthDate(member.getBirthdate())
-                .years(member.getYears())
                 .name(member.getName())
                 .updatedAt(member.getUpdatedAt())
                 .build();

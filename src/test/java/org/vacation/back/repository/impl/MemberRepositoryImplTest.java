@@ -35,8 +35,17 @@ class MemberRepositoryImplTest {
                 .role(Role.ADMIN)
                 .birthdate("2022-33-12")
                 .email("test@naver.com")
-                .years(14)
-                .employeeNumber("202212341234")
+                .employeeNumber("20221234")
+                .phoneNumber("010-1234-1234")
+                .build());
+
+        memberRepository.save(Member.builder()
+                .username("USER")
+                .password(encoder.encode("1234"))
+                .role(Role.STAFF)
+                .birthdate("2022-33-12")
+                .email("test@naver.com")
+                .employeeNumber("20221235")
                 .phoneNumber("010-1234-1234")
                 .build());
     }
@@ -68,7 +77,7 @@ class MemberRepositoryImplTest {
      * memberStatus는 수정사항도 많기 때문에 저장할 때 지정이 필요하고 수정도 자주 이루어져야 한다.
      * */
     @Test
-    @DisplayName("where 테스트")
+    @DisplayName("where TEST")
     void member_deleted_auto() {
         // given
         memberRepository.save(Member.builder()
@@ -78,7 +87,6 @@ class MemberRepositoryImplTest {
                 .birthdate("2022-33-12")
                 .memberStatus(MemberStatus.WAITING)
                 .email("test@naver.com")
-                .years(14)
                 .employeeNumber("202212341234")
                 .phoneNumber("010-1234-1234")
                 .build());
@@ -88,6 +96,17 @@ class MemberRepositoryImplTest {
         // then
         Assertions.assertThat(member.getUsername()).isEqualTo("admin");
         Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
+    }
+
+    @Test
+    @DisplayName("Picking the highest number of employee number")
+    void member_max_employeeNumber() {
+        // given
+        Integer temp = memberRepository.maxEmployeeNumber();
+        Member member = memberRepository.findById("USER").get();
+        // when
+        // then
+        Assertions.assertThat(member.getEmployeeNumber()).isEqualTo(temp.toString());
     }
 
 }

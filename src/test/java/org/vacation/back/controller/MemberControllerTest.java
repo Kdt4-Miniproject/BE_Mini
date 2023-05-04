@@ -2,6 +2,7 @@ package org.vacation.back.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,7 @@ class MemberControllerTest extends MyWithRTestDoc {
                 .password("1234")
                 .birthDate("2023-04-26")
                 .phoneNumber("010-1234-1234")
-                .positionName("사원")
+                .positionName("대리")
                 .departmentName("개발")
                 .fileName("404.jpg")
                 .name("김독자")
@@ -137,6 +138,32 @@ class MemberControllerTest extends MyWithRTestDoc {
         // then
     }
 
+    @Test
+    @DisplayName("")
+    void member_refresh_token() throws Exception {
+        // given
+
+        String accessToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjYzNTAzLCJ1c2VybmFtZSI6ImFkbWluIn0.hlUHLUliGMVUJXcVqj_N6lmpMb20ukgfBG_xQFuEFOA7_oUpF7ZZofFNSLhIxm9itefxGP6U6TT4gXA4Or_Z-w";
+        String refreshToekn = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzY4ODI3LCJ1c2VybmFtZSI6ImFkbWluIn0.JEaYSN7oiP0z59dwZRMRbnqkhTlZ139Ieo5oT7UDXjNCMB2ZfRL-Qy2rrUb8DaAVtfbe5y5wUfvGA_Kp6DBNRQ";
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.post("/api/v1/refresh")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization",accessToken)
+                        .header("X-Auth-Refresh-Token",refreshToekn)
+                )
+                .andExpect(status().isOk());
+
+        Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"));
+        Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("Authorization"));
+        Assertions.assertNotEquals(resultActions.andReturn().getResponse().getHeader("Authorization"),accessToken);
+        Assertions.assertEquals(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"),refreshToekn);
+
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+        // then
+    }
+    
     @Test
     @DisplayName("/api/v1/login")
     void member_login_success() throws Exception {

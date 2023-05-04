@@ -22,7 +22,12 @@ public class QDutyTemp extends EntityPathBase<DutyTemp> {
 
     public static final QDutyTemp dutyTemp = new QDutyTemp("dutyTemp");
 
-    public final StringPath day = createString("day");
+    public final QBaseEntity _super = new QBaseEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    public final DatePath<java.time.LocalDate> day = createDate("day", java.time.LocalDate.class);
 
     public final BooleanPath deleted = createBoolean("deleted");
 
@@ -31,6 +36,9 @@ public class QDutyTemp extends EntityPathBase<DutyTemp> {
     public final QMember member;
 
     public final EnumPath<org.vacation.back.common.DutyStatus> status = createEnum("status", org.vacation.back.common.DutyStatus.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QDutyTemp(String variable) {
         this(DutyTemp.class, forVariable(variable), INITS);

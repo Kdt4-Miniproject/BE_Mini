@@ -41,7 +41,7 @@ class MemberControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg";
 
 
     @Test
@@ -109,9 +109,12 @@ class MemberControllerTest extends MyWithRTestDoc {
                 .username("admin")
                 .password("1234")
                 .birthDate("2023-04-26")
+                .phoneNumber("010-1234-1234")
+                .positionName("사원")
+                .departmentName("개발")
+                .fileName("404.jpg")
                 .name("김독자")
-                .department("개발")
-                .position("대리")
+                .joiningDay("2020-01-01")
                 .years("3")
                 .email("test@naver.com")
                 .build();
@@ -166,10 +169,10 @@ class MemberControllerTest extends MyWithRTestDoc {
     void member_dto_modify() throws Exception {
         // given
         MemberModifyDTO dto  = MemberModifyDTO.builder()
-                .phoneNumber("010-1234-1234")
-                .employeeNumber("20220")
                 .email("test@naver.com")
-                .year("4")
+                .fileName("404.jpg")
+                .newPassword("123400")
+                .oldPassword("1234")
                 .build();
 
         // when
@@ -186,6 +189,31 @@ class MemberControllerTest extends MyWithRTestDoc {
 
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
         // then
+    }
+
+    @Test
+    @DisplayName("/api/v1/member/admin/modify")
+    void member_modify_admin() throws Exception {
+        AdminMemberModifyRequest dto  = AdminMemberModifyRequest.builder()
+                .username("test2233")
+                .email("test@naver.com")
+                .fileName("404.jpg")
+                .newPassword("123400")
+                .oldPassword("1234")
+                .build();
+        // when
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
+                .post("/api/v1/member/modify")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(dto))
+                .header("Authorization",token)
+        ).andExpect(status().isOk());
+
+        resultActions.andExpect(jsonPath("$.data").value(true));
+        resultActions.andExpect(jsonPath("$.status").value(200));
+
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
     
     
@@ -216,7 +244,8 @@ class MemberControllerTest extends MyWithRTestDoc {
     void member_pwd_modify() throws Exception {
         // given
         PasswordModifyRequest request = PasswordModifyRequest.builder()
-                .password("1234")
+                .oldPassword("1234")
+                .newPassword("123411")
                 .build();
 
         // when
@@ -234,40 +263,6 @@ class MemberControllerTest extends MyWithRTestDoc {
     }
 
 
-
-    /**
-     * @apiNote 관리자 권한으로는 해당 멤버에 모든걸 변경할 수 있디
-     * */
-    @Test
-    @DisplayName("")
-    void admin_member_modify_member() throws Exception {
-        // given
-        AdminMemberModifyRequest request = AdminMemberModifyRequest.builder()
-                .username("admin")
-                .password("1234")
-                .birthdate("2023-04-26")
-                .phoneNumber("010-1234-1234")
-                .name("김독자")
-                .department("개발")
-                .position("대리")
-                .years("3")
-                .role(Role.STAFF)
-                .email("test@naver.com")
-                .deleted(false)
-                .build();
-        // when
-        ResultActions resultActions = mockMvc
-                .perform(RestDocumentationRequestBuilders.post("/api/v1/member/admin/modify")
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .header("Authorization",token)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(objectMapper.writeValueAsString(request))
-                ).andExpect(status().isOk());
-        // then
-        resultActions.andExpect(jsonPath("$.status").value(200));
-
-        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
-    }
 
 
     /**

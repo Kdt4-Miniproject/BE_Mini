@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.vacation.back.common.MemberStatus;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Where(clause = "deleted = false")
 public class Member extends BaseEntity {
 
 
@@ -50,7 +50,7 @@ public class Member extends BaseEntity {
     private MemberStatus memberStatus;
     private String name;
 
-    private String joinYear;
+    private LocalDate joiningDay;
 
     @OneToMany(mappedBy = "member")
     @Builder.Default

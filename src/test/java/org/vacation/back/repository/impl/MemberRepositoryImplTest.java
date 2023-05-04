@@ -38,7 +38,6 @@ class MemberRepositoryImplTest {
                 .years(14)
                 .employeeNumber("202212341234")
                 .phoneNumber("010-1234-1234")
-                .deleted(false)
                 .build());
     }
 
@@ -82,7 +81,6 @@ class MemberRepositoryImplTest {
                 .years(14)
                 .employeeNumber("202212341234")
                 .phoneNumber("010-1234-1234")
-                .deleted(false)
                 .build());
         // when
 
@@ -90,7 +88,6 @@ class MemberRepositoryImplTest {
         // then
         Assertions.assertThat(member.getUsername()).isEqualTo("admin");
         Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
-        Assertions.assertThat(member.isDeleted()).isFalse();
     }
 
 }

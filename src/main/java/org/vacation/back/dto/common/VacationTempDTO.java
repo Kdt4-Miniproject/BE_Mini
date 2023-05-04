@@ -5,6 +5,7 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Vacation;
 
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -18,9 +19,9 @@ public class VacationTempDTO {
     Long id;
 
 
-    String start;
+    LocalDate start;
 
-    String end;
+    LocalDate end;
 
     boolean deleted;
 

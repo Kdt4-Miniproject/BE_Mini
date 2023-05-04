@@ -91,6 +91,14 @@ include::{snippets}/{member}/member_dto_modify/http-request.adoc[]
 === 응답
 include::{snippets}/{member}/member_dto_modify/http-response.adoc[]
 
+== 사용자 정보 변환(성공시) - 관리자가 강제로 변환
+=== 요청
+include::{snippets}/{member}/member_modify_admin/http-request.adoc[]
+=== 응답
+include::{snippets}/{member}/member_modify_admin/http-response.adoc[]
+
+
+
 == 사용자 정보 자세히보기(성공시)
 === 요청
 include::{snippets}/{member}/member_detail_info/http-request.adoc[]
@@ -98,11 +106,7 @@ include::{snippets}/{member}/member_detail_info/http-request.adoc[]
 include::{snippets}/{member}/member_detail_info/http-response.adoc[]
 
 
-== 사용자 비밀번호 수정하기
-=== 요청
-include::{snippets}/{member}/member_pwd_modify/http-request.adoc[]
-=== 응답
-include::{snippets}/{member}/member_pwd_modify/http-response.adoc[]
+
 
 
 == 사용자의 모든 정보수정하기 (관리자만 가능)

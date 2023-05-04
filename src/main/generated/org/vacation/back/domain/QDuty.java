@@ -27,9 +27,7 @@ public class QDuty extends EntityPathBase<Duty> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final StringPath day = createString("day");
-
-    public final BooleanPath deleted = createBoolean("deleted");
+    public final DatePath<java.time.LocalDate> day = createDate("day", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

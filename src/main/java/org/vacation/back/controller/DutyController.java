@@ -18,6 +18,7 @@ import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class DutyController {
         //TODO: 조회하는 유저가 정보 확인
         DutyDTO dutyDTO = DutyDTO.builder()
                 .id(1L)
-                .day("2023-05-02")
+                .day(LocalDate.parse("2023-05-02"))
                 .deleted(false)
                 .status(DutyStatus.WAITING)
                 .build();
@@ -62,7 +63,7 @@ public class DutyController {
         List<DutyDTO> dutyDTOList = new ArrayList<>();
         dutyDTOList.add(DutyDTO.builder()
                 .id(1L)
-                .day("2023-05-02")
+                .day(LocalDate.parse("2023-05-02"))
                 .deleted(false)
                 .status(DutyStatus.WAITING)
                 .build());

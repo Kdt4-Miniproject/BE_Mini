@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.common.VacationStatus;
-import org.vacation.back.domain.VacationTemp;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.VacationTempDTO;
@@ -17,6 +16,7 @@ import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,8 @@ public class VacationController {
         //TODO: 조회하는 유저가 정보 확인
         VacationTempDTO dto = VacationTempDTO.builder()
                 .id(1L)
-                .start("2023-05-01")
-                .end("2023-05-01")
+                .start(LocalDate.parse("2023-05-01"))
+                .end(LocalDate.parse("2023-05-01"))
                 .deleted(false)
                 .status(VacationStatus.WAITING)
                 .build();
@@ -62,15 +62,15 @@ public class VacationController {
         List<VacationTempDTO> vacationTempDTOList = new ArrayList<>();
         vacationTempDTOList.add(VacationTempDTO.builder()
                 .id(1L)
-                .start("2023-05-01")
-                .end("2023-05-01")
+                .start(LocalDate.parse("2023-05-01"))
+                .end(LocalDate.parse("2023-05-01"))
                 .deleted(false)
                 .status(VacationStatus.WAITING)
                 .build());
         vacationTempDTOList.add(VacationTempDTO.builder()
                 .id(2L)
-                .start("2023-05-01")
-                .end("2023-05-01")
+                .start(LocalDate.parse("2023-05-01"))
+                .end(LocalDate.parse("2023-05-01"))
                 .deleted(false)
                 .status(VacationStatus.WAITING)
                 .build());

@@ -120,6 +120,7 @@ class MemberControllerTest extends MyWithRTestDoc {
                 .build();
 
 
+
        ResultActions resultActions =  mockMvc
                .perform(RestDocumentationRequestBuilders.post("/api/v1/join")
                 .accept(MediaType.APPLICATION_JSON_VALUE)

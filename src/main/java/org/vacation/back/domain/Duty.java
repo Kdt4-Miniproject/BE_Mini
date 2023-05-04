@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.vacation.back.common.VacationStatus;
+import org.vacation.back.common.DutyStatus;
+
 
 import javax.persistence.*;
 
@@ -22,5 +23,5 @@ public class Duty extends BaseEntity{
 
     private boolean deleted;
     @Enumerated(EnumType.STRING)
-    private VacationStatus status;
+    private DutyStatus status;
 }

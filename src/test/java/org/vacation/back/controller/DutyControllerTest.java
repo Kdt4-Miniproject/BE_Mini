@@ -18,6 +18,8 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
+import org.vacation.back.dto.common.DutyDTO;
+import org.vacation.back.dto.request.duty.DutyAssignDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
@@ -38,8 +40,8 @@ public class DutyControllerTest extends MyWithRTestDoc {
     @Autowired
     private ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMDk1OTQ2LCJ1c2VybmFtZSI6ImFkbWluIn0.RT5pT_S8JgcQ4nY51cR4fLW04r6WYH4LL4oHiB1OkH6QEhcJhpE6YxdaXoaLQqDv5kQ97lZYRlezG_5PzysMcw";
-    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjc1NDg2LCJ1c2VybmFtZSI6ImFkbWluIn0._AzkFLnNRIsg06JZh51npez_p-NI0yr8iKbY4VOgrxz2eopbfSfJ0eCz1QQSVEp7ozEv3SIVP8cYJjinwCQSmw";
+    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzgxMDg2LCJ1c2VybmFtZSI6ImFkbWluIn0.utrpJM2qG8hJ4G_yUnn-KdKkGlfSA0-jbS1iovUISxCRBeDGg7cOFI3O9I4WZXEed-FxYTnZfs7YIb-eyA7TpQ";
 
     @Test
     @DisplayName("/api/v1/duty/save")
@@ -203,6 +205,33 @@ public class DutyControllerTest extends MyWithRTestDoc {
 
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
                 .post("/api/v1/duty/rejected/{id}", id)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization",token)
+                .header("X-Refresh-Token", RefreshToken)
+        ).andExpect(status().isOk());
+
+
+        //then
+        resultActions.andExpect(jsonPath("$.data").value(true));
+        resultActions.andExpect(jsonPath("$.status").value(200));
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+
+    @Test
+    @DisplayName("/api/v1/duty/assign/{username}")
+    void duty_assign() throws Exception {
+        // given
+        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
+        String username = "admin";
+
+        DutyAssignDTO dutyAssignDTO = DutyAssignDTO.builder()
+                .username("admin")
+                .build();
+
+        //when
+
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
+                .post("/api/v1/duty/assign/{username}", username)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
                 .header("X-Refresh-Token", RefreshToken)

@@ -18,4 +18,10 @@ public class MemberModifyDTO {
     private String email;
 
 
+    private String oldPassword;
+
+    private String newPassword;
+
+
+
 }

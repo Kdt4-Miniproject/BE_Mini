@@ -27,20 +27,18 @@ public class QVacation extends EntityPathBase<Vacation> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final BooleanPath deleted = createBoolean("deleted");
-
-    public final StringPath end = createString("end");
+    public final DatePath<java.time.LocalDate> end = createDate("end", java.time.LocalDate.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath start = createString("start");
+    public final QMember member;
+
+    public final DatePath<java.time.LocalDate> start = createDate("start", java.time.LocalDate.class);
 
     public final EnumPath<org.vacation.back.common.VacationStatus> status = createEnum("status", org.vacation.back.common.VacationStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
-
-    public final QVacationTemp vacationTemp;
 
     public QVacation(String variable) {
         this(Vacation.class, forVariable(variable), INITS);
@@ -60,7 +58,7 @@ public class QVacation extends EntityPathBase<Vacation> {
 
     public QVacation(Class<? extends Vacation> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.vacationTemp = inits.isInitialized("vacationTemp") ? new QVacationTemp(forProperty("vacationTemp"), inits.get("vacationTemp")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
     }
 
 }

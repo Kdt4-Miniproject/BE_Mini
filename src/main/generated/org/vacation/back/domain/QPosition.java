@@ -31,6 +31,8 @@ public class QPosition extends EntityPathBase<Position> {
 
     public final StringPath positionName = createString("positionName");
 
+    public final EnumPath<org.vacation.back.common.PositionStatus> status = createEnum("status", org.vacation.back.common.PositionStatus.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 

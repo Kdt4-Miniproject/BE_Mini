@@ -3,8 +3,8 @@ package org.vacation.back.dto.common;
 import lombok.*;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Vacation;
-
 import java.time.LocalDate;
+
 
 
 @Getter
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 public class VacationDTO {
 
     private Long id;
-
 
     private LocalDate start;
 

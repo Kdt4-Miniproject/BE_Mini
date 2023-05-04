@@ -29,8 +29,6 @@ public class QMember extends EntityPathBase<Member> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final BooleanPath deleted = createBoolean("deleted");
-
     public final QDepartment department;
 
     public final ListPath<Duty, QDuty> duties = this.<Duty, QDuty>createList("duties", Duty.class, QDuty.class, PathInits.DIRECT2);
@@ -38,6 +36,10 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath email = createString("email");
 
     public final StringPath employeeNumber = createString("employeeNumber");
+
+    public final StringPath fileName = createString("fileName");
+
+    public final DatePath<java.time.LocalDate> joiningDay = createDate("joiningDay", java.time.LocalDate.class);
 
     public final EnumPath<org.vacation.back.common.MemberStatus> memberStatus = createEnum("memberStatus", org.vacation.back.common.MemberStatus.class);
 
@@ -58,7 +60,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath username = createString("username");
 
-    public final ListPath<VacationTemp, QVacationTemp> vacationTemps = this.<VacationTemp, QVacationTemp>createList("vacationTemps", VacationTemp.class, QVacationTemp.class, PathInits.DIRECT2);
+    public final ListPath<Vacation, QVacation> vacationTemps = this.<Vacation, QVacation>createList("vacationTemps", Vacation.class, QVacation.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> years = createNumber("years", Integer.class);
 

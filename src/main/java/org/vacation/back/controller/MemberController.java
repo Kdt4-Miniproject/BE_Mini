@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -61,7 +62,8 @@ public class MemberController {
                 .role(Role.ADMIN)
                 .birthDate("2023-04-28")
                 .email("admin@naver.com")
-                .years(15)
+                .years(1)
+                .joiningDay("2023-01-01")
                 .employeeNumber("202304281234")
                 .updatedAt(LocalDateTime.now())
                 .phoneNumber("010-1234-1234")
@@ -74,7 +76,8 @@ public class MemberController {
                 .role(Role.ADMIN)
                 .birthDate("2023-04-28")
                 .email("admin@naver.com")
-                .years(15)
+                .joiningDay("2022-01-01")
+                .years(2)
                 .employeeNumber("202304281234")
                 .updatedAt(LocalDateTime.now())
                 .phoneNumber("010-1234-1234")
@@ -140,6 +143,17 @@ public class MemberController {
         //TODO: 해당 username이 PK인지 체크 조회,
         //TODO: Exception은 ExceptionHandler로 처리할 것임
 
+        Calendar calendar = Calendar.getInstance();
+
+        Integer year = calendar.get(Calendar.YEAR) + 1;
+        Integer temp  = Integer.parseInt(registerMemberDTO.getJoiningDay().substring(0,4));
+
+        Integer years = year - temp;
+
+        registerMemberDTO.setYears(years.toString());
+
+        System.out.println(registerMemberDTO);
+
         return ResponseEntity.ok(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
                         .data(true)
@@ -179,7 +193,9 @@ public class MemberController {
             ){
 
          //   log.info("{}",request.getAttribute("username"));
-        /* TODO: 토큰에 username과 수정할 데이터에 username이 같은지, 또는 관리자인지
+        /*
+            TODO: password는 데이터가 들어오면 토큰 값을 통해 username을 조회하고 해당 데이터랑 비밀번호 가 매치하는지 확인할 예정이다.
+            TODO: 토큰에 username과 수정할 데이터에 username이 같은지, 또는 관리자인지
            TODO: 현재 바꿀 수 있는 데이터는 phoneNumber, employeeNumber, year 3가지인데 더 바뀔 수도 있음
          * TODO: 더티체킹으로 해당 3가지 값으로 수정할 예정
          * TODO: 3가지 값만 바꿀 수 있도록 메소드를 만들 예정 status는 String으로 받아서
@@ -191,13 +207,37 @@ public class MemberController {
                         .data(true).build());
     }
 
+    @Permission
+    @PostMapping("/api/v1/member/admin/modify")
+    public ResponseEntity<CommonResponse<?>> modifyAdmin(
+            @RequestBody AdminMemberModifyRequest adminMemberModifyRequest
+    ){
+
+        //   log.info("{}",request.getAttribute("username"));
+        /*
+           TODO: 이건 관리자가 하는 기능임 그러기 떄문에 추가로 username도 받음
+            TODO: password는 데이터가 들어오면 토큰 값을 통해 username을 조회하고 해당 데이터랑 비밀번호 가 매치하는지 확인할 예정이다.
+            TODO: 토큰에 username과 수정할 데이터에 username이 같은지, 또는 관리자인지
+           TODO: 현재 바꿀 수 있는 데이터는 phoneNumber, employeeNumber, year 3가지인데 더 바뀔 수도 있음
+         * TODO: 더티체킹으로 해당 3가지 값으로 수정할 예정
+         * TODO: 3가지 값만 바꿀 수 있도록 메소드를 만들 예정 status는 String으로 받아서
+         *      Enum으로 컨버팅할 예정임
+         * */
+        return ResponseEntity.ok()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SUCCESS)
+                        .data(true).build());
+    }
+
+
+
     @PostMapping("/api/v1/member/pwd/modify")
     public ResponseEntity<CommonResponse<?>> pwdModify(
             @RequestBody PasswordModifyRequest passwordModifyRequest,
             HttpServletRequest request
     ){
         /*
-        * TODO: request로 토큰을 조회하여 해당 토큰에 사용자의 정보를 조회하고 들어온 PWD로 변경한다
+        * TODO: request로 토큰을 조회하여 oldPapssword와 암호화하여 비교한다. 틀리면 예외
         * */
 
         return ResponseEntity.ok()
@@ -210,27 +250,7 @@ public class MemberController {
      * 추가 적인 API 설명 그리고 어떻게 구성할건지 작성필요 그리고 해당 API는 관리자권한으로 사용자의 모든 걸 수정한다.
      *
      * */
-    @Permission
-    @PostMapping("/api/v1/member/admin/modify")
-    public ResponseEntity<CommonResponse<?>> adminMNodify(
-            @RequestBody AdminMemberModifyRequest adminMemberModifyRequest,
-            HttpServletRequest request){
 
-        /*
-         들어온 데이터에 username으로 사용자를 조회하여 해당 사용자를 다른 모든 데이터로 변환할 예정임
-        * 성공시 아래 값을 리턴하고 실패시 다른 값을 리턴하도록 할 예쩡임
-        * 아직 코드는 만드지 않았지만 만들예정
-        * */
-
-        CommonResponse<?> commonResponse = CommonResponse.builder()
-                .data(true)
-                .codeEnum(CodeEnum.SUCCESS)
-                .build();
-
-        return ResponseEntity
-                .status(commonResponse.getStatus())
-                .body(commonResponse);
-    }
     @Permission
     @PostMapping("/api/v1/member/admin/role/modify")
     public ResponseEntity<CommonResponse<?>> roleChange(@RequestBody RoleChangeRequest request){

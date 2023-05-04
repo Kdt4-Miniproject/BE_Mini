@@ -32,6 +32,7 @@ public class MemberDTO{
 
     private String phoneNumber;
 
+    private String joiningDay;
     private String birthDate;
     private Integer years;
     private String name;

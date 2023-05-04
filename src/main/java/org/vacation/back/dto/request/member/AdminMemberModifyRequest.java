@@ -13,29 +13,16 @@ import org.vacation.back.domain.Role;
 @Builder
 public class AdminMemberModifyRequest {
 
+
     private String username;
 
-    private String password;
+
+    private String fileName;
 
     private String email;
 
-    private Role role;
 
+    private String oldPassword;
 
-    private String employeeNumber;
-
-    private String phoneNumber;
-
-    private String birthdate;
-
-    private String department;
-
-
-    private String position;
-
-    private String years;
-
-    private String name;
-
-    private boolean deleted;
+    private String newPassword;
 }

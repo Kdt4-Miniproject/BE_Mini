@@ -14,6 +14,7 @@ import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 import org.vacation.back.service.VacationService;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,6 @@ public class VacationController {
             HttpServletRequest request){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
         List<VacationDTO> vacationTempDTOList = new ArrayList<>();
-
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(vacationTempDTOList)

@@ -4,6 +4,8 @@ import lombok.*;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class DutyDTO {
     private Long id;
 
 
-    private String day;
+    private LocalDate day;
 
     private boolean deleted;
 

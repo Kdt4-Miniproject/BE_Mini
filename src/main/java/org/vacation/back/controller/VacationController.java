@@ -7,19 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.common.VacationStatus;
-import org.vacation.back.domain.VacationTemp;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
-import org.vacation.back.dto.common.VacationTempDTO;
+import org.vacation.back.dto.common.VacationDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
-import org.vacation.back.dto.request.vacation.VacationOkAndRejectedDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
-import org.vacation.back.repository.VacationTempRepository;
-import org.vacation.back.service.VacationTempService;
-
+import org.vacation.back.service.VacationService;
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VacationController {
 
-    private final VacationTempService vacationTempService;
+    private final VacationService vacationTempService;
 
     @PostMapping("/api/v1/vacation/save")
     public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto){
@@ -46,13 +40,7 @@ public class VacationController {
             @PathVariable(value = "id") Long id,
             HttpServletRequest request){
         //TODO: 조회하는 유저가 정보 확인
-        VacationTempDTO dto = VacationTempDTO.builder()
-                .id(1L)
-                .start("2023-05-01")
-                .end("2023-05-01")
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build();
+        VacationDTO dto = new VacationDTO();
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(dto)
@@ -63,21 +51,8 @@ public class VacationController {
     public ResponseEntity<CommonResponse> vacationList(
             HttpServletRequest request){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
-        List<VacationTempDTO> vacationTempDTOList = new ArrayList<>();
-        vacationTempDTOList.add(VacationTempDTO.builder()
-                .id(1L)
-                .start("2023-05-01")
-                .end("2023-05-01")
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build());
-        vacationTempDTOList.add(VacationTempDTO.builder()
-                .id(2L)
-                .start("2023-05-01")
-                .end("2023-05-01")
-                .deleted(false)
-                .status(VacationStatus.WAITING)
-                .build());
+        List<VacationDTO> vacationTempDTOList = new ArrayList<>();
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(vacationTempDTOList)

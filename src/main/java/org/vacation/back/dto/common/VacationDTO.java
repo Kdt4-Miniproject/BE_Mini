@@ -4,8 +4,7 @@ import lombok.*;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Vacation;
 
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Getter
@@ -13,22 +12,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VacationTempDTO {
+public class VacationDTO {
 
-    Long id;
-
-
-    String start;
-
-    String end;
-
-    boolean deleted;
-
-    VacationStatus status;
+    private Long id;
 
 
-    public static VacationTempDTO toDTO(Vacation vacation){
-        return VacationTempDTO.builder()
+    private LocalDate start;
+
+    private LocalDate end;
+
+    private boolean deleted;
+
+    private VacationStatus status;
+
+
+    public static VacationDTO toDTO(Vacation vacation){
+        return VacationDTO.builder()
                 .id(vacation.getId())
                 .start(vacation.getStart())
                 .end(vacation.getEnd())

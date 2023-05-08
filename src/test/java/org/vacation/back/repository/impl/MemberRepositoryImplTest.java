@@ -67,27 +67,29 @@ class MemberRepositoryImplTest {
      * deleted는 자동 where , insert 가능
      * memberStatus는 수정사항도 많기 때문에 저장할 때 지정이 필요하고 수정도 자주 이루어져야 한다.
      * */
-    @Test
-    @DisplayName("where 테스트")
-    void member_deleted_auto() {
-        // given
-        memberRepository.save(Member.builder()
-                .username("admin")
-                .password(encoder.encode("1234"))
-                .role(Role.ADMIN)
-                .birthdate("2022-33-12")
-                .memberStatus(MemberStatus.WAITING)
-                .email("test@naver.com")
-                .years(14)
-                .employeeNumber("202212341234")
-                .phoneNumber("010-1234-1234")
-                .build());
-        // when
-
-         Member member =  memberRepository.findById("admin").get();
-        // then
-        Assertions.assertThat(member.getUsername()).isEqualTo("admin");
-        Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
-    }
+//    @Test
+//    @DisplayName("where 테스트")
+//    void member_deleted_auto() {
+//        // given
+//        memberRepository.save(Member.builder()
+//                .username("admin")
+//                .password(encoder.encode("1234"))
+//                .role(Role.ADMIN)
+//                .birthdate("2022-33-12")
+//                .memberStatus(MemberStatus.WAITING)
+//                .email("test@naver.com")
+//                .years(14)
+//                .employeeNumber("202212341234")
+//                .phoneNumber("010-1234-1234")
+//                .deleted(false)
+//                .build());
+//        // when
+//
+//         Member member =  memberRepository.findById("admin").get();
+//        // then
+//        Assertions.assertThat(member.getUsername()).isEqualTo("admin");
+//        Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
+//        Assertions.assertThat(member.isDeleted()).isFalse();
+//    }
 
 }

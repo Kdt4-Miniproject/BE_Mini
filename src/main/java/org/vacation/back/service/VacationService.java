@@ -1,18 +1,21 @@
 package org.vacation.back.service;
 
-import org.vacation.back.dto.common.VacationDTO;
+import org.vacation.back.dto.request.vacation.VacationModifyDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface VacationService {
 
-    public void vacationSave();
+    public void vacationSave(VacationSaveRequestDTO dto);
 
-    public VacationDTO vacationDetail(Long id);
+    public VacationResponseDTO vacationDetail(Long id);
 
-    public List<VacationDTO> vacationList();
+    public List<VacationResponseDTO> vacationList();
 
-    public void vacationModify(Long id);
+    public void vacationModify(Long id, VacationModifyDTO dto);
 
     public void vacationDelete(Long id);
 

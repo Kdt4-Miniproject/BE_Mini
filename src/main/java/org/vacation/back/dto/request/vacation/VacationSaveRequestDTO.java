@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.VacationStatus;
+import org.vacation.back.domain.Vacation;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -12,13 +15,21 @@ import org.vacation.back.common.VacationStatus;
 @Builder
 public class VacationSaveRequestDTO {
 
-    String username;
+    private String memberName;
 
-    String start;
+    private LocalDate start;
 
-    String end;
+    private LocalDate end;
 
-    boolean deleted;
 
-    VacationStatus status;
+    private VacationStatus status;
+
+    public Vacation toEntity(){
+        return Vacation.builder()
+                .memberName(this.memberName)
+                .start(this.start)
+                .end(this.end)
+                .status(this.status)
+                .build();
+    }
 }

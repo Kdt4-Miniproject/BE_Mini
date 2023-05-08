@@ -33,6 +33,8 @@ public class QVacation extends EntityPathBase<Vacation> {
 
     public final QMember member;
 
+    public final StringPath memberName = createString("memberName");
+
     public final DatePath<java.time.LocalDate> start = createDate("start", java.time.LocalDate.class);
 
     public final EnumPath<org.vacation.back.common.VacationStatus> status = createEnum("status", org.vacation.back.common.VacationStatus.class);

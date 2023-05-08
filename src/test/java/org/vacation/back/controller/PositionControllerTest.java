@@ -23,6 +23,8 @@ import org.vacation.back.dto.request.Position.PositionDeleteDTO;
 import org.vacation.back.dto.request.Position.PositionModifyDTO;
 import org.vacation.back.dto.request.Position.PositionSaveDTO;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @DisplayName("직급 API")
 @AutoConfigureRestDocs(uriScheme = "http", uriHost = "localhost", uriPort = 8080)
 @AutoConfigureMockMvc

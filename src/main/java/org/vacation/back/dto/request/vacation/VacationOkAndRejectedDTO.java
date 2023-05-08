@@ -12,5 +12,5 @@ import org.vacation.back.common.VacationStatus;
 @Builder
 public class VacationOkAndRejectedDTO{
 
-    VacationStatus status;
+    private VacationStatus status;
 }

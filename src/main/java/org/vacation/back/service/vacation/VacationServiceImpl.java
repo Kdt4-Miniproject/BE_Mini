@@ -20,17 +20,19 @@ import java.util.List;
 public class VacationServiceImpl implements VacationService {
 
     private final VacationRepository vacationRepository;
-    public void vacationSave(VacationSaveRequestDTO dto) {
-        try {
-            vacationRepository.save(dto.toEntity());
-        }catch (Exception e){
+    public void vacationSave(VacationSaveRequestDTO dto, String userName) {
+        if (vacationRepository.findByVacationStart(userName, dto.getStart()) != null) {
             throw new CommonException(ErrorCode.DUPLICATED_START, "신청한 연차 시작날짜가 이미 존재합니다.");
         }
+            vacationRepository.save(dto.toEntity());
+
+
+
     }
 
     public VacationResponseDTO vacationDetail(Long id) {
         VacationResponseDTO dto = VacationResponseDTO.toDTO(vacationRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다.")));
+                .orElseThrow(() -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요")));
         return dto;
     }
 
@@ -54,32 +56,37 @@ public class VacationServiceImpl implements VacationService {
     @Transactional
     public void vacationModify(Long id, VacationModifyDTO dto) {
         Vacation vacation = vacationRepository.findById(id).orElseThrow(
-                () -> new RuntimeException()
-        );
+                () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요"));
         vacation.modifyVacation(dto.getStart(), dto.getEnd());
     }
 
     @Transactional
     public void vacationDelete(Long id) {
         Vacation vacation = vacationRepository.findById(id).orElseThrow(
-                () -> new RuntimeException()
-        );
+                () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요"));
+        if (vacation.getStatus() == VacationStatus.DELETED) {
+            throw new CommonException(ErrorCode.ALREADY_DELETED_VACATION, "이미 삭제된 연차입니다.");
+        }
         vacation.setStatus(VacationStatus.DELETED);
     }
 
     @Transactional
     public void vacationOk(Long id) {
         Vacation vacation = vacationRepository.findById(id).orElseThrow(
-                () -> new RuntimeException()
-        );
+                () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요"));
+        if (vacation.getStatus() == VacationStatus.DELETED) {
+            throw new CommonException(ErrorCode.ALREADY_OK_VACATION, "이미 승인된 연차입니다.");
+        }
         vacation.setStatus(VacationStatus.OK);
     }
 
     @Transactional
     public void vacationRejected(Long id) {
         Vacation vacation = vacationRepository.findById(id).orElseThrow(
-                () -> new RuntimeException()
-        );
+                () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요"));
+        if (vacation.getStatus() == VacationStatus.DELETED) {
+            throw new CommonException(ErrorCode.ALREADY_REJECTED_VACATION, "이미 반려된 연차입니다.");
+        }
         vacation.setStatus(VacationStatus.REJECTED);
     }
 }

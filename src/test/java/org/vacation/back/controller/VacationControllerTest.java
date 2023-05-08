@@ -42,18 +42,19 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @Autowired
     private VacationService vacationService;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjg4Mzk0LCJ1c2VybmFtZSI6ImFkbWluIn0.4cF42EyIWYHs5wEo3Su5Y27kwphDYOgQEVTrWSW-TY0pq8cWice2BtEf3-aRW9yhsfCb1Xi6OWMKogSqB5pUFA";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzNjE2NjU5LCJ1c2VybmFtZSI6ImFkbWluIn0.H56aWl3jU9HAFu5M8c-6LeV7A7qqXzKEmB4ncdVg4ucI4Se3KlvS8_C5HNOcHjEFegnNdw75vgEQyIU_3vnZ8g";
 
 
     @BeforeEach
     void vacation_saveBefore() {
+        String memberName = "admin";
         VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
                 .memberName("admin")
                 .start(LocalDate.parse("2023-05-01"))
                 .end(LocalDate.parse("2023-05-01"))
                 .status(VacationStatus.WAITING)
                 .build();
-        vacationService.vacationSave(save_test1);
+        vacationService.vacationSave(save_test1, memberName);
 
         VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
                 .memberName("admin")
@@ -61,7 +62,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
                 .end(LocalDate.parse("2023-05-02"))
                 .status(VacationStatus.WAITING)
                 .build();
-        vacationService.vacationSave(save_test2);
+        vacationService.vacationSave(save_test2, memberName);
     }
     @Test
     @DisplayName("/api/v1/vacation/save")
@@ -72,8 +73,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
         VacationSaveRequestDTO dto = VacationSaveRequestDTO.builder()
                 .memberName("admin")
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
+                .start(LocalDate.parse("2023-05-09"))
                 .status(VacationStatus.WAITING)
                 .build();
 

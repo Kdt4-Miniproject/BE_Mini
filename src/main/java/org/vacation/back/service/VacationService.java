@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface VacationService {
 
-    public void vacationSave(VacationSaveRequestDTO dto);
+    public void vacationSave(VacationSaveRequestDTO dto, String userName);
 
     public VacationResponseDTO vacationDetail(Long id);
 

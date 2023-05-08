@@ -21,7 +21,6 @@ public class VacationSaveRequestDTO {
 
     private LocalDate end;
 
-
     private VacationStatus status;
 
     public Vacation toEntity(){

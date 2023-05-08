@@ -16,7 +16,12 @@ public enum ErrorCode {
     DUPLICATED_MEMBER_NAME(HttpStatus.BAD_REQUEST,"Member name is duplicatged"),
     ACCESS_RESOURCES_WITHOUT_PERMISSION(HttpStatus.FORBIDDEN,"Attempt to access resources without permission"),
     ID_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 ID의 정보를 찾을 수 없습니다."),
-    DUPLICATED_START(HttpStatus.BAD_REQUEST, "신청한 연차 시작날짜가 이미 존재합니다.");
+    DUPLICATED_START(HttpStatus.BAD_REQUEST, "신청한 연차 시작날짜가 이미 존재합니다."),
+    DTO_IS_NULL(HttpStatus.BAD_REQUEST, "입력값 확인해주세요."),
+    ALREADY_DELETED_VACATION(HttpStatus.BAD_REQUEST, "이미 삭제된 연차입니다."),
+    ALREADY_OK_VACATION(HttpStatus.BAD_REQUEST, "이미 승인된 연차입니다."),
+    ALREADY_REJECTED_VACATION(HttpStatus.BAD_REQUEST, "이미 반려된 연차입니다.");
+
     private HttpStatus httpStatus;
 
     private String message;

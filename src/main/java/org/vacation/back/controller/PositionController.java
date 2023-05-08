@@ -41,8 +41,9 @@ public class PositionController {
     public ResponseEntity<CommonResponse> detail() {
 
         PositionDTO dto = PositionDTO.builder()
-                .position(PositionStatus.ASSISTANT_MANAGER)
+                .positionName("ASSISTANT_MANAGER")
                 .vacation("1")
+                .status(PositionStatus.ACTIVATION)
                 .build();
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -57,14 +58,14 @@ public class PositionController {
     public ResponseEntity<CommonResponse> find_all(HttpServletRequest request) {
         List<PositionDTO> dtoList = new ArrayList<>();
         dtoList.add(PositionDTO.builder()
-                .position(PositionStatus.STAFF)
+                .positionName("STAFF")
                 .vacation("1")
-                .deleted(false)
+                .status(PositionStatus.ACTIVATION)
                 .build());
         dtoList.add(PositionDTO.builder()
-                .position(PositionStatus.MANAGER)
+                .positionName("MANAGER")
                 .vacation("3")
-                .deleted(false)
+                .status(PositionStatus.ACTIVATION)
                 .build());
 
         return ResponseEntity.ok(CommonResponse.builder()

@@ -119,4 +119,18 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+
+    //당직 임의 배정
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/duty/assign/{username}")
+    public ResponseEntity<CommonResponse> assign(
+            @PathVariable(value = "username") String username) {
+        //TODO: 당직 신청하지 않은 사람 임의로 날짜 지정
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+
+    }
 }
+

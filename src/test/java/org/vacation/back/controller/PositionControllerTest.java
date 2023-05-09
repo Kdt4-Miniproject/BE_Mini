@@ -35,7 +35,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
     final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
 
     @Permission
@@ -46,9 +46,9 @@ public class PositionControllerTest extends MyWithRTestDoc {
 //        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
 
         PositionSaveDTO positionDTO = PositionSaveDTO.builder()
-                .position(PositionStatus.STAFF)
+                .positionName("STAFF")
                 .vacation("1")
-                .deleted(false)
+                .status(PositionStatus.ACTIVATION)
                 .build();
 
         // when
@@ -114,8 +114,9 @@ public class PositionControllerTest extends MyWithRTestDoc {
         // given
 
         PositionModifyDTO positionDTO = PositionModifyDTO.builder()
-                .position(PositionStatus.ASSISTANT_MANAGER)
+                .positionName("ASSISTANT_MANAGER")
                 .vacation("5")
+                .status(PositionStatus.ACTIVATION)
                 .build();
 
         // when
@@ -142,8 +143,8 @@ public class PositionControllerTest extends MyWithRTestDoc {
         // given
 
         PositionDeleteDTO positionDTO = PositionDeleteDTO.builder()
-                .position(PositionStatus.DEPARTMENT_MANAGER)
-                .deleted(true)
+                .positionName("DEPARTMENT_MANAGER")
+                .status(PositionStatus.DEACTIVATION)
                 .build();
 
         // when

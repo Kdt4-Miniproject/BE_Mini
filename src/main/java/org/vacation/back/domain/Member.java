@@ -29,7 +29,10 @@ public class Member extends BaseEntity {
 
     private String email;
 
-    @Enumerated(EnumType.STRING) private Role role;
+
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 
     @Column(name = "employee_number")
@@ -63,28 +66,53 @@ public class Member extends BaseEntity {
     private List<Duty> duties = new ArrayList<>();
 
     @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "position_name",insertable = false,updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "position_name")
     private Position position;
     @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "department_name",insertable = false,updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_name")
     private Department department;
 
 
 
-    @Column(name = "department_name")
-    public String departmentName;
 
-    @Column(name = "position_name")
-    public String positionName;
 
+    public void changeStatus(MemberStatus memberStatus){
+        this.memberStatus = memberStatus;
+    }
 
     public void changePassword(String pwdData){
         this.password = pwdData;
     }
+    public void changePhoneNumber(String phoneNumber){this.phoneNumber = phoneNumber;}
+    public void changeEmail(String email){this.email = email;}
+
+    public void changeFileName(String fileName){this.fileName = fileName;}
+
+    public void changeName(String name) {this.name = name;}
+
+    public void changeBirthDate(String birthdate){this.birthdate =birthdate;}
+
+    public void changeJoiningDay(String joingDay){this.joiningDay = LocalDate.parse(joingDay);}
+
+    public void changeYears(String years){this.totalYears = Integer.parseInt(years);}
+
+    public void changeRole(Role role){this.role =role;}
+
+
+
     public void assignEmNumber(String number){
         this.employeeNumber = number;
     }
+
+    public void changePosition(Position position){
+        this.position = position;
+    }
+    public void changeDepartment(Department department){
+        this.department = department;
+    }
+
+
 
 }

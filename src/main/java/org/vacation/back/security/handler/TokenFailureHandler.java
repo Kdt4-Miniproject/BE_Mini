@@ -24,7 +24,7 @@ public class TokenFailureHandler implements AuthenticationFailureHandler {
         log.error("USERANEM OF PASSWORD NOT VALID");
 
         CommonResponse<?> commonResponse = CommonResponse.builder()
-                .codeEnum(CodeEnum.UNAUTHORIZED)
+                .codeEnum(CodeEnum.LOGIN_FAIL)
                 .data(false)
                 .build();
 

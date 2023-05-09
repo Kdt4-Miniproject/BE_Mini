@@ -14,11 +14,11 @@ import javax.persistence.Enumerated;
 @Builder
 public class PositionDTO {
 
-    private PositionStatus position;
+    private String positionName;
 
     private String vacation;
 
-    private boolean deleted;
+    private PositionStatus status;
 
     public static PositionDTO toDTO(Position position) {
         return PositionDTO.builder()

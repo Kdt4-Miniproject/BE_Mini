@@ -17,10 +17,15 @@ public class MemberModifyDTO {
 
     private String email;
 
+    private String name;
+
+    private String phoneNumber;
 
     private String oldPassword;
 
     private String newPassword;
+
+
 
 
 

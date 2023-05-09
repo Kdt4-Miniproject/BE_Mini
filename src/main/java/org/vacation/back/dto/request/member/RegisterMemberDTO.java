@@ -48,8 +48,6 @@ public class RegisterMemberDTO {
                 .role(Role.STAFF)
                 .birthdate(this.birthDate)
                 .phoneNumber(this.phoneNumber)
-                .departmentName(this.departmentName)
-                .positionName(this.positionName)
                 .fileName(this.fileName)
                 .name(this.name)
                 .joiningDay(LocalDate.parse(this.joiningDay))

@@ -32,6 +32,9 @@ endif::[]
 
 size는 기본값 10 변경가능
 page는 기본값 0 변경가능
+text => EMAIL, POSITION , NAME , DEPARTMENT, ALL 만들어져 있고 더 추가하고 싶으면 메시지 보내주세요.
+     위에 EMAIL, POSITION, NAME, DEPARTMENT는 keyword와 같이 와야하고 선택 안 하면 자동 ALL 선택
+     ALL선택이 될 경우 어떤 keyword가 들어오든 무시함 => 애초에 전체보기이므로 키워드가 무의미
 
 === 요청
 include::{snippets}/{member}/member_page_request/http-request.adoc[]
@@ -91,7 +94,8 @@ include::{snippets}/{member}/member_login_success/http-response.adoc[]
 
 
 Refresh토큰을 받는 곳 /api/v1/refresh
-위와 같이 403 과 message가 나오면 요청을 보낸다.
+위 에러와 같이 403 응답코드가 나오면 해당 주소로 요청을 보내면 된다. 그러면 새로은 AccessToken이 발급되고
+만약 RefreshToken도 유효기간이 3일 남았다면, 재발급해준다.
 
 
 === 요청
@@ -120,6 +124,9 @@ include::{snippets}/{member}/member_modify_admin/http-response.adoc[]
 
 
 == 사용자 정보 자세히보기(성공시)
+
+해당 토큰의 주인에 대한 정보를 응답함
+
 === 요청
 include::{snippets}/{member}/member_detail_info/http-request.adoc[]
 === 응답

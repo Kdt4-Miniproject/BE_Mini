@@ -31,8 +31,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final QDepartment department;
 
-    public final StringPath departmentName = createString("departmentName");
-
     public final ListPath<Duty, QDuty> duties = this.<Duty, QDuty>createList("duties", Duty.class, QDuty.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
@@ -52,8 +50,6 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final QPosition position;
-
-    public final StringPath positionName = createString("positionName");
 
     public final EnumPath<Role> role = createEnum("role", Role.class);
 

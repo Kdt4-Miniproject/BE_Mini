@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PageResponseDTO<T> {
 
-    private Integer total;
+    private Long total;
 
     private boolean first;
 

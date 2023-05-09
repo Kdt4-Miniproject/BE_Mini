@@ -7,13 +7,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
+import org.vacation.back.common.Search;
 import org.vacation.back.domain.Role;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
-import org.vacation.back.exception.EmailNotValidException;
+import org.vacation.back.exception.*;
 import org.vacation.back.service.MemberService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,53 +49,20 @@ public class MemberController {
                 .data( memberService.exist(username))
                 .build());
     }
-
     /**
+     *
+     *
+     *
      * TODO: API 설명 작성예정
      * */
     @GetMapping("/api/v1/member/page/search")
-    public ResponseEntity<CommonResponse<?>> page(@RequestParam(required = false) String text,
+    public ResponseEntity<CommonResponse<?>> page(@RequestParam(defaultValue = "ALL") Search text,
+                                               @RequestParam(required = false) String keyword,
                                                @RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size){
 
-        MemberDTO dto = MemberDTO.builder()
-                .username("admin")
-                .role(Role.ADMIN)
-                .birthDate("2023-04-28")
-                .email("admin@naver.com")
-                .years(1)
-                .joiningDay("2023-01-01")
-                .employeeNumber("202304281234")
-                .updatedAt(LocalDateTime.now())
-                .phoneNumber("010-1234-1234")
-                .name("김독자")
-                .fileName(UUID.randomUUID().toString()+"_data.jpg")
-                .build();
 
-        MemberDTO dto2 = MemberDTO.builder()
-                .username("admin")
-                .role(Role.ADMIN)
-                .birthDate("2023-04-28")
-                .email("admin@naver.com")
-                .joiningDay("2022-01-01")
-                .years(2)
-                .employeeNumber("202304281234")
-                .updatedAt(LocalDateTime.now())
-                .phoneNumber("010-1234-1234")
-                .name("김독자")
-                .fileName(UUID.randomUUID().toString()+"_data.jpg")
-                .build();
-
-        List<MemberDTO> list = new ArrayList<>();
-        list.add(dto);
-        list.add(dto2);
-
-        PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
-                .total(2)
-                .first(true)
-                .last(false)
-                .content(list)
-                .build();
+        PageResponseDTO<?> pageResponseDTO = memberService.pageMember(text,keyword,page,size);
 
          return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -105,28 +73,14 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @GetMapping("/api/v1/member/detail")
-    public ResponseEntity<CommonResponse<?>> detail(@RequestHeader("Authorization") String token){
+    public ResponseEntity<CommonResponse<?>> detail(HttpServletRequest request){
         //TODO: 토큰 디코딩이 필요하다. 디코딩해서 username을 데이터 조회하는데 사용한다.
         //TODO: 토큰 만료 상태인지 그런거 체크 필요
-
-        log.info(token);
-
-        MemberDTO dto = MemberDTO.builder()
-                .username("admin")
-                .role(Role.ADMIN)
-                .birthDate("2023-04-28")
-                .email("admin@naver.com")
-                .years(15)
-                .employeeNumber("202304281234")
-                .updatedAt(LocalDateTime.now())
-                .phoneNumber("010-1234-1234")
-                .name("김독자")
-                .fileName(UUID.randomUUID().toString()+"_data.jpg")
-                .build();
+        String username = request.getAttribute("username").toString();
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dto)
+                .data(memberService.findByDetail(username))
                 .build());
 
     }
@@ -142,7 +96,6 @@ public class MemberController {
         //TODO: 등록시 실패 Exception 처리가 필요하고,
         //TODO: 해당 username이 PK인지 체크 조회,
         //TODO: Exception은 ExceptionHandler로 처리할 것임
-
 
 
 
@@ -184,19 +137,13 @@ public class MemberController {
             HttpServletRequest request
             ){
 
-         //   log.info("{}",request.getAttribute("username"));
-        /*
-            TODO: password는 데이터가 들어오면 토큰 값을 통해 username을 조회하고 해당 데이터랑 비밀번호 가 매치하는지 확인할 예정이다.
-            TODO: 토큰에 username과 수정할 데이터에 username이 같은지, 또는 관리자인지
-           TODO: 현재 바꿀 수 있는 데이터는 phoneNumber, employeeNumber, year 3가지인데 더 바뀔 수도 있음
-         * TODO: 더티체킹으로 해당 3가지 값으로 수정할 예정
-         * TODO: 3가지 값만 바꿀 수 있도록 메소드를 만들 예정 status는 String으로 받아서
-         *      Enum으로 컨버팅할 예정임
-         * */
+        String username = request.getAttribute("username").toString();
+
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
-                        .data(true).build());
+                        .data(memberService.memberModify(memberModifyDTO,username))
+                        .build());
     }
 
     @Permission
@@ -205,20 +152,12 @@ public class MemberController {
             @RequestBody AdminMemberModifyRequest adminMemberModifyRequest
     ){
 
-        //   log.info("{}",request.getAttribute("username"));
-        /*
-           TODO: 이건 관리자가 하는 기능임 그러기 떄문에 추가로 username도 받음
-            TODO: password는 데이터가 들어오면 토큰 값을 통해 username을 조회하고 해당 데이터랑 비밀번호 가 매치하는지 확인할 예정이다.
-            TODO: 토큰에 username과 수정할 데이터에 username이 같은지, 또는 관리자인지
-           TODO: 현재 바꿀 수 있는 데이터는 phoneNumber, employeeNumber, year 3가지인데 더 바뀔 수도 있음
-         * TODO: 더티체킹으로 해당 3가지 값으로 수정할 예정
-         * TODO: 3가지 값만 바꿀 수 있도록 메소드를 만들 예정 status는 String으로 받아서
-         *      Enum으로 컨버팅할 예정임
-         * */
+
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
-                        .data(true).build());
+                        .data(memberService.adminModify(adminMemberModifyRequest))
+                        .build());
     }
 
 
@@ -228,14 +167,15 @@ public class MemberController {
             @RequestBody PasswordModifyRequest passwordModifyRequest,
             HttpServletRequest request
     ){
-        /*
-        * TODO: request로 토큰을 조회하여 oldPapssword와 암호화하여 비교한다. 틀리면 예외
-        * */
+        String username = request.getAttribute("username").toString();
+
+        boolean result = memberService.changePwd(username,passwordModifyRequest);
 
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
-                        .data(true).build());
+                        .data(result)
+                        .build());
     }
 
     /**
@@ -246,14 +186,14 @@ public class MemberController {
     @Permission
     @PostMapping("/api/v1/member/admin/role/modify")
     public ResponseEntity<CommonResponse<?>> roleChange(@RequestBody RoleChangeRequest request){
-
         /*
         * TODO: request에 Username을 통해 해당 데이터를 조회하고 데이터가 존재하고 해당 데이터의 값을 권한을 확인한 후 들어온 role이랑 다르면 수정
-        *
         * */
+        boolean result = memberService.adminRoleModify(request);
+
 
         CommonResponse<?> commonResponse = CommonResponse.builder()
-                .data(true)
+                .data(result)
                 .codeEnum(CodeEnum.SUCCESS)
                 .build();
 
@@ -261,6 +201,43 @@ public class MemberController {
                 .status(commonResponse.getStatus())
                 .body(commonResponse);
     }
+
+    @Permission
+    @PostMapping("/api/v1/member/admin/active")
+    public ResponseEntity<CommonResponse<?>> activate(@RequestBody AdminStatusModifyRequest request){
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.adminStatusModify(request))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+
+    }
+    @Permission
+    @GetMapping("/api/v1/member/admin/deactivation/list")
+    public ResponseEntity<CommonResponse<?>> deactivationList(@RequestParam(defaultValue = "ALL") Search text,
+                                                              @RequestParam(required = false) String keyword,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "10") int size){
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.deactivatedList(text, keyword, page, size))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+
+    }
+
+
+
+
+
 
 
     /*
@@ -286,6 +263,54 @@ public class MemberController {
                         .codeEnum(CodeEnum.INVALID_ARGUMENT)
                         .data(false)
                 .build());
+    }
+
+    @ExceptionHandler(NotFoundPositionException.class)
+    public ResponseEntity<CommonResponse<?>> positionException(){
+            return ResponseEntity
+                    .badRequest()
+                    .body(CommonResponse.builder()
+                            .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                            .data(false)
+                            .build());
+    }
+    @ExceptionHandler(NotFoundDepartmentException.class)
+    public ResponseEntity<CommonResponse<?>> departmentException(){
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(JoinFailException.class)
+    public ResponseEntity<CommonResponse<?>> joinException(){
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ResponseEntity<CommonResponse<?>> memberException(){
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ResponseEntity<CommonResponse<?>> passwordException(){
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                        .build());
     }
 
 

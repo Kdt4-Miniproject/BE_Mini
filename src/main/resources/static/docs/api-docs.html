@@ -666,15 +666,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="paragraph">
 <p>size는 기본값 10 변경가능
-page는 기본값 0 변경가능</p>
+page는 기본값 0 변경가능
+text &#8658; EMAIL, POSITION , NAME , DEPARTMENT, ALL 만들어져 있고 더 추가하고 싶으면 메시지 보내주세요.
+     위에 EMAIL, POSITION, NAME, DEPARTMENT는 keyword와 같이 와야하고 선택 안 하면 자동 ALL 선택
+     ALL선택이 될 경우 어떤 keyword가 들어오든 무시함 &#8658; 애초에 전체보기이므로 키워드가 무의미</p>
 </div>
 <div class="sect2">
 <h3 id="_요청">요청</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/member/page/search?page=0&amp;size=10 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/member/page/search?text=EMAIL&amp;keyword=test&amp;page=0&amp;size=10 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -693,39 +696,165 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 992
+Content-Length: 5400
 
 {
   "status" : 200,
   "message" : "success",
   "data" : {
-    "total" : 2,
+    "total" : 22,
     "first" : true,
     "last" : false,
     "content" : [ {
-      "username" : "admin",
-      "role" : "ADMIN",
-      "fileName" : "6d3519b5-f21d-4468-b494-27c5106c1601_data.jpg",
-      "email" : "admin@naver.com",
-      "employeeNumber" : "202304281234",
+      "username" : "admin1",
+      "password" : "$2a$10$CCCzhASb8vwUsc2J5n3Equ/q/Owu7bcEdysBXj3U2iMFC9VYpJtG.",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221255",
       "phoneNumber" : "010-1234-1234",
-      "joiningDay" : "2023-01-01",
-      "birthDate" : "2023-04-28",
-      "years" : 1,
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
       "name" : "김독자",
-      "updatedAt" : "2023-05-04T14:35:04.8615985"
+      "updatedAt" : "2023-05-05T22:27:34.727184",
+      "positionName" : "과장",
+      "departmentName" : "개발"
+    }, {
+      "username" : "admin2",
+      "password" : "$2a$10$lWspLqjoRBd3S9CBh7PsYukKLrfICNubMFaE1PWerDF1ocDngDXDu",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221277",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-08T14:33:26.560266",
+      "positionName" : "대리",
+      "departmentName" : "개발"
+    }, {
+      "username" : "admin23",
+      "password" : "$2a$10$3mBNOKqUzYSWjtjdxBarcOsz6zjPZ7D.42EQYnqiRRXRzNUkmS1fO",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221276",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-08T14:33:25.705969",
+      "positionName" : "대리",
+      "departmentName" : "개발"
+    }, {
+      "username" : "admin3",
+      "password" : "$2a$10$ITB44BgRfF6AgUvbr/b01eIawoYRjJu5kjgBD5Sa2v2PxZTB3F/Vy",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221257",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-05T22:27:35.028394",
+      "positionName" : "과장",
+      "departmentName" : "개발"
+    }, {
+      "username" : "admin4",
+      "password" : "$2a$10$xnpIfqlciKl60kfj8VVIiORL3.q2AOiMl/P50GPYpFH2cCB/6..Ky",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221258",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-05T22:27:35.205545",
+      "positionName" : "과장",
+      "departmentName" : "개발"
+    }, {
+      "username" : "admin5",
+      "password" : "$2a$10$uQfJ6ny.HVxPN3GrCCqzR.TbOEQ7hDb82lHI9wqSHZiVeiA51RRLe",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221259",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-05T22:27:35.434871",
+      "positionName" : "과장",
+      "departmentName" : "개발"
     }, {
       "username" : "admin",
+      "password" : "1234",
       "role" : "ADMIN",
-      "fileName" : "a10e57e0-7821-4f28-9e2c-ce0baf32d929_data.jpg",
-      "email" : "admin@naver.com",
-      "employeeNumber" : "202304281234",
+      "fileName" : "",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221234",
       "phoneNumber" : "010-1234-1234",
-      "joiningDay" : "2022-01-01",
-      "birthDate" : "2023-04-28",
-      "years" : 2,
+      "joiningDay" : "",
+      "birthDate" : "2022-33-12",
+      "years" : 0,
+      "name" : "",
+      "updatedAt" : "2023-05-05T14:13:03.317616",
+      "positionName" : "대리",
+      "departmentName" : "인사"
+    }, {
+      "username" : "admin10",
+      "password" : "$2a$10$FdMOlPLJF0FvrYt4fD1FhedEaQitvN7HjNTTTURL1aiobbPxc9bWi",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221244",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
       "name" : "김독자",
-      "updatedAt" : "2023-05-04T14:35:04.8615985"
+      "updatedAt" : "2023-05-05T14:13:04.630926",
+      "positionName" : "대리",
+      "departmentName" : "인사"
+    }, {
+      "username" : "admin11",
+      "password" : "$2a$10$KYJ4eY59ffynHAGEA.Fu/uIaclEMU4vM.egc3JXov6Cx93P281g1e",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221245",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-05T14:13:04.712443",
+      "positionName" : "대리",
+      "departmentName" : "인사"
+    }, {
+      "username" : "admin12",
+      "password" : "$2a$10$SIEoHdyMdrmVsf4JfQ3i6.O2k.hOr0LoKcWOYbB3IRVegL.A/vUxi",
+      "role" : "STAFF",
+      "fileName" : "404.jpg",
+      "email" : "test@naver.com",
+      "employeeNumber" : "20221246",
+      "phoneNumber" : "010-1234-1234",
+      "joiningDay" : "2020-01-01",
+      "birthDate" : "2023-04-26",
+      "years" : 4,
+      "name" : "김독자",
+      "updatedAt" : "2023-05-05T14:13:04.789989",
+      "positionName" : "대리",
+      "departmentName" : "인사"
     } ]
   }
 }</code></pre>
@@ -741,7 +870,7 @@ Content-Length: 992
 <h3 id="_요청_2">요청</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/join/check?username=jaewoo%40naver.com HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/join/check?username=test%40naver.com HTTP/1.1
 Accept: application/json
 Host: localhost:8080</code></pre>
 </div>
@@ -783,15 +912,15 @@ Content-Length: 67
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/join HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 296
+Content-Length: 298
 Host: localhost:8080
 
 {
-  "username" : "admin",
+  "username" : "admin23",
   "password" : "1234",
   "fileName" : "404.jpg",
   "departmentName" : "개발",
-  "positionName" : "사원",
+  "positionName" : "대리",
   "phoneNumber" : "010-1234-1234",
   "name" : "김독자",
   "email" : "test@naver.com",
@@ -837,11 +966,11 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/login HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 52
+Content-Length: 53
 Host: localhost:8080
 
 {
-  "username" : "admin",
+  "username" : "admin1",
   "password" : "1234"
 }</code></pre>
 </div>
@@ -856,8 +985,8 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjY0OTA1LCJ1c2VybmFtZSI6ImFkbWluIn0.q7atLGhGOu5iW9Mzm_Ekh34fRwGn2jL2I7ZsuoIe1GLiqWD0qeawLeFBeDQ5H-Sx-kELUBLhe2ONlq1rmqrh7A
-X-Auth-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzcwNTA1LCJ1c2VybmFtZSI6ImFkbWluIn0.BZk-SB-MMuDJDn-4k7kbr_yYy6hMbKXKAxWqetHFsDnKlbspXRiYTlDEVRizF8KqIk15gwjUwqzSx5iZ6-jHWw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiU1RBRkYiLCJuYW1lIjoi6rmA64-F7J6QIiwiZXhwIjoxNjgzNjEwNTc2LCJ1c2VybmFtZSI6ImFkbWluMSJ9.aQ_l-Zd2mYInIY0wtzrvpx0KonU1PvNaK8mYwSeASe6liCu6rmyTvCQfPR-uLgkjjCKLuOrZc7lNscmmuf5myA
+X-Auth-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiU1RBRkYiLCJuYW1lIjoi6rmA64-F7J6QIiwiZXhwIjoxNjg2MTE2MTc2LCJ1c2VybmFtZSI6ImFkbWluMSJ9.HDW4E7-DsUCMOIoIazIqQ91MZ7KIlEV1KRuM3pHezoFkQOpeiVpj4k2L7s6NkSmhaaMCbnf5UPYGHlp9CzmSsQ
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
@@ -888,6 +1017,16 @@ Content-Length: 66
 }</code></pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">토큰이 없거나 너무 짧은 경우
+{
+    "status": 401,
+    "message": "Token is null or too short",
+    "data": false
+}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -895,7 +1034,8 @@ Content-Length: 66
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refresh토큰을 받는 곳 /api/v1/refresh
-위와 같이 403 과 message가 나오면 요청을 보낸다.</p>
+위 에러와 같이 403 응답코드가 나오면 해당 주소로 요청을 보내면 된다. 그러면 새로은 AccessToken이 발급되고
+만약 RefreshToken도 유효기간이 3일 남았다면, 재발급해준다.</p>
 </div>
 <div class="sect2">
 <h3 id="_요청_5">요청</h3>
@@ -919,7 +1059,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjY0OTA0LCJ1c2VybmFtZSI6ImFkbWluIn0.5S2JRYVIvVc7ZTUq8veLYHjHnYe1cijdNelxa-WZ5_HB0Bbh5fxZWD_XMRAjyyyT3xRLMlr4tYXkiesOx5lNUw
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzNjEwNTc2LCJ1c2VybmFtZSI6ImFkbWluIn0.MmrRWC604SLsP3rT8rPA6yfmmwH4mPyHie4Ljk-KEtWbge_ruPWZ-OP39ABuAAFItVGo2fQXvclHlim5VlO9vQ
 X-Auth-Refresh-Token: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzY4ODI3LCJ1c2VybmFtZSI6ImFkbWluIn0.JEaYSN7oiP0z59dwZRMRbnqkhTlZ139Ieo5oT7UDXjNCMB2ZfRL-Qy2rrUb8DaAVtfbe5y5wUfvGA_Kp6DBNRQ
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -932,16 +1072,6 @@ Content-Length: 66
   "status" : 200,
   "message" : "success",
   "data" : true
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-none hljs">토큰이 없거나 너무 짧은 경우
-{
-    "status": 401,
-    "message": "Token is null or too short",
-    "data": false
 }</code></pre>
 </div>
 </div>
@@ -958,13 +1088,15 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/member/modify HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
-Content-Length: 117
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ
+Content-Length: 178
 Host: localhost:8080
 
 {
-  "fileName" : "404.jpg",
-  "email" : "test@naver.com",
+  "fileName" : "404321.jpg",
+  "email" : "test@nate.com",
+  "name" : "김사랑",
+  "phoneNumber" : "01012344321",
   "oldPassword" : "1234",
   "newPassword" : "123400"
 }</code></pre>
@@ -1007,7 +1139,7 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/member/modify HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ
 Content-Length: 145
 Host: localhost:8080
 
@@ -1050,13 +1182,16 @@ Content-Length: 66
 <div class="sect1">
 <h2 id="_사용자_정보_자세히보기성공시">사용자 정보 자세히보기(성공시)</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>해당 토큰의 주인에 대한 정보를 응답함</p>
+</div>
 <div class="sect2">
 <h3 id="_요청_8">요청</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/member/detail HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1075,23 +1210,26 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 451
+Content-Length: 563
 
 {
   "status" : 200,
   "message" : "success",
   "data" : {
-    "username" : "admin",
-    "role" : "ADMIN",
-    "fileName" : "08614321-8943-4c3f-81b2-d08cc09046b4_data.jpg",
-    "email" : "admin@naver.com",
-    "employeeNumber" : "202304281234",
+    "username" : "admin2",
+    "password" : "$2a$10$lWspLqjoRBd3S9CBh7PsYukKLrfICNubMFaE1PWerDF1ocDngDXDu",
+    "role" : "STAFF",
+    "fileName" : "404.jpg",
+    "email" : "test@naver.com",
+    "employeeNumber" : "20221277",
     "phoneNumber" : "010-1234-1234",
-    "joiningDay" : null,
-    "birthDate" : "2023-04-28",
-    "years" : 15,
+    "joiningDay" : "2020-01-01",
+    "birthDate" : "2023-04-26",
+    "years" : 4,
     "name" : "김독자",
-    "updatedAt" : "2023-05-04T14:35:04.8244085"
+    "updatedAt" : "2023-05-08T14:33:26.560266",
+    "positionName" : "대리",
+    "departmentName" : "개발"
   }
 }</code></pre>
 </div>
@@ -1122,7 +1260,7 @@ Unresolved directive in api-docs.adoc - include::./build/generated-snippets/memb
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/member/admin/role/modify HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ
 Content-Length: 48
 Host: localhost:8080
 
@@ -1220,7 +1358,7 @@ Expires: 0
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/position/list HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1239,19 +1377,19 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 228
+Content-Length: 248
 
 {
   "status" : 200,
   "message" : "success",
   "data" : [ {
-    "position" : "STAFF",
+    "positionName" : "STAFF",
     "vacation" : "1",
-    "deleted" : false
+    "status" : "ACTIVATION"
   }, {
-    "position" : "MANAGER",
+    "positionName" : "MANAGER",
     "vacation" : "3",
-    "deleted" : false
+    "status" : "ACTIVATION"
   } ]
 }</code></pre>
 </div>
@@ -1269,14 +1407,14 @@ Content-Length: 228
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/position/save HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
-Content-Length: 71
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
+Content-Length: 81
 Host: localhost:8080
 
 {
-  "position" : "STAFF",
+  "positionName" : "STAFF",
   "vacation" : "1",
-  "deleted" : false
+  "status" : "ACTIVATION"
 }</code></pre>
 </div>
 </div>
@@ -1316,7 +1454,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/position/detail HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1335,15 +1473,15 @@ X-XSS-Protection: 1; mode=block
 Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
-Content-Length: 153
+Content-Length: 163
 
 {
   "status" : 200,
   "message" : "success",
   "data" : {
-    "position" : "ASSISTANT_MANAGER",
+    "positionName" : "ASSISTANT_MANAGER",
     "vacation" : "1",
-    "deleted" : false
+    "status" : "ACTIVATION"
   }
 }</code></pre>
 </div>
@@ -1361,13 +1499,14 @@ Content-Length: 153
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/position/modify HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
-Content-Length: 61
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
+Content-Length: 93
 Host: localhost:8080
 
 {
-  "position" : "ASSISTANT_MANAGER",
-  "vacation" : "5"
+  "positionName" : "ASSISTANT_MANAGER",
+  "vacation" : "5",
+  "status" : "ACTIVATION"
 }</code></pre>
 </div>
 </div>
@@ -1408,13 +1547,13 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/position/delete HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
-Content-Length: 62
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
+Content-Length: 75
 Host: localhost:8080
 
 {
-  "position" : "DEPARTMENT_MANAGER",
-  "deleted" : true
+  "positionName" : "DEPARTMENT_MANAGER",
+  "status" : "DEACTIVATION"
 }</code></pre>
 </div>
 </div>
@@ -1456,7 +1595,7 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/vacation/save HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Content-Length: 127
 Host: localhost:8080
 
@@ -1505,7 +1644,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/vacation/detail/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1551,7 +1690,7 @@ Content-Length: 189
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/vacation/list HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1604,7 +1743,7 @@ Content-Length: 322
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/vacation/modify/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Content-Length: 55
 Host: localhost:8080
 
@@ -1650,7 +1789,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/vacation/delete/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1690,7 +1829,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/vacation/ok/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1730,7 +1869,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/vacation/rejected/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1772,7 +1911,7 @@ Content-Length: 66
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/save HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Content-Length: 100
 Host: localhost:8080
 
@@ -1820,7 +1959,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/duty/detail/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1865,7 +2004,7 @@ Content-Length: 160
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/v1/duty/list HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1911,7 +2050,7 @@ Content-Length: 164
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/modify/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Content-Length: 28
 Host: localhost:8080
 
@@ -1956,7 +2095,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/delete/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1996,7 +2135,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/ok/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2036,7 +2175,7 @@ Content-Length: 66
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/v1/duty/rejected/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2071,7 +2210,7 @@ Content-Length: 66
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-05-04 14:34:25 +0900
+Last updated 2023-05-06 14:45:47 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

@@ -12,7 +12,7 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionDeleteDTO {
 
-    private PositionStatus position;
+    private String positionName;
 
-    private boolean deleted; // 삭제 : true
+    private PositionStatus status;
 }

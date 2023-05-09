@@ -14,7 +14,7 @@ public enum ErrorCode {
 
 
     DUPLICATED_MEMBER_NAME(HttpStatus.BAD_REQUEST,"Member name is duplicatged"),
-    ACCESS_RESOURCES_WITHOUT_PERMISSION(HttpStatus.FORBIDDEN,"Attempt to access resources without permission");
+    ACCESS_RESOURCES_WITHOUT_PERMISSION(HttpStatus.FORBIDDEN,"권한이 없습니다.");
     private HttpStatus httpStatus;
 
     private String message;

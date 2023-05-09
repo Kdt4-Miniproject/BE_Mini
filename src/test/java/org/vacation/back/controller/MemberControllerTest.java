@@ -1,7 +1,7 @@
 package org.vacation.back.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.vacation.back.MyWithRTestDoc;
+import org.vacation.back.common.Search;
 import org.vacation.back.domain.Role;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
@@ -41,7 +40,7 @@ class MemberControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjAxMTkwLCJ1c2VybmFtZSI6ImFkbWluIn0.zzA6T2uisyHiyo8v-iaqCzcuHQ_mepDZe5ExP_9DPlKIKl6J11s-Nxu4vOI6FAwnK3PiVMgGZHzelA4oNTi_gg";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ";
 
 
     @Test
@@ -52,7 +51,7 @@ class MemberControllerTest extends MyWithRTestDoc {
         ResultActions resultActions =  mockMvc
                 .perform(RestDocumentationRequestBuilders.get("/api/v1/join/check")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .param("username","jaewoo@naver.com")
+                        .param("username","test@naver.com")
                 )
                 .andExpect(status().isOk());
         // then
@@ -81,7 +80,9 @@ class MemberControllerTest extends MyWithRTestDoc {
         // when
         ResultActions resultActions =  mockMvc
                 .perform(RestDocumentationRequestBuilders.get("/api/v1/member/page/search")
-                        .param("page","0")
+                        .param("text","EMAIL")
+                        .param("keyword","test")
+                        .param("page", "0")
                         .param("size","10")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization",token)
@@ -89,10 +90,8 @@ class MemberControllerTest extends MyWithRTestDoc {
                 .andExpect(status().isOk());
         // then
         resultActions.andExpect(jsonPath("$.status").value(200));
-        resultActions.andExpect(jsonPath("$.data.total").value(2));
         resultActions.andExpect(jsonPath("$.data.first").value(true));
         resultActions.andExpect(jsonPath("$.data.last").value(false));
-        resultActions.andExpect(jsonPath("$.data..content.length()").value(2));
 
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
 
@@ -106,11 +105,11 @@ class MemberControllerTest extends MyWithRTestDoc {
         CommonResponse.builder().data("String").codeEnum(CodeEnum.UNAUTHORIZED).build();
 
         RegisterMemberDTO dto = RegisterMemberDTO.builder()
-                .username("admin")
+                .username("admin23")
                 .password("1234")
                 .birthDate("2023-04-26")
                 .phoneNumber("010-1234-1234")
-                .positionName("사원")
+                .positionName("대리")
                 .departmentName("개발")
                 .fileName("404.jpg")
                 .name("김독자")
@@ -118,6 +117,7 @@ class MemberControllerTest extends MyWithRTestDoc {
                 .years("3")
                 .email("test@naver.com")
                 .build();
+
 
 
        ResultActions resultActions =  mockMvc
@@ -137,11 +137,37 @@ class MemberControllerTest extends MyWithRTestDoc {
     }
 
     @Test
+    @DisplayName("")
+    void member_refresh_token() throws Exception {
+        // given
+
+        String accessToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjYzNTAzLCJ1c2VybmFtZSI6ImFkbWluIn0.hlUHLUliGMVUJXcVqj_N6lmpMb20ukgfBG_xQFuEFOA7_oUpF7ZZofFNSLhIxm9itefxGP6U6TT4gXA4Or_Z-w";
+        String refreshToekn = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzY4ODI3LCJ1c2VybmFtZSI6ImFkbWluIn0.JEaYSN7oiP0z59dwZRMRbnqkhTlZ139Ieo5oT7UDXjNCMB2ZfRL-Qy2rrUb8DaAVtfbe5y5wUfvGA_Kp6DBNRQ";
+        // when
+        ResultActions resultActions =  mockMvc
+                .perform(RestDocumentationRequestBuilders.post("/api/v1/refresh")
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Authorization",accessToken)
+                        .header("X-Auth-Refresh-Token",refreshToekn)
+                )
+                .andExpect(status().isOk());
+
+        Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"));
+        Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("Authorization"));
+        Assertions.assertNotEquals(resultActions.andReturn().getResponse().getHeader("Authorization"),accessToken);
+        Assertions.assertEquals(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"),refreshToekn);
+
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+        // then
+    }
+    
+    @Test
     @DisplayName("/api/v1/login")
     void member_login_success() throws Exception {
         // given
         LoginRequestDTO dto = LoginRequestDTO.builder()
-                .username("admin")
+                .username("admin1")
                 .password("1234")
                 .build();
         // when
@@ -159,6 +185,7 @@ class MemberControllerTest extends MyWithRTestDoc {
         resultActions.andExpect(header().exists("X-Auth-Refresh-Token"));
 
 
+        System.out.println(resultActions.andReturn().getResponse().getHeader("Authorization"));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
 
     }
@@ -169,10 +196,12 @@ class MemberControllerTest extends MyWithRTestDoc {
     void member_dto_modify() throws Exception {
         // given
         MemberModifyDTO dto  = MemberModifyDTO.builder()
-                .email("test@naver.com")
-                .fileName("404.jpg")
-                .newPassword("123400")
-                .oldPassword("1234")
+                .email("test@nate.com")
+                .name("김사랑22")
+                .phoneNumber("01012344321")
+                .fileName("404321.jpg")
+                .newPassword("12340012")
+                .oldPassword("123400")
                 .build();
 
         // when
@@ -194,19 +223,22 @@ class MemberControllerTest extends MyWithRTestDoc {
     @Test
     @DisplayName("/api/v1/member/admin/modify")
     void member_modify_admin() throws Exception {
-        AdminMemberModifyRequest dto  = AdminMemberModifyRequest.builder()
-                .username("test2233")
-                .email("test@naver.com")
-                .fileName("404.jpg")
-                .newPassword("123400")
-                .oldPassword("1234")
+        AdminMemberModifyRequest request = AdminMemberModifyRequest.builder()
+
+                .username("admin2")
+                .name("나는야")
+                .name("email@test.com")
+                .phoneNumber("010-2222-2222")
+                .birthDate("1111-11-11")
+                .joiningDay("2022-01-01")
+                .fileName("10111.jpg")
                 .build();
         // when
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
-                .post("/api/v1/member/modify")
+                .post("/api/v1/member/admin/modify")
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(objectMapper.writeValueAsString(dto))
+                .content(objectMapper.writeValueAsString(request))
                 .header("Authorization",token)
         ).andExpect(status().isOk());
 

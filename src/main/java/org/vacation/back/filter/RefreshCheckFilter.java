@@ -99,7 +99,7 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("Authorization",accesTokenValue);
-        response.setHeader("X-Refresh-Token","Bearer refreshTokenValue");
+        response.setHeader("X-Auth-Refresh-Token","Bearer "+ refreshTokenValue);
 
         Gson gson = new Gson();
 

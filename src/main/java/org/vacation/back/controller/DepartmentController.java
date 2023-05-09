@@ -45,10 +45,12 @@ public class DepartmentController {
     @GetMapping("/api/v1/department/detail") // 유저 페이지
     public ResponseEntity<CommonResponse> detail() {
 
-        DepartmentDTO dto = new DepartmentDTO();
-        dto.setDepartment(DepartmentStatus.MARKETING);
-        dto.setVacation_limit("4");
-        dto.setPersonal("6");
+        DepartmentDTO dto = DepartmentDTO.builder()
+                .departmentName("MARKETING")
+                .vacationLimit("4")
+                .departmentPersonal("6")
+                .status(DepartmentStatus.ACTIVATION)
+                .build();
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -62,18 +64,18 @@ public class DepartmentController {
     @GetMapping("/api/v1/department/list") // 관리자 페이지
     public ResponseEntity<CommonResponse> find_all(HttpServletRequest request) {
         List<DepartmentDTO> dtoList = new ArrayList<>();
-        DepartmentDTO dto1 = new DepartmentDTO();
-        dto1.setDepartment(DepartmentStatus.MARKETING);
-        dto1.setVacation_limit("4");
-        dto1.setPersonal("6");
-        dto1.setDeleted(true);
-        dtoList.add(dto1);
-        DepartmentDTO dto2 = new DepartmentDTO();
-        dto2.setDepartment(DepartmentStatus.DEVELOPMENT);
-        dto2.setVacation_limit("5");
-        dto2.setPersonal("10");
-        dto2.setDeleted(true);
-        dtoList.add(dto2);
+        dtoList.add(DepartmentDTO.builder()
+                .departmentName("MARKETING")
+                .vacationLimit("4")
+                .departmentPersonal("6")
+                .status(DepartmentStatus.ACTIVATION)
+                .build());
+        dtoList.add(DepartmentDTO.builder()
+                .departmentName("DEVELOPMENT")
+                .vacationLimit("3")
+                .departmentPersonal("7")
+                .status(DepartmentStatus.ACTIVATION)
+                .build());
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)

@@ -12,7 +12,9 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionModifyDTO {
 
-    private PositionStatus position;
+    private String positionName;
 
     private String vacation;
+
+    private PositionStatus status;
 }

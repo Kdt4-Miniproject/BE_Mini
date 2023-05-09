@@ -3,6 +3,7 @@ package org.vacation.back.domain.id;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.vacation.back.domain.Department;
 import org.vacation.back.domain.Position;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Builder
 public class PositionAndDepartmentId  implements Serializable {
         private String positionName;

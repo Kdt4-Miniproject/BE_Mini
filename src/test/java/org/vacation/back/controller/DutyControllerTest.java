@@ -39,8 +39,10 @@ public class DutyControllerTest extends MyWithRTestDoc {
     @Autowired
     private ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjg5NDM0LCJ1c2VybmFtZSI6ImFkbWluIn0.VP0FI0gbQvSSfv-tIJQz5oyjpwE8gaMYrXlVCIxuat5m8_mN9mDoyCzB0VuAgfhjra1B4eEtz69d7MS55GhemQ";
-    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1Nzk1MDM0LCJ1c2VybmFtZSI6ImFkbWluIn0.e3lL_6rW0FQQefEQzqnzOQJOSneunpgXm8HWFqt8IQQi_VvFmvf_0TVuLuR-H_vhfOwmXOctFtS__xXk4CxLiA";
+
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
+    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
+
 
     @Test
     @DisplayName("/api/v1/duty/save")

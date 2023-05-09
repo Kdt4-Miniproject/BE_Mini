@@ -18,6 +18,7 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
+import org.vacation.back.dto.request.duty.DutyAssignDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
@@ -38,8 +39,10 @@ public class DutyControllerTest extends MyWithRTestDoc {
     @Autowired
     private ObjectMapper objectMapper;
 
+
     final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
     final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
+
 
     @Test
     @DisplayName("/api/v1/duty/save")
@@ -207,4 +210,32 @@ public class DutyControllerTest extends MyWithRTestDoc {
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
+
+    @Test
+    @DisplayName("/api/v1/duty/assign/{username}")
+    void duty_assign() throws Exception {
+        // given
+        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
+        String username = "admin";
+
+        DutyAssignDTO dutyAssignDTO = DutyAssignDTO.builder()
+                .username("admin")
+                .build();
+
+        //when
+
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
+                .post("/api/v1/duty/assign/{username}", username)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .header("Authorization",token)
+                .header("X-Refresh-Token", RefreshToken)
+        ).andExpect(status().isOk());
+
+
+        //then
+        resultActions.andExpect(jsonPath("$.data").value(true));
+        resultActions.andExpect(jsonPath("$.status").value(200));
+        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+    }
+
 }

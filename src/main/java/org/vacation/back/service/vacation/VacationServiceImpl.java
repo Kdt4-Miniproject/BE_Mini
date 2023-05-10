@@ -30,7 +30,9 @@ public class VacationServiceImpl implements VacationService {
 
     public VacationResponseDTO vacationDetail(Long id) {
         VacationResponseDTO dto = VacationResponseDTO.toDTO(vacationRepository.findByVacationId(id));
-//                .orElseThrow(() -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요")));
+        if(dto == null) {
+            throw new CommonException(ErrorCode.ID_NOT_FOUND, "해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요");
+        }
         return dto;
     }
 

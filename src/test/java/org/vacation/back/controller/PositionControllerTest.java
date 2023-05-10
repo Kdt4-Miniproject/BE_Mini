@@ -35,7 +35,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjc3ODU5LCJ1c2VybmFtZSI6ImFkbWluIn0.1PotkL6P3Q8knj_G9aQvVAC8O0vOK-nCouZKmIR13PErg0UAkp_AP-9apSGEGHG2-V3FSLeIQENIiCCSYi1-ig";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
     final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
 
     @Permission

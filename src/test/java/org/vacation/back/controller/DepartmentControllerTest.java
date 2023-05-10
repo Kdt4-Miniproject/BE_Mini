@@ -37,7 +37,7 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
     @Autowired
     ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjc3ODU5LCJ1c2VybmFtZSI6ImFkbWluIn0.1PotkL6P3Q8knj_G9aQvVAC8O0vOK-nCouZKmIR13PErg0UAkp_AP-9apSGEGHG2-V3FSLeIQENIiCCSYi1-ig";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
 
     @Permission
     @DisplayName("/api/v1/department/save")

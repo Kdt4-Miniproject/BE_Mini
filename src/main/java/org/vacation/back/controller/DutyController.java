@@ -6,18 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.common.DutyStatus;
-import org.vacation.back.common.VacationStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.DutyDTO;
-import org.vacation.back.dto.common.VacationTempDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
-import org.vacation.back.dto.request.vacation.VacationModifyDTO;
-import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,4 +114,18 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+
+    //당직 임의 배정
+    @PreAuthorize("hasRole('admin')")
+    @PostMapping("/duty/assign/{username}")
+    public ResponseEntity<CommonResponse> assign(
+            @PathVariable(value = "username") String username) {
+        //TODO: 당직 신청하지 않은 사람 임의로 날짜 지정
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+
+    }
 }
+

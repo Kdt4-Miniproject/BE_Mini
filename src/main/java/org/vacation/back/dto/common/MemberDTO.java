@@ -38,22 +38,31 @@ public class MemberDTO{
     private String name;
     private LocalDateTime updatedAt;
 
+    private String positionName;
+
+    private String departmentName;
+
 
     public static MemberDTO toDTO(Member member){
 
         return MemberDTO.builder()
-                .username(member.getUsername())
-                .password(member.getPassword())
-                .role(member.getRole())
-                .email(member.getEmail())
-                .employeeNumber(member.getEmployeeNumber())
-                .phoneNumber(member.getPhoneNumber())
-                .birthDate(member.getBirthdate())
-                .years(member.getYears())
-                .name(member.getName())
-                .updatedAt(member.getUpdatedAt())
+                .username(member.getUsername() != null ? member.getUsername() : "")
+                .password(member.getPassword() != null ? member.getPassword() : "")
+                .role(member.getRole() != null ? member.getRole() : Role.STAFF)
+                .email(member.getEmail() != null ? member.getEmail() : "")
+                .employeeNumber(member.getEmployeeNumber() != null ? member.getEmployeeNumber() : "")
+                .phoneNumber(member.getPhoneNumber() != null ?member.getPhoneNumber():"")
+                .fileName(member.getFileName() != null ? member.getFileName() : "")
+                .birthDate(member.getBirthdate() != null ? member.getBirthdate() : "")
+                .name(member.getName() != null ? member.getName() : "")
+                .joiningDay(member.getJoiningDay() != null ? member.getJoiningDay().toString() : "")
+                .years(member.getTotalYears() != null ? member.getTotalYears() : 0)
+                .updatedAt(member.getUpdatedAt() != null ? member.getUpdatedAt() : LocalDateTime.MIN)
+                .positionName(member.getPosition() != null ? member.getPosition().getPositionName() : "")
+                .departmentName(member.getDepartment() != null ? member.getDepartment().getDepartmentName() : "")
                 .build();
     }
+
 
 
 

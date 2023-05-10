@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.vacation.back.common.MemberStatus;
+import org.vacation.back.domain.Member;
+import org.vacation.back.domain.Role;
 
 import java.time.LocalDate;
 
@@ -36,5 +39,21 @@ public class RegisterMemberDTO {
     private String years; // 몇년차 토탈
 
 
+
+    public Member toEntity(){
+        return Member.builder()
+                .username(this.username)
+                .memberStatus(MemberStatus.WAITING)
+                .email(this.email)
+                .role(Role.STAFF)
+                .birthdate(this.birthDate)
+                .phoneNumber(this.phoneNumber)
+                .fileName(this.fileName)
+                .name(this.name)
+                .joiningDay(LocalDate.parse(this.joiningDay))
+                .totalYears(Integer.parseInt(this.years))
+                .phoneNumber(this.phoneNumber)
+                .build();
+    }
 
 }

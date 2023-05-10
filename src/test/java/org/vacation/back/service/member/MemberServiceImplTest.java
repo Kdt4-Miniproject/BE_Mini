@@ -171,6 +171,8 @@ class MemberServiceImplTest {
                 .setParameter("id",2L)
                 .getSingleResult();
 
+
+
         // then
         System.out.println(vacation.getMember());
         System.out.println(vacation);

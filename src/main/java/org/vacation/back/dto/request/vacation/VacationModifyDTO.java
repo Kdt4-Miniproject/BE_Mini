@@ -6,13 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.VacationStatus;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class VacationModifyDTO {
 
-    String start;
+    private LocalDate start;
 
-    String end;
+    private LocalDate end;
 }

@@ -28,7 +28,7 @@ public class Vacation extends BaseEntity{
     private VacationStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
     public void modifyVacation(LocalDate start, LocalDate end){

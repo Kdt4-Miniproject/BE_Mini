@@ -8,19 +8,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.vacation.back.common.Search;
+import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Position;
 import org.vacation.back.domain.Role;
+import org.vacation.back.domain.Vacation;
 import org.vacation.back.dto.request.member.AdminMemberModifyRequest;
 import org.vacation.back.dto.request.member.MemberModifyDTO;
 import org.vacation.back.dto.request.member.RegisterMemberDTO;
 import org.vacation.back.dto.request.member.RoleChangeRequest;
 import org.vacation.back.repository.MemberRepository;
+import org.vacation.back.repository.VacationRepository;
 import org.vacation.back.service.MemberService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +39,10 @@ class MemberServiceImplTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    VacationRepository vacationRepository;
+
 
     @PersistenceContext
     EntityManager entityManager;
@@ -150,5 +158,21 @@ class MemberServiceImplTest {
         // when
         memberService.adminRoleModify(request);
         // then
+    }
+
+    @Test
+    @DisplayName("휴가 추가")
+    void member_vacation_add() {
+        // given
+
+        // when
+
+        Vacation vacation = entityManager.createQuery("select v from Vacation v join fetch v.member where v.id = :id",Vacation.class)
+                .setParameter("id",2L)
+                .getSingleResult();
+
+        // then
+        System.out.println(vacation.getMember());
+        System.out.println(vacation);
     }
 }

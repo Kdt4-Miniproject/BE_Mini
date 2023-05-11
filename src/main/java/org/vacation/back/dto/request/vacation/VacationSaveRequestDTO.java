@@ -18,15 +18,13 @@ public class VacationSaveRequestDTO {
 
     private String memberUsername; //id
 
-    private Member member;
-
     private LocalDate start;
 
     private LocalDate end;
 
     private VacationStatus status;
 
-    public Vacation toEntity(){
+    public Vacation toEntity(Member member){
 
         return Vacation.builder()
                 .member(member)

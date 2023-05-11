@@ -22,6 +22,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     @Query("SELECT v FROM Vacation v WHERE v.status = :status")
     List<Vacation> findAllByVacationStatus(@Param("status") VacationStatus status);
 
-    @Query("select v, m.name, d.departmentName from Vacation v left join v.member m left join m.department d where v.id = :id")
+    @Query("select v, m, d.departmentName from Vacation v left join v.member m left join m.department d where v.id = :id")
     Vacation findByVacationId(@Param("id") Long id);
 }

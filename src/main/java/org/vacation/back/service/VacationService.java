@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface VacationService {
 
-    public void vacationSave(VacationSaveRequestDTO dto, String userName);
+    public void vacationSave(VacationSaveRequestDTO dto);
 
     public VacationResponseDTO vacationDetail(Long id);
 

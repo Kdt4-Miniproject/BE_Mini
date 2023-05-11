@@ -27,17 +27,19 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/vacation/")
 public class VacationController {
 
     private final VacationService vacationService;
 
-    @PostMapping("/api/v1/vacation/save")
+    @PostMapping("save")
     public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto,
                                                HttpServletRequest request){
         if (dto.getMemberUsername() == null || dto.getStart() == null || dto.getEnd() == null || dto.getStatus() == null) {
             throw new CommonException(ErrorCode.DTO_IS_NULL, "비어있는 입력이 있습니다.");
         }
-        vacationService.vacationSave(dto, (String) request.getAttribute("username"));
+        dto.setMemberUsername((String) request.getAttribute("username"));
+        vacationService.vacationSave(dto);
 
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -46,10 +48,10 @@ public class VacationController {
                 .build());
     }
 
-    @GetMapping("/api/v1/vacation/detail/{id}")
+    @GetMapping("detail/{id}")
     public ResponseEntity<CommonResponse> detail(
             @PathVariable(value = "id") Long id){
-        //TODO: 조회하는 유저가 정보 확인
+
         VacationResponseDTO dto = vacationService.vacationDetail(id);
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -58,7 +60,7 @@ public class VacationController {
                 .build());
     }
 
-    @GetMapping(value = {"/api/v1/vacation/list/{month}", "/api/v1/vacation/list"})
+    @GetMapping(value = "list/{month}")
     public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) Optional<String> month){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
         List<VacationResponseDTO> vacationResponseDTOList;
@@ -79,7 +81,7 @@ public class VacationController {
     }
 
 
-    @PostMapping("/api/v1/vacation/modify/{id}")
+    @PostMapping("modify/{id}")
     public ResponseEntity<CommonResponse> modify(
             @PathVariable(value = "id") Long id,
             @RequestBody VacationModifyDTO dto){
@@ -96,7 +98,7 @@ public class VacationController {
                 .build());
     }
 
-    @PostMapping("/api/v1/vacation/delete/{id}")
+    @PostMapping("delete/{id}")
     public ResponseEntity<CommonResponse> delete(
             @PathVariable(value = "id") Long id){
 
@@ -110,7 +112,7 @@ public class VacationController {
     }
 
     @Permission
-    @PostMapping("/api/v1/vacation/ok/{id}")
+    @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
             @PathVariable(value = "id") Long id){
         vacationService.vacationOk(id);
@@ -121,7 +123,7 @@ public class VacationController {
                 .build());
     }
     @Permission
-    @PostMapping("/api/v1/vacation/rejected/{id}")
+    @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
             @PathVariable(value = "id") Long id){
         vacationService.vacationRejected(id);

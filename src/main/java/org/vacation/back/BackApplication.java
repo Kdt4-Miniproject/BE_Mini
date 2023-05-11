@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vacation.back.common.DepartClassification;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.*;
 import org.vacation.back.repository.DepartmentRepository;
 import org.vacation.back.repository.MemberRepository;
@@ -47,15 +48,17 @@ public class BackApplication {
 
 
 				memberRepository.save(Member.builder()
-								.username("admin")
-								.password(passwordEncoder.encode("1234"))
-								.role(Role.ADMIN)
-								.department(department)
-								.position(position)
-								.birthdate("2022-33-12")
-								.email("test@naver.com")
-								.employeeNumber("20221234")
-								.phoneNumber("010-1234-1234")
+						.username("admin")
+						.password(passwordEncoder.encode("1234"))
+						.role(Role.ADMIN)
+						.department(department)
+						.position(position)
+						.name("관리자")
+						.birthdate("2022-33-12")
+						.email("test@naver.com")
+						.employeeNumber("20221234")
+						.memberStatus(MemberStatus.ACTIVATION)
+						.phoneNumber("010-1234-1234")
 						.build());
 
 				memberRepository.save(Member.builder()
@@ -64,9 +67,11 @@ public class BackApplication {
 						.birthdate("2022-33-12")
 						.department(department)
 						.position(position)
+						.name("유저")
 						.email("test@naver.com")
 						.employeeNumber("20221235")
 						.phoneNumber("010-1234-1234")
+						.memberStatus(MemberStatus.ACTIVATION)
 						.build());
 
 

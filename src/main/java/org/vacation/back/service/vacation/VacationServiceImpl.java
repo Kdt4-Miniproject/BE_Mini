@@ -3,6 +3,7 @@ package org.vacation.back.service.vacation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Vacation;
@@ -38,8 +39,11 @@ public class VacationServiceImpl implements VacationService {
             vacationRepository.save(dto.toEntity(member));
     }
 
+    @Transactional
     public VacationResponseDTO vacationDetail(Long id) {
-        VacationResponseDTO dto = VacationResponseDTO.toDTO(vacationRepository.findById(id).get());
+        Vacation vacation = vacationRepository.findByvacation(id);
+        VacationResponseDTO dto = VacationResponseDTO.toDTO(vacation);
+        Member member = vacationRepository.findBymember(vacation.getMember().getUsername(), MemberStatus.ACTIVATION);
         if(dto == null) {
             throw new CommonException(ErrorCode.ID_NOT_FOUND, "해당 ID의 정보를 찾을 수 없습니다, ID를 확인하세요");
         }
@@ -48,6 +52,8 @@ public class VacationServiceImpl implements VacationService {
     }
 
     public List<VacationResponseDTO> vacationListStatus() {
+
+
         List<Vacation> vacationList = vacationRepository.findAllByVacationStatus(VacationStatus.WAITING);
         List<VacationResponseDTO> vacationResponseList = new ArrayList<>();
         for (Vacation vacation : vacationList){
@@ -56,7 +62,7 @@ public class VacationServiceImpl implements VacationService {
             dto.setMemberName(vacation.getMember().getName());
             dto.setStart(vacation.getStart());
             dto.setEnd(vacation.getEnd());
-            dto.setDepartment(vacation.getMember().getDepartment());
+            dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
             dto.setStatus(vacation.getStatus());
             vacationResponseList.add(dto);
         }
@@ -75,7 +81,7 @@ public class VacationServiceImpl implements VacationService {
             System.out.println("dto : " + dto.getMemberName());
             dto.setStart(vacation.getStart());
             dto.setEnd(vacation.getEnd());
-            dto.setDepartment(vacation.getMember().getDepartment());
+            dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
             dto.setStatus(vacation.getStatus());
             vacationResponseList.add(dto);
         }

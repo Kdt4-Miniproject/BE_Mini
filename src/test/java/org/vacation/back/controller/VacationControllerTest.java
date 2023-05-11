@@ -69,14 +69,17 @@ public class VacationControllerTest extends MyWithRTestDoc{
     void vacation_saveBefore() {
         departmentRepository.save(Department.builder()
                 .departmentName("개발")
+                        .vacationLimit(2)
                 .departmentPersonal(10)
                 .build());
         Department department = departmentRepository.save(Department.builder()
                 .departmentName("인사")
+                .vacationLimit(2)
                 .departmentPersonal(10)
                 .build());
         departmentRepository.save(Department.builder()
                 .departmentName("마케팅")
+                .vacationLimit(2)
                 .departmentPersonal(10)
                 .build());
 
@@ -197,7 +200,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @DisplayName("/api/v1/vacation/list/{month}")
     void vacation_list() throws Exception {
         // given
-        String month = "6";
+        String month = "0";
         //when
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
                 .get("/api/v1/vacation/list/{month}", month)

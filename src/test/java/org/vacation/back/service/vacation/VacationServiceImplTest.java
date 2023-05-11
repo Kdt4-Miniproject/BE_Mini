@@ -148,6 +148,6 @@ public class VacationServiceImplTest {
         VacationResponseDTO vacation = vacationService.vacationDetail(1L);
 
         Assertions.assertThat(vacation.getMemberName()).isEqualTo("유저");
-        Assertions.assertThat(vacation.getDepartment()).isEqualTo("인사");
+        Assertions.assertThat(vacation.getDepartmentName()).isEqualTo("인사");
     }
 }

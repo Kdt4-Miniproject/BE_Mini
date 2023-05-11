@@ -38,7 +38,7 @@ public class TokenSuccessHandler implements AuthenticationSuccessHandler {
         response.setHeader("X-Auth-Refresh-Token",refreshToken);
 
         Gson gson = new Gson();
-        CommonResponse commonResponse = CommonResponse.builder()
+        CommonResponse<?> commonResponse = CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build();

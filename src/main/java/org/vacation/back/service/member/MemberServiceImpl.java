@@ -269,5 +269,17 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public boolean memberRemove(String username) {
+        Optional<Member> optional = memberRepository.removeByusername(username);
+        if(optional.isPresent()){
+            Member member = optional.get();
+            member.changeStatus(MemberStatus.DEACTIVATION);
+            return true;
+        }
+        return false;
+    }
+
 
 }

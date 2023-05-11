@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vacation.back.common.DepartClassification;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.*;
 import org.vacation.back.repository.DepartmentRepository;
 import org.vacation.back.repository.MemberRepository;
@@ -65,6 +66,7 @@ public class BackApplication {
 						.department(department)
 						.position(position)
 						.email("test@naver.com")
+							.memberStatus(MemberStatus.ACTIVATION)
 						.employeeNumber("20221235")
 						.phoneNumber("010-1234-1234")
 						.build());

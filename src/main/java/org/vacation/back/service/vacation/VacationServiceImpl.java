@@ -66,7 +66,6 @@ public class VacationServiceImpl implements VacationService {
             dto.setStatus(vacation.getStatus());
             vacationResponseList.add(dto);
         }
-
         return vacationResponseList;
     }
 

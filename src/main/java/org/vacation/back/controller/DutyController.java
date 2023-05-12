@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Permission;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
@@ -92,7 +93,8 @@ public class DutyController {
                 .build());
     }
 
-    @PreAuthorize("hasRole('admin')")
+
+    @Permission
     @PostMapping("/duty/ok/{id}")
     public ResponseEntity<CommonResponse> ok(
             @PathVariable(value = "id") Long id){
@@ -103,7 +105,7 @@ public class DutyController {
                 .data(true)
                 .build());
     }
-    @PreAuthorize("hasRole('admin')")
+    @Permission
     @PostMapping("/duty/rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
             @PathVariable(value = "id") Long id){
@@ -116,7 +118,7 @@ public class DutyController {
     }
 
     //당직 임의 배정
-    @PreAuthorize("hasRole('admin')")
+    @Permission
     @PostMapping("/duty/assign/{username}")
     public ResponseEntity<CommonResponse> assign(
             @PathVariable(value = "username") String username) {

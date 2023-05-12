@@ -69,7 +69,7 @@ public class PermissionAspect {
         if(temp != null) role = temp.toString();
 
         log.info(" 해당 사용자 권한 ===> {}",role);
-        if(role != null && role.equalsIgnoreCase("LEADER")){
+        if(role != null && (role.equalsIgnoreCase("LEADER") || role.equalsIgnoreCase("ADMIN"))){
             return proceedingJoinPoint.proceed();
         }else{
             HttpServletResponse response =

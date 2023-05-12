@@ -56,7 +56,7 @@ public class UploadTest {
     void postTest() throws IOException {
         // given
         // when
-        memberService.vacationFindByDepartment("인사");
+       // memberService.vacationFindByDepartment("인사");
 
 
 

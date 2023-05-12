@@ -14,6 +14,7 @@ import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.common.MemberDTO;
+import org.vacation.back.dto.common.UameAndPositionDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
@@ -296,15 +297,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
-    public List<VacationResponseDTO> vacationFindByDepartment(String departmentName) {
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public PageResponseDTO<?> vacationFindByDepartment(Pageable pageable, String departmentName) {
 
-        List<String> memberList = memberRepository.memberBydepartmentName(departmentName)
-                .orElseThrow(RuntimeException::new);
-        List<Vacation> vacations = memberRepository.vacationByUsername(memberList)
-                .orElseThrow(RuntimeException::new);
+        List<Member> memberList = memberRepository.memberBydepartmentName(departmentName)
+                .orElseThrow(MemberNotFoundException::new);
 
-        return vacations.stream().map(VacationResponseDTO::toDTOv).toList();
+        Page<Vacation> vacations = memberRepository.vacationByUsername(memberList.stream()
+                        .map(Member::getUsername).toList(),pageable);
+
+        List<VacationResponseDTO> content = vacations.getContent()
+                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation, departmentName,
+                vacation.getMember().getPosition().getPositionName())).toList();
+
+       PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
+               .content(content)
+               .last(vacations.isLast())
+               .first(vacations.isFirst())
+               .total(vacations.getTotalElements())
+               .build();
+
+        return pageResponseDTO;
     }
 
 

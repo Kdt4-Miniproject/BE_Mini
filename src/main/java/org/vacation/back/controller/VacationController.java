@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Leader;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
@@ -57,8 +58,7 @@ public class VacationController {
 
 
     @GetMapping(value = {"list/{month}", "list"})
-    public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) Optional<String> month){
-
+    public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) String month){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
         List<VacationResponseDTO> vacationResponseDTOList;
         if (month != null){
@@ -104,7 +104,7 @@ public class VacationController {
                 .build());
     }
 
-    @Permission
+    @Leader
     @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
             @PathVariable(value = "id") Long id){
@@ -114,7 +114,7 @@ public class VacationController {
                 .data(true)
                 .build());
     }
-    @Permission
+    @Leader
     @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
             @PathVariable(value = "id") Long id){

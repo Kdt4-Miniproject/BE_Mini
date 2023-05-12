@@ -1,6 +1,7 @@
 package org.vacation.back.repository.impl;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -14,11 +15,13 @@ import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.common.MemberDTO;
+import org.vacation.back.dto.common.UameAndPositionDTO;
 import org.vacation.back.repository.child.CustomMemberRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -226,17 +229,57 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
         return Optional.empty();
     }
 
-    public Optional<List<String>> memberBydepartmentName(String departmentName){
+    public Optional<List<Member>> memberBydepartmentName(String departmentName){
         QMember member = QMember.member;
+        QPosition position = QPosition.position;
 
-        List<String> list = queryFactory.select(member.username)
+        List<Member> list = queryFactory.select(member)
                 .from(member)
+                .innerJoin(member.position,position).fetchJoin()
                 .where(member.department.departmentName.eq(departmentName)
                         .and(member.memberStatus.eq(MemberStatus.ACTIVATION)))
                 .fetch();
 
+
+
         if(list != null) return Optional.of(list);
         else return Optional.empty();
+    }
+
+    @Override
+    public Page<Vacation> vacationByUsername(List<String> usernames,Pageable pageable) {
+
+        QMember member = QMember.member;
+        QVacation vacation = QVacation.vacation;
+
+        JPAQuery<Vacation> query = queryFactory
+                .select(vacation)
+                .from(vacation)
+                .innerJoin(vacation.member, member).fetchJoin()
+                .where(vacation.member.username.in(usernames))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        List<Vacation> content = query.fetch();
+
+
+        return PageableExecutionUtils.getPage(content, pageable, () ->
+                queryFactory.select(Wildcard.count)
+                        .innerJoin(vacation.member, member).fetchJoin()
+                        .where(vacation.member.username.in(usernames)).fetch().get(0));
+
+    }
+
+    @Override
+    public List<Member> findAllActivation() {
+        QMember member = QMember.member;
+
+
+        return queryFactory
+                .select(member)
+                .from(member)
+                .where(member.memberStatus.eq(MemberStatus.ACTIVATION))
+                .fetch();
     }
 
 

@@ -27,6 +27,8 @@ public class VacationResponseDTO {
 
     private String departmentName;
 
+    private String positionName;
+
     //부서 추가
 
     public static VacationResponseDTO toDTO(Vacation vacation){
@@ -39,13 +41,15 @@ public class VacationResponseDTO {
                 .departmentName(vacation.getMember().getDepartment().getDepartmentName())
                 .build();
     }
-    public static VacationResponseDTO toDTOv(Vacation vacation){
+    public static VacationResponseDTO toDTOv(Vacation vacation,String departmentName,String positionName){
         return VacationResponseDTO.builder()
                 .id(vacation.getId())
                 .memberName(vacation.getMember().getName())
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
+                .departmentName(departmentName)
+                .positionName(positionName)
                 .build();
     }
 }

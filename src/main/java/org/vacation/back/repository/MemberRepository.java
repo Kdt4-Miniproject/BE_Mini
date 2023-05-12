@@ -13,6 +13,5 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member,String>, CustomMemberRepository {
 
 
-    @Query("SELECT v FROM Vacation v  join fetch v.member WHERE v.member.username in (:usernams)")
-    public Optional<List<Vacation>> vacationByUsername(@Param("usernams") List<String> usernames);
+
 }

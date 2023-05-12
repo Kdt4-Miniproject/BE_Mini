@@ -37,7 +37,8 @@ public class JWTUtils {
                 .withIssuedAt(new Date(System.currentTimeMillis()))
                 .sign(Algorithm.HMAC512(SECRET));
 
-        return TOKEN_PREFIX + jwt;
+        if(!refresh) return TOKEN_PREFIX + jwt;
+        else return jwt;
     }
     public DecodedJWT verify(String jwt) throws SignatureVerificationException, TokenExpiredException {
 

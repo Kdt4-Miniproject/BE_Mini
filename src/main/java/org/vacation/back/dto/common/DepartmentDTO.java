@@ -13,15 +13,26 @@ public class DepartmentDTO {
 
     private String departmentName;
 
-    private String vacationLimit;
+    private Integer vacationLimit;
 
-    private String departmentPersonal;
+    private Integer departmentPersonal;
 
     private DepartmentStatus status;
 
     public static DepartmentDTO toDTO(Department department){
         return DepartmentDTO.builder()
+                .departmentName(department.getDepartmentName())
+                .vacationLimit(department.getVacationLimit())
+                .departmentPersonal(department.getDepartmentPersonal())
+                .status(department.getStatus())
                 .build();
+    }
+
+    public DepartmentDTO(Department department) {
+        this.departmentName = department.getDepartmentName();
+        this.vacationLimit = department.getVacationLimit();
+        this.departmentPersonal = department.getDepartmentPersonal();
+        this.status = department.getStatus();
     }
 
 }

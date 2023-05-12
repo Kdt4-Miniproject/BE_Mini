@@ -5,6 +5,7 @@ import org.vacation.back.common.Search;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
 
 import java.util.List;
 
@@ -37,4 +38,6 @@ public interface MemberService {
     public boolean changePwd(String username , PasswordModifyRequest passwordModifyRequest);
 
     public boolean memberRemove(String username);
+
+    public List<VacationResponseDTO> vacationFindByDepartment(String departmentName);
 }

@@ -52,8 +52,10 @@ public class VacationController {
                 .build());
     }
 
+
     @GetMapping(value = {"list/{month}", "list"})
-    public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) String month){
+    public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) Optional<String> month){
+
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
         List<VacationResponseDTO> vacationResponseDTOList;
         if (month != null){

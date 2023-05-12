@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Leader;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.Role;
@@ -247,6 +248,22 @@ public class MemberController {
                 .status(commonResponse.getStatus())
                 .body(commonResponse);
 
+    }
+
+    @Leader
+    @GetMapping("/api/v1/member/vacation")
+    public ResponseEntity<CommonResponse<?>> departmentMVacation(HttpServletRequest request){
+
+        String departmentName = request.getAttribute("department").toString();
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.vacationFindByDepartment(departmentName))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
     }
 
 

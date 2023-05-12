@@ -31,6 +31,7 @@ public class Vacation extends BaseEntity{
     @JoinColumn(name = "member_id")
     private Member member;
 
+
     public void modifyVacation(LocalDate start, LocalDate end){
         this.start=start;
         this.end=end;

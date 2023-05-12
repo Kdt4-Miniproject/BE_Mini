@@ -6,6 +6,7 @@ import org.vacation.back.domain.Department;
 import org.vacation.back.domain.Vacation;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class VacationResponseDTO {
 
     private LocalDate end;
 
-
+    private LocalDateTime createAt;
 
     private VacationStatus status;
 
@@ -38,6 +39,7 @@ public class VacationResponseDTO {
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
+                .createAt(vacation.getCreatedAt())
                 .departmentName(vacation.getMember().getDepartment().getDepartmentName())
                 .build();
     }

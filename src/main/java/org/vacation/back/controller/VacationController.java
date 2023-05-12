@@ -29,7 +29,7 @@ public class VacationController {
     private final VacationService vacationService;
 
     @PostMapping("save")
-    public ResponseEntity<CommonResponse> save(@Validated @RequestBody VacationSaveRequestDTO dto,
+    public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto,
                                                HttpServletRequest request){
         vacationService.vacationSave(dto, request);
 

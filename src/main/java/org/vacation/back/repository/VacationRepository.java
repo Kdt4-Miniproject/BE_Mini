@@ -3,6 +3,7 @@ package org.vacation.back.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.method.P;
 import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Member;
@@ -31,6 +32,9 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     @Query("select v from Vacation v join fetch v.member m where v.id = :id")
     Vacation findByvacation(@Param("id") Long id);
 
-    @Query("select m from Member m join fetch m.department where m.username = :username and m.memberStatus = :status")
+    @Query("select v from Vacation v join fetch v.member where v.member.department.departmentName = :departmentName and v.status = 'OK'")
+    List<Vacation> findAllByDepartment(@Param("departmentName") String departmentName);
+
+    @Query("select m from Member m join fetch m.department join fetch m.position where m.username = :username and m.memberStatus = :status")
     Member findBymember(@Param("username") String username, @Param("status")MemberStatus status);
 }

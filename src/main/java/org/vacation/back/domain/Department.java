@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "department_tb")
 @Entity
 public class Department {
 
@@ -36,6 +37,14 @@ public class Department {
     @Builder.Default
     private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
 
+    public void modify(Integer vacationLimit, Integer departmentPersonal){
+        this.vacationLimit = vacationLimit;
+        this.departmentPersonal = departmentPersonal;
+    }
+
+    public void setStatus(DepartmentStatus status) {
+        this.status = status;
+    }
 
     public void plusPersonal(){
         this.departmentPersonal = this.departmentPersonal + 1;

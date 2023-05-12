@@ -3,6 +3,7 @@ package org.vacation.back.utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
@@ -72,7 +73,7 @@ public class AssignUtils {
             Duty duty = Duty.builder()
                     .day(temp)
                     .member(entry.getValue())
-                    .status(VacationStatus.WAITING)
+                    .status(DutyStatus.WAITING)
                     .build();
 
             dutyRepository.save(duty);

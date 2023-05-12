@@ -23,6 +23,8 @@ public class VacationResponseDTO {
 
     private LocalDate end;
 
+
+
     private VacationStatus status;
 
     private String departmentName;

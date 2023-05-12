@@ -16,6 +16,7 @@ import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.repository.VacationRepository;
 import org.vacation.back.service.VacationService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public class VacationServiceImpl implements VacationService {
 
     private final MemberRepository memberRepository;
 
-    public void vacationSave(VacationSaveRequestDTO dto) {
-        if (vacationRepository.findByVacationStart(dto.getUserName(), dto.getStart()) != null) {
+    public void vacationSave(VacationSaveRequestDTO dto, HttpServletRequest request) {
+        if (vacationRepository.findByVacationStart((String) request.getAttribute("username"), dto.getStart()) != null) {
             throw new CommonException(ErrorCode.DUPLICATED_START, "신청한 연차 시작날짜가 이미 존재합니다.");
         }
 
-        Member member = memberRepository.findById(dto.getUserName()).orElseThrow(
+        Member member = memberRepository.findById((String) request.getAttribute("username")).orElseThrow(
                 () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID를 찾을 수 없습니다.")
         );
 

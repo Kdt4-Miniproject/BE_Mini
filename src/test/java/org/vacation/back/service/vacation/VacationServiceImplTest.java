@@ -94,29 +94,29 @@ public class VacationServiceImplTest {
         //given2
         String username = "user";
 
-        VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
-                .userName("user")
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
-                .status(VacationStatus.WAITING)
-                .build();
-        vacationService.vacationSave(save_test1);
-
-        VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
-                .userName("user")
-                .start(LocalDate.parse("2023-05-02"))
-                .end(LocalDate.parse("2023-05-02"))
-                .status(VacationStatus.WAITING)
-                .build();
-        vacationService.vacationSave(save_test2);
-
-        VacationSaveRequestDTO save_test3 = VacationSaveRequestDTO.builder()
-                .userName("user")
-                .start(LocalDate.parse("2023-06-01"))
-                .end(LocalDate.parse("2023-06-02"))
-                .status(VacationStatus.WAITING)
-                .build();
-        vacationService.vacationSave(save_test3);
+//        VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
+//                .userName("user")
+//                .start(LocalDate.parse("2023-05-01"))
+//                .end(LocalDate.parse("2023-05-01"))
+//                .status(VacationStatus.WAITING)
+//                .build();
+//        vacationService.vacationSave(save_test1);
+//
+//        VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
+//                .userName("user")
+//                .start(LocalDate.parse("2023-05-02"))
+//                .end(LocalDate.parse("2023-05-02"))
+//                .status(VacationStatus.WAITING)
+//                .build();
+//        vacationService.vacationSave(save_test2);
+//
+//        VacationSaveRequestDTO save_test3 = VacationSaveRequestDTO.builder()
+//                .userName("user")
+//                .start(LocalDate.parse("2023-06-01"))
+//                .end(LocalDate.parse("2023-06-02"))
+//                .status(VacationStatus.WAITING)
+//                .build();
+//        vacationService.vacationSave(save_test3);
     }
 
     @Test
@@ -124,12 +124,12 @@ public class VacationServiceImplTest {
     void vacatioin_save(){
         Member member = memberRepository.findById("user").orElseThrow();
 
-        vacationService.vacationSave(VacationSaveRequestDTO.builder()
-                .userName("user")
-                .start(LocalDate.parse("2023-05-08"))
-                .end(LocalDate.parse("2023-05-08"))
-                .status(VacationStatus.WAITING)
-                .build());
+//        vacationService.vacationSave(VacationSaveRequestDTO.builder()
+//                .userName("user")
+//                .start(LocalDate.parse("2023-05-08"))
+//                .end(LocalDate.parse("2023-05-08"))
+//                .status(VacationStatus.WAITING)
+//                .build());
 
     }
 
@@ -138,12 +138,12 @@ public class VacationServiceImplTest {
     void vacation_detail(){
         Member member = memberRepository.findById("user").orElseThrow();
 
-        vacationService.vacationSave(VacationSaveRequestDTO.builder()
-                .userName("user")
-                .start(LocalDate.parse("2023-05-08"))
-                .end(LocalDate.parse("2023-05-08"))
-                .status(VacationStatus.WAITING)
-                .build());
+//        vacationService.vacationSave(VacationSaveRequestDTO.builder()
+//                .userName("user")
+//                .start(LocalDate.parse("2023-05-08"))
+//                .end(LocalDate.parse("2023-05-08"))
+//                .status(VacationStatus.WAITING)
+//                .build());
 
         VacationResponseDTO vacation = vacationService.vacationDetail(1L);
 

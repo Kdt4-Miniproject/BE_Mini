@@ -4,6 +4,7 @@ package org.vacation.back.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.dto.CodeEnum;
@@ -28,13 +29,9 @@ public class VacationController {
     private final VacationService vacationService;
 
     @PostMapping("save")
-    public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto,
+    public ResponseEntity<CommonResponse> save(@Validated @RequestBody VacationSaveRequestDTO dto,
                                                HttpServletRequest request){
-        if (dto.getUserName() == null || dto.getStart() == null || dto.getEnd() == null || dto.getStatus() == null) {
-            throw new CommonException(ErrorCode.DTO_IS_NULL, "비어있는 입력이 있습니다.");
-        }
-        dto.setUserName((String) request.getAttribute("username"));
-        vacationService.vacationSave(dto);
+        vacationService.vacationSave(dto, request);
 
 
         return ResponseEntity.ok(CommonResponse.builder()

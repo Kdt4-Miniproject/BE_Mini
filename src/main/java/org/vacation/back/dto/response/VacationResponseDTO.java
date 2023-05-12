@@ -25,7 +25,7 @@ public class VacationResponseDTO {
 
     private VacationStatus status;
 
-    private Department department;
+    private String departmentName;
 
     //부서 추가
 
@@ -36,7 +36,7 @@ public class VacationResponseDTO {
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
-                .department(vacation.getMember().getDepartment())
+                .departmentName(vacation.getMember().getDepartment().getDepartmentName())
                 .build();
     }
     public static VacationResponseDTO toDTOv(Vacation vacation){

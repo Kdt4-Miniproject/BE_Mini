@@ -30,8 +30,10 @@ public class FileServiceImpl implements FileService {
     private final LocalTempUploader localTempUploader;
     private final S3Uploder s3Uploader;
 
-    @Value("${FILEPATH}")
-    private String path;
+
+
+//    @Value("${FILEPATH}")
+    private String path = "FILEPATH";
 
     @Override
     public List<String> upload(FileDTO fileDTO) {

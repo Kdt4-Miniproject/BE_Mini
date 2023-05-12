@@ -27,9 +27,10 @@ public class Vacation extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private VacationStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
+
 
     public void modifyVacation(LocalDate start, LocalDate end){
         this.start=start;

@@ -16,9 +16,7 @@ import java.time.LocalDate;
 @Builder
 public class VacationSaveRequestDTO {
 
-    private String memberUsername; //id
-
-    private Member member;
+    private String userName; //id
 
     private LocalDate start;
 
@@ -26,7 +24,7 @@ public class VacationSaveRequestDTO {
 
     private VacationStatus status;
 
-    public Vacation toEntity(){
+    public Vacation toEntity(Member member){
 
         return Vacation.builder()
                 .member(member)

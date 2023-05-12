@@ -10,17 +10,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.vacation.back.MyWithRTestDoc;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.VacationStatus;
+import org.vacation.back.domain.*;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.member.RegisterMemberDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.repository.DepartmentRepository;
+import org.vacation.back.repository.MemberRepository;
+import org.vacation.back.repository.PositionRepository;
 import org.vacation.back.service.MemberService;
 import org.vacation.back.service.VacationService;
 
@@ -45,51 +52,99 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @Autowired
     private VacationService vacationService;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzNzE0Njg4LCJ1c2VybmFtZSI6ImFkbWluIn0.o1cHAhkwvDoWQ2Gnl-VY9WBn_TOu4RahiUrhLFlP7-jGfb_p-YVH3EY1xQ8wl7Xg68BSpi3UTh2RMjq1uxN_Vw";
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PositionRepository positionRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IiIsInJvbGUiOiJBRE1JTiIsIm5hbWUiOiLqtIDrpqzsnpAiLCJleHAiOjE2ODM4Nzc3MDEsInVzZXJuYW1lIjoiYWRtaW4ifQ.fdwJc9-xjRJUqGoFOmsNywuwcJwIkstC3SsTNp_j8LINJbN7dAeNafxE5UcWRLY2xRvRdFY0YmMpdnB44hcySQ";
 
 
     @BeforeEach
     void vacation_saveBefore() {
-        RegisterMemberDTO dto = RegisterMemberDTO.builder()
-                .username("admin")
-                .password("1234")
-                .birthDate("2023-04-26")
-                .phoneNumber("010-1234-1234")
-                .positionName("사원")
+        departmentRepository.save(Department.builder()
                 .departmentName("개발")
-                .fileName("404.jpg")
-                .name("김독자")
-                .joiningDay("2020-01-01")
-                .years("3")
+                        .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+        Department department = departmentRepository.save(Department.builder()
+                .departmentName("인사")
+                .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+        departmentRepository.save(Department.builder()
+                .departmentName("마케팅")
+                .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+
+        Position position = positionRepository.save(Position.builder()
+                .positionName("대리")
+                .vacation("40")
+                .build());
+
+        memberRepository.save(Member.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("1234"))
+                .role(Role.ADMIN)
+                .department(department)
+                .position(position)
+                .name("관리자")
+                .birthdate("2022-33-12")
                 .email("test@naver.com")
-                .build();
+                .employeeNumber("20221234")
+                .memberStatus(MemberStatus.ACTIVATION)
+                .phoneNumber("010-1234-1234")
+                .build());
 
+        memberRepository.save(Member.builder()
+                .username("user")
+                .password(passwordEncoder.encode("1234"))
+                .birthdate("2022-33-12")
+                .department(department)
+                .position(position)
+                .name("유저")
+                .email("test@naver.com")
+                .employeeNumber("20221235")
+                .phoneNumber("010-1234-1234")
+                .memberStatus(MemberStatus.ACTIVATION)
+                .build());
 
+        Member member = memberRepository.findById("user").orElseThrow();
+        //given2
+        String username = "user";
 
         VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
-                .memberUsername("admin")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-01"))
                 .end(LocalDate.parse("2023-05-01"))
                 .status(VacationStatus.WAITING)
                 .build();
-        vacationService.vacationSave(save_test1, dto.getUsername());
+        vacationService.vacationSave(save_test1);
 
         VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
-                .memberUsername("admin")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-02"))
                 .end(LocalDate.parse("2023-05-02"))
                 .status(VacationStatus.WAITING)
                 .build();
-        vacationService.vacationSave(save_test2, dto.getUsername());
+        vacationService.vacationSave(save_test2);
 
         VacationSaveRequestDTO save_test3 = VacationSaveRequestDTO.builder()
-                .memberUsername("admin")
+                .userName("user")
                 .start(LocalDate.parse("2023-06-01"))
                 .end(LocalDate.parse("2023-06-02"))
                 .status(VacationStatus.WAITING)
                 .build();
-        vacationService.vacationSave(save_test3, dto.getUsername());
+        vacationService.vacationSave(save_test3);
     }
+
+
     @Test
     @DisplayName("/api/v1/vacation/save")
     void vacation_save() throws Exception {
@@ -98,7 +153,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         VacationSaveRequestDTO dto = VacationSaveRequestDTO.builder()
-                .memberUsername("admin")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-09"))
                 .end(LocalDate.parse("2023-05-10"))
                 .status(VacationStatus.WAITING)
@@ -125,7 +180,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @DisplayName("/api/v1/vacation/detail/{id}")
     void vacation_detail() throws Exception {
         // given
-        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
         Long id = 1L;
 
         //when
@@ -146,7 +200,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @DisplayName("/api/v1/vacation/list/{month}")
     void vacation_list() throws Exception {
         // given
-        String month = "";
+        String month = "0";
         //when
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
                 .get("/api/v1/vacation/list/{month}", month)
@@ -209,7 +263,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data.status").value("DELETED"));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }

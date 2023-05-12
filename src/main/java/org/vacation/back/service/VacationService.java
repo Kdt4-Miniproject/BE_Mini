@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface VacationService {
 
-    public void vacationSave(VacationSaveRequestDTO dto, String userName);
+    public void vacationSave(VacationSaveRequestDTO dto);
 
     public VacationResponseDTO vacationDetail(Long id);
 
@@ -16,7 +16,7 @@ public interface VacationService {
 
     public List<VacationResponseDTO> vacationListStatus();
 
-    public void vacationModify(Long id, VacationModifyDTO dto);
+    public void vacationModify(VacationModifyDTO dto);
 
     public void vacationDelete(Long id);
 

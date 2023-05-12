@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.vacation.back.common.PositionStatus;
+
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @Builder
@@ -12,9 +13,6 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionModifyDTO {
 
-    private String positionName;
-
+    @NotEmpty
     private String vacation;
-
-    private PositionStatus status;
 }

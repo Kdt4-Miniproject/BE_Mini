@@ -22,6 +22,15 @@ public class PositionDTO {
 
     public static PositionDTO toDTO(Position position) {
         return PositionDTO.builder()
+                .positionName(position.getPositionName())
+                .vacation(position.getVacation())
+                .status(position.getStatus())
                 .build();
+    }
+
+    public PositionDTO(Position position) {
+        this.positionName = position.getPositionName();
+        this.vacation = position.getVacation();
+        this.status = position.getStatus();
     }
 }

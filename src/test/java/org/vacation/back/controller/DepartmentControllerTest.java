@@ -1,55 +1,83 @@
 package org.vacation.back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.vacation.back.MyWithRTestDoc;
-import org.vacation.back.annotation.Permission;
-import org.vacation.back.common.DepartmentStatus;
-import org.vacation.back.common.PositionStatus;
-import org.vacation.back.dto.request.Position.PositionDeleteDTO;
-import org.vacation.back.dto.request.Position.PositionModifyDTO;
-import org.vacation.back.dto.request.Position.PositionSaveDTO;
-import org.vacation.back.dto.request.department.DepartmentDeleteDTO;
+import org.vacation.back.common.MemberStatus;
+import org.vacation.back.domain.Department;
+import org.vacation.back.domain.Member;
+import org.vacation.back.domain.Position;
+import org.vacation.back.domain.Role;
 import org.vacation.back.dto.request.department.DepartmentModifyDTO;
 import org.vacation.back.dto.request.department.DepartmentSaveDTO;
+import org.vacation.back.repository.DepartmentRepository;
+import org.vacation.back.repository.MemberRepository;
+import org.vacation.back.repository.PositionRepository;
 
-@DisplayName("부서 API")
+import javax.persistence.EntityManager;
+
+@DisplayName("Department API")
 @AutoConfigureRestDocs(uriScheme = "http", uriHost = "localhost", uriPort = 8080)
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class DepartmentControllerTest extends MyWithRTestDoc {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
-    @Permission
-    @DisplayName("/api/v1/department/save")
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private PositionRepository positionRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EntityManager em;
+
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IiIsInJvbGUiOiJBRE1JTiIsIm5hbWUiOiLqtIDrpqzsnpAiLCJwb3NpdGlvbiI6IuuMgOumrCIsImV4cCI6MTY4Mzk2MDkzNiwiZGVwYXJ0bWVudCI6IuyduOyCrCIsImlhdCI6MTY4Mzg3NDUzNiwidXNlcm5hbWUiOiJhZG1pbiJ9.48ykXEP2oyQcB2uz9sXI8tJramc8PVeQCGN9B_tb8Qmt4FDgY6G_79WtRrqtu7_RnVJ_Pws8gB-bBsRyiOPJyA";
+
+    @BeforeEach
+    public void setUp() {
+        DepartmentSaveDTO dto = new DepartmentSaveDTO();
+        dto.setDepartmentName("인사");
+        dto.setVacationLimit(3);
+        dto.setDepartmentPersonal(6);
+        departmentRepository.save(dto.toEntity());
+        em.clear();
+    }
+
     @Test
+    @DisplayName("/api/v1/department/save")
     public void department_save() throws Exception {
         // given
-
         DepartmentSaveDTO departmentDTO = DepartmentSaveDTO.builder()
-                .departmentName("HUMAN_RESOURCE")
-                .vacationLimit("3")
-                .departmentPersonal("6")
-                .status(DepartmentStatus.ACTIVATION)
+                .departmentName("영업")
+                .vacationLimit(3)
+                .departmentPersonal(6)
                 .build();
 
         // when
@@ -58,7 +86,7 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(departmentDTO))
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -69,28 +97,28 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @DisplayName("/api/v1/department/detail")
     @Test
+    @DisplayName("/api/v1/department/detail")
     public void department_detail() throws Exception {
         // given
+        String id = "개발";
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/v1/department/detail")
+                        .get("/api/v1/department/detail/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
         // then
+        actions.andExpect(MockMvcResultMatchers.jsonPath("$.data.departmentName").value("개발"));
         actions.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200));
 
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @Permission
-    @DisplayName("/api/v1/department/list")
     @Test
+    @DisplayName("/api/v1/department/list")
     public void department_find_all() throws Exception {
         // given
 
@@ -98,7 +126,7 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         ResultActions actions = mockMvc.perform(RestDocumentationRequestBuilders
                         .get("/api/v1/department/list")
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
@@ -108,53 +136,45 @@ public class DepartmentControllerTest extends MyWithRTestDoc {
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @Permission
-    @DisplayName("/api/v1/department/modify")
     @Test
+    @DisplayName("/api/v1/department/modify")
     public void department_modify() throws Exception {
         // given
-
+        String id = "인사";
         DepartmentModifyDTO departmentDTO = DepartmentModifyDTO.builder()
-                .departmentName("DEVELOPMENT")
-                .vacationLimit("4")
-                .departmentPersonal("10")
-                .status(DepartmentStatus.ACTIVATION)
+                .vacationLimit(4)
+                .departmentPersonal(10)
                 .build();
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/department/modify")
+                        .post("/api/v1/department/modify/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(departmentDTO))
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
         // then
-        actions.andExpect(MockMvcResultMatchers.jsonPath("$.data").value(true));
+
         actions.andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200));
 
         actions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
-    @DisplayName("/api/v1/department/delete")
     @Test
+    @DisplayName("/api/v1/department/delete")
     public void department_delete() throws Exception {
         // given
 
-        DepartmentDeleteDTO departmentDTO = DepartmentDeleteDTO.builder()
-                .departmentName("MARKETING")
-                .status(DepartmentStatus.DEACTIVATION)
-                .build();
+        String id = "인사";
 
         // when
         ResultActions actions = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/department/delete")
+                        .post("/api/v1/department/delete/{id}", id)
                         .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(departmentDTO))
-                        .header("Authorization",token)
+                        .header("Authorization", token)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
 

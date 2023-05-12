@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Builder
 public class VacationSaveRequestDTO {
 
-    private String memberUsername; //id
+    private String userName; //id
 
     private LocalDate start;
 

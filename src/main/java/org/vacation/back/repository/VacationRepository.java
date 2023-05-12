@@ -18,11 +18,11 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     //해당 달만 정보를 넘겨줘야함
 
-    @Query("select v from Vacation v join fetch v.member m WHERE MONTH(v.start) = :month")
+    @Query("select v from Vacation v join fetch v.member m WHERE MONTH(v.start) = :month AND v.status <> 'DELETED'")
     List<Vacation> findAllByVacationMonth(@Param("month") Integer month);
 
     //inner join
-    @Query("select v from Vacation v join fetch v.member m WHERE v.status = :status")
+    @Query("select v from Vacation v join fetch v.member m WHERE v.status = :status AND v.status <> 'DELETED'")
     List<Vacation> findAllByVacationStatus(@Param("status") VacationStatus status);
 
     @Query("select v from Vacation v join fetch v.member m where v.id = :id")

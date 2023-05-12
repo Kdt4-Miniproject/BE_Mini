@@ -234,7 +234,7 @@ class MemberControllerTest extends MyWithRTestDoc {
     void member_login_success() throws Exception {
         // given
         LoginRequestDTO dto = LoginRequestDTO.builder()
-                .username("user")
+                .username("admin")
                 .password("1234")
                 .build();
         // when

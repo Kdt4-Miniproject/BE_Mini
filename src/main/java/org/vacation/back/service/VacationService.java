@@ -16,7 +16,7 @@ public interface VacationService {
 
     public List<VacationResponseDTO> vacationListStatus();
 
-    public void vacationModify(Long id, VacationModifyDTO dto);
+    public void vacationModify(VacationModifyDTO dto);
 
     public void vacationDelete(Long id);
 

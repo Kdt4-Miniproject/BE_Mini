@@ -14,6 +14,8 @@ import java.time.LocalDate;
 @Builder
 public class VacationModifyDTO {
 
+    private Long id;
+
     private LocalDate start;
 
     private LocalDate end;

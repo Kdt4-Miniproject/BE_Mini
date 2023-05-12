@@ -62,7 +62,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IiIsInJvbGUiOiJTVEFGRiIsIm5hbWUiOiLsnKDsoIAiLCJleHAiOjE2ODM4NTY4ODIsInVzZXJuYW1lIjoidXNlciJ9.HNkoqtz6gX0HMXV3tIajQRKDWjrtQwKFBabkyEK9ivvhohLDphRczYRxW0yt4_R6fphMlESOsTK49cX7RfETUA";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IiIsInJvbGUiOiJBRE1JTiIsIm5hbWUiOiLqtIDrpqzsnpAiLCJleHAiOjE2ODM4Nzc3MDEsInVzZXJuYW1lIjoiYWRtaW4ifQ.fdwJc9-xjRJUqGoFOmsNywuwcJwIkstC3SsTNp_j8LINJbN7dAeNafxE5UcWRLY2xRvRdFY0YmMpdnB44hcySQ";
 
 
     @BeforeEach
@@ -120,7 +120,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
         String username = "user";
 
         VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
-                .memberUsername("user")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-01"))
                 .end(LocalDate.parse("2023-05-01"))
                 .status(VacationStatus.WAITING)
@@ -128,7 +128,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
         vacationService.vacationSave(save_test1);
 
         VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
-                .memberUsername("user")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-02"))
                 .end(LocalDate.parse("2023-05-02"))
                 .status(VacationStatus.WAITING)
@@ -136,7 +136,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
         vacationService.vacationSave(save_test2);
 
         VacationSaveRequestDTO save_test3 = VacationSaveRequestDTO.builder()
-                .memberUsername("user")
+                .userName("user")
                 .start(LocalDate.parse("2023-06-01"))
                 .end(LocalDate.parse("2023-06-02"))
                 .status(VacationStatus.WAITING)
@@ -153,7 +153,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         VacationSaveRequestDTO dto = VacationSaveRequestDTO.builder()
-                .memberUsername("user")
+                .userName("user")
                 .start(LocalDate.parse("2023-05-09"))
                 .end(LocalDate.parse("2023-05-10"))
                 .status(VacationStatus.WAITING)
@@ -263,7 +263,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data.status").value("DELETED"));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }

@@ -1,0 +1,36 @@
+package org.vacation.back.dto.response;
+
+import lombok.*;
+import org.vacation.back.common.DutyStatus;
+import org.vacation.back.domain.Duty;
+
+import java.time.LocalDate;
+
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
+public class DutyResponseDTO {
+    private Long id;
+    private String memberName;
+
+    private LocalDate day;
+
+    private DutyStatus status;
+
+    private String departmentName;
+
+
+    public static DutyResponseDTO toDTO(Duty duty){
+
+        return DutyResponseDTO.builder()
+                .id(duty.getId())
+                .memberName(duty.getMember().getUsername())
+                .day(duty.getDay())
+                .status(duty.getStatus())
+                .departmentName(duty.getMember().getDepartment().getDepartmentName())
+                .build();
+    }
+}

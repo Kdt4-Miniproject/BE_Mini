@@ -11,5 +11,7 @@ import org.vacation.back.common.DutyStatus;
 @Getter
 @Builder
 public class DutyOkAndRejectedDTO {
+
+    private Long id;
     private DutyStatus status;
 }

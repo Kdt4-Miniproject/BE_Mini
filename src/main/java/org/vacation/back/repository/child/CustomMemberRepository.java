@@ -18,6 +18,8 @@ public interface CustomMemberRepository {
 
     public Optional<Member> findByUsername(String username);
 
+    public Optional<Member> findByUserWithAll(String username);
+
     public boolean existsByEmployNumber(String number);
     public String maxEmployeeNumber();
 
@@ -34,4 +36,7 @@ public interface CustomMemberRepository {
     public Page<Member> findByDeactivated(Search text,String keyword ,Pageable pageable);
 
     public Optional<Member> findByDeactiveMember(String username);
+
+
+    public Optional<Member> removeByusername(String username);
 }

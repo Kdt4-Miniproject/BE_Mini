@@ -35,4 +35,6 @@ public interface MemberService {
     public boolean adminStatusModify(AdminStatusModifyRequest request);
 
     public boolean changePwd(String username , PasswordModifyRequest passwordModifyRequest);
+
+    public boolean memberRemove(String username);
 }

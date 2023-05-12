@@ -63,6 +63,8 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
           String refreshImage = decodedRefresh.getClaim("image").asString();
           String refreshName = decodedRefresh.getClaim("name").asString();
 
+          String refreshPosition = decodedRefresh.getClaim("position").asString();
+          String refreshDepartment = decodedRefresh.getClaim("department").asString();
           Integer exp = decodedRefresh.getClaim("exp").asInt();
 
 
@@ -77,6 +79,8 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
                   .name(refreshName)
                   .fileName(refreshImage)
                   .role(refreshRole)
+                  .positionName(refreshPosition)
+                  .departmentName(refreshDepartment)
                   .build();
 
 
@@ -91,6 +95,8 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
       }catch (TokenExpiredException tokenExpiredException){
           sendError(response, TokenException.TOKEN_ERROR.EXPIRED);
       }catch (SignatureVerificationException signatureVerificationException){
+          sendError(response, TokenException.TOKEN_ERROR.BADSIGN);
+      }catch (Exception e){
           sendError(response, TokenException.TOKEN_ERROR.BADSIGN);
       }
 

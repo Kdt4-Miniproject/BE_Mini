@@ -1,5 +1,6 @@
 package org.vacation.back.repository.impl;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -52,6 +53,24 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
 
           if(member != null) return Optional.of(member);
           else return Optional.empty();
+    }
+
+    @Override
+    public Optional<Member> findByUserWithAll(String username) {
+
+            QMember member = QMember.member;
+            QPosition position = QPosition.position;
+            QDepartment department = QDepartment.department;
+
+
+            Member memberEntity = queryFactory.select(member)
+                    .from(member)
+                    .innerJoin(member.position,position).fetchJoin()
+                    .innerJoin(member.department,department).fetchJoin()
+                    .where(member.memberStatus.eq(MemberStatus.ACTIVATION),member.username.eq(username))
+                    .fetchOne();
+
+          return Optional.of(memberEntity);
     }
 
     public boolean existsByEmployNumber(String number){
@@ -154,7 +173,7 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                 .from(QMember.member)
                 .innerJoin(QMember.member.position,QPosition.position).fetchJoin()
                 .innerJoin(QMember.member.department,QDepartment.department).fetchJoin()
-                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.DEACTIVATION))
+                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.WAITING))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -173,12 +192,33 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
 
     @Override
     public Optional<Member> findByDeactiveMember(String username) {
+
+
         Member member = queryFactory.select(QMember.member)
                 .from(QMember.member)
-                .where(QMember.member.memberStatus.eq(MemberStatus.DEACTIVATION),QMember.member.username.eq(username))
+                .where(QMember.member.username.eq(username))
                 .fetchOne();
 
         if(member != null) return Optional.of(member);
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Member> removeByusername(String username) {
+        QMember member = QMember.member;
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        booleanBuilder.or(member.memberStatus.eq(MemberStatus.WAITING));
+        booleanBuilder.or(member.memberStatus.eq(MemberStatus.ACTIVATION));
+
+
+        Member memberEntity = queryFactory.select(member)
+                .from(member)
+                .where(booleanBuilder,member.username.eq(username))
+                .fetchOne();
+
+        if(memberEntity != null) return Optional.of(memberEntity);
         return Optional.empty();
     }
 

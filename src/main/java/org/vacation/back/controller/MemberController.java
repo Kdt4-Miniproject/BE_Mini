@@ -42,7 +42,7 @@ public class MemberController {
     public ResponseEntity<CommonResponse<?>> checking(@RequestParam String username){
         // TODO: PathVariable로 들어온 username이 PK로 겹치는게 있는지 확인한다.
 
-        if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
+    //    if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -233,6 +233,22 @@ public class MemberController {
                 .body(commonResponse);
 
     }
+
+    @Permission
+    @PostMapping("/api/v1/member/admin/remove")
+    public ResponseEntity<CommonResponse<?>> memberRemove(@RequestBody MemberRemoveRequest request){
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.memberRemove(request.getUsername()))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+
+    }
+
 
 
 

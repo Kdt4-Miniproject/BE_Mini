@@ -35,4 +35,12 @@ public class Department {
     @OneToMany(mappedBy = "departmentName")
     @Builder.Default
     private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
+
+
+    public void plusPersonal(){
+        this.departmentPersonal = this.departmentPersonal + 1;
+    }
+    public void minusPersonal(){
+        this.departmentPersonal = this.departmentPersonal - 1;
+    }
 }

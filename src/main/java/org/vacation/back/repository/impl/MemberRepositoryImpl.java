@@ -70,8 +70,9 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                     .where(member.memberStatus.eq(MemberStatus.ACTIVATION),member.username.eq(username))
                     .fetchOne();
 
-          return Optional.of(memberEntity);
-    }
+            if(memberEntity != null) return Optional.of(memberEntity);
+            else return Optional.empty();
+        }
 
     public boolean existsByEmployNumber(String number){
             QMember member = QMember.member;
@@ -186,7 +187,7 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                 .from(QMember.member)
                 .innerJoin(QMember.member.position,QPosition.position)
                 .innerJoin(QMember.member.department,QDepartment.department)
-                .where(typeSearch(text,keyword))
+                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.WAITING))
                 .fetch().get(0));
     }
 
@@ -196,6 +197,7 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
 
         Member member = queryFactory.select(QMember.member)
                 .from(QMember.member)
+                .innerJoin(QMember.member.department,QDepartment.department).fetchJoin()
                 .where(QMember.member.username.eq(username))
                 .fetchOne();
 
@@ -206,6 +208,7 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
     @Override
     public Optional<Member> removeByusername(String username) {
         QMember member = QMember.member;
+        QDepartment department = QDepartment.department;
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
@@ -216,10 +219,24 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
         Member memberEntity = queryFactory.select(member)
                 .from(member)
                 .where(booleanBuilder,member.username.eq(username))
+                .innerJoin(member.department,department).fetchJoin()
                 .fetchOne();
 
         if(memberEntity != null) return Optional.of(memberEntity);
         return Optional.empty();
+    }
+
+    public Optional<List<String>> memberBydepartmentName(String departmentName){
+        QMember member = QMember.member;
+
+        List<String> list = queryFactory.select(member.username)
+                .from(member)
+                .where(member.department.departmentName.eq(departmentName)
+                        .and(member.memberStatus.eq(MemberStatus.ACTIVATION)))
+                .fetch();
+
+        if(list != null) return Optional.of(list);
+        else return Optional.empty();
     }
 
 

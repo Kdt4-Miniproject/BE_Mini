@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.Department;
@@ -23,6 +24,7 @@ import org.vacation.back.repository.PositionRepository;
 import org.vacation.back.service.MemberService;
 import org.vacation.back.service.TestService;
 
+import java.time.LocalDate;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -42,6 +44,9 @@ class BackApplicationTests {
 
 	@Autowired
 	MemberRepository memberRepository;
+
+	@Autowired
+	PasswordEncoder encoder;
 
 
 
@@ -111,13 +116,68 @@ class BackApplicationTests {
 	@Test
 	void query_page() {
 	    // given
-		Page<Member> page = memberRepository.pageMember(Search.ALL,"김", PageRequest.of(0,6));
+//		Department department = departmentRepository.save(Department.builder()
+//				.departmentName("인사")
+//				.departmentPersonal(10)
+//				.build());
+//
+//		Department department2 = departmentRepository.save(Department.builder()
+//				.departmentName("개발")
+//				.departmentPersonal(10)
+//				.build());
+//
+//
+//
+//		Position position = positionRepository.save(Position.builder()
+//				.positionName("대리")
+//				.vacation("40")
+//				.build());
+//		Position position2 = positionRepository.save(Position.builder()
+//				.positionName("과장")
+//				.vacation("40")
+//				.build());
+//
+//
+//		IntStream.rangeClosed(1,5).forEach(i -> {
+//					Member member = Member.builder()
+//							.username("user"+i)
+//							.password("1234")
+//							.birthdate("2023-04-26")
+//							.phoneNumber("010-1234-1234")
+//							.position(position2)
+//							.department(department2)
+//							.fileName("404.jpg")
+//							.name("김독자")
+//							.joiningDay(LocalDate.parse("2020-01-01"))
+//							.email("test@naver.com")
+//							.build();
+//
+//			memberRepository.save(member);
+//		});
+//		IntStream.rangeClosed(6,10).forEach(i -> {
+//			Member member = Member.builder()
+//					.username("user"+i)
+//					.password("1234")
+//					.birthdate("2023-04-26")
+//					.phoneNumber("010-1234-1234")
+//					.position(position2)
+//					.department(department)
+//					.fileName("404.jpg")
+//					.name("김독자")
+//					.joiningDay(LocalDate.parse("2020-01-01"))
+//					.email("test@naver.com")
+//					.build();
+//
+//			memberRepository.save(member);
+//		});
 		// when
-
-		page.getContent().forEach(member -> {
-		});
-		// when
-
+		memberRepository.findAll().forEach(
+				member ->
+				{
+					member.changePassword(encoder.encode("1234"));
+					memberRepository.save(member);
+				}
+		);
 	    // then
 	}
 

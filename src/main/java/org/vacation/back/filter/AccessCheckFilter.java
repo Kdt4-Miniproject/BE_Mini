@@ -47,7 +47,9 @@ public class AccessCheckFilter extends OncePerRequestFilter
 
             String role = token.get("role").asString();
             String username = token.get("username").asString();
+            String department = token.get("department").asString();
 
+            request.setAttribute("department",department);
             request.setAttribute("role",role);
             request.setAttribute("username",username);
 

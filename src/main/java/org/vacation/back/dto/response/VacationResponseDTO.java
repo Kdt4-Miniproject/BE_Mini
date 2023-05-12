@@ -39,4 +39,13 @@ public class VacationResponseDTO {
                 .department(vacation.getMember().getDepartment())
                 .build();
     }
+    public static VacationResponseDTO toDTOv(Vacation vacation){
+        return VacationResponseDTO.builder()
+                .id(vacation.getId())
+                .memberName(vacation.getMember().getName())
+                .start(vacation.getStart())
+                .end(vacation.getEnd())
+                .status(vacation.getStatus())
+                .build();
+    }
 }

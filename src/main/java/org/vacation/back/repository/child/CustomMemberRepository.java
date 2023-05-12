@@ -39,4 +39,6 @@ public interface CustomMemberRepository {
 
 
     public Optional<Member> removeByusername(String username);
+
+    public Optional<List<String>> memberBydepartmentName(String departmentName);
 }

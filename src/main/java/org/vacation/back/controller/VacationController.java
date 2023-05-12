@@ -58,6 +58,8 @@ public class VacationController {
                 .build());
     }
 
+
+    //TODO: 권한 필요
     @GetMapping(value = {"/api/v1/vacation/list/{month}", "/api/v1/vacation/list"})
     public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) Optional<String> month){
         //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)

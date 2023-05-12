@@ -15,7 +15,9 @@ public class AdminStatusModifyRequest {
 
 
     private String username;
+
     private MemberStatus memberStatus;
+
 
 }
 

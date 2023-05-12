@@ -61,12 +61,14 @@ public class BackApplication {
 
 				memberRepository.save(Member.builder()
 						.username("user")
+								.name("김독자")
 						.password(passwordEncoder.encode("1234"))
 						.birthdate("2022-33-12")
 						.department(department)
 						.position(position)
+								.role(Role.ADMIN)
 						.email("test@naver.com")
-							.memberStatus(MemberStatus.ACTIVATION)
+						.memberStatus(MemberStatus.ACTIVATION)
 						.employeeNumber("20221235")
 						.phoneNumber("010-1234-1234")
 						.build());

@@ -34,18 +34,21 @@ public class DutyServiceImpl implements DutyService {
 
     @Transactional
     public void dutySave(DutySaveRequestDTO dutySaveRequestDTO) {
+        LocalDate currentDate = LocalDate.now();
 
-        if(dutyRepository.findByDutyDay(dutySaveRequestDTO.getUsername(),dutySaveRequestDTO.getDay()) != null){
+        if (dutyRepository.findByDutyDay(dutySaveRequestDTO.getUsername(), dutySaveRequestDTO.getDay()) != null) {
             throw new CommonException(ErrorCode.EXIST_DUTY, "이미 당직이 존재합니다.");
         }
 
+        if (dutySaveRequestDTO.getDay().isBefore(currentDate)) {
+            throw new CommonException(ErrorCode.INVALID_DUTY_DATE, "이미 지난 날짜로 당직을 신청할 수 없습니다.");
+        }
 
         Member member = memberRepository.findById(dutySaveRequestDTO.getUsername()).orElseThrow(
-                () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID를 찾을 수 없습니다.")
+                () -> new CommonException(ErrorCode.ID_NOT_FOUND, "해당 ID를 찾을 수 없습니다.")
         );
 
         dutyRepository.save(dutySaveRequestDTO.toEntity(member));
-
     }
 
 
@@ -63,7 +66,7 @@ public class DutyServiceImpl implements DutyService {
     }
 
     public List<DutyResponseDTO> dutyListStatus() {
-        List<Duty> dutyList = dutyRepository.findAllByDutyStatus(DutyStatus.WAITING);
+        List<Duty> dutyList = dutyRepository.findAllByDutyStatus();
         if (dutyList == null) {
             throw new CommonException(ErrorCode.NO_RESULT, "당직을 신청한 사람이 없습니다.");
         }

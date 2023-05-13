@@ -28,6 +28,7 @@ public enum ErrorCode {
     NOTFOUND_USERNAME(HttpStatus.BAD_REQUEST, "유저를 찾을 수 없습니다."),
     EXIST_DUTY(HttpStatus.BAD_REQUEST, "이미 당직이 존재합니다."),
     DUPLICATED_UPDATE(HttpStatus.BAD_REQUEST, "이미 수정요청이 있습니다."),
+    INVALID_DUTY_DATE(HttpStatus.BAD_REQUEST, "이미 수정요청이 있습니다."),
     ACCESS_RESOURCES_WITHOUT_PERMISSION(HttpStatus.FORBIDDEN,"권한이 없습니다.");
     private HttpStatus httpStatus;
 

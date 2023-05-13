@@ -47,4 +47,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("SELECT DISTINCT m FROM Member m JOIN FETCH m.duties")
     List<Member> findByAllduties();
 
+    @Query("SELECT d FROM Duty d WHERE d.status = :status AND MONTH(d.day) = :month")
+    List<Duty> findDutiesByStatusAndMonth(@Param("status") DutyStatus status, @Param("month") int month);
+
+
 }

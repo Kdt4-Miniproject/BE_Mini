@@ -44,5 +44,5 @@ public class Duty extends BaseEntity{
     public void setDay(LocalDate day) {
         this.day = day;
     }
-    
+
 }

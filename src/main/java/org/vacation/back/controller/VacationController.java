@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Leader;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
@@ -104,7 +105,7 @@ public class VacationController {
                 .build());
     }
 
-    @Permission
+    @Leader
     @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
             @PathVariable(value = "id") Long id){
@@ -114,7 +115,7 @@ public class VacationController {
                 .data(true)
                 .build());
     }
-    @Permission
+    @Leader
     @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
             @PathVariable(value = "id") Long id){

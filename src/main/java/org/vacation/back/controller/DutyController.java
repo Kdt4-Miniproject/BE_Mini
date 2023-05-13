@@ -114,6 +114,7 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+
     @Permission
     @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(

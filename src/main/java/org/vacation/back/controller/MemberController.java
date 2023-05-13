@@ -3,6 +3,7 @@ package org.vacation.back.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.MemberService;
+import org.vacation.back.service.VacationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,6 +37,8 @@ import java.util.regex.Pattern;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final VacationService vacationService;
 
     /**
      * TODO: API 설명 작성예정
@@ -252,12 +256,15 @@ public class MemberController {
 
     @Leader
     @GetMapping("/api/v1/member/vacation")
-    public ResponseEntity<CommonResponse<?>> departmentMVacation(HttpServletRequest request){
+    public ResponseEntity<CommonResponse<?>> departmentMVacation(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ,HttpServletRequest request){
 
         String departmentName = request.getAttribute("department").toString();
 
         CommonResponse<?> commonResponse = CommonResponse.builder()
-                .data(memberService.vacationFindByDepartment(departmentName))
+                .data(memberService.vacationFindByDepartment(PageRequest.of(page,size), departmentName))
                 .codeEnum(CodeEnum.SUCCESS)
                 .build();
 
@@ -265,6 +272,9 @@ public class MemberController {
                 .status(commonResponse.getStatus())
                 .body(commonResponse);
     }
+
+
+
 
 
 

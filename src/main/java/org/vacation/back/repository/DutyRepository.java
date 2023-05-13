@@ -15,7 +15,8 @@ import java.util.Optional;
 
 public interface DutyRepository  extends JpaRepository<Duty, Long> {
 
-
+    @Query("select d from Duty d where MONTH(d.day) = :month")
+    public List<Duty> findAll(@Param("month") Integer month);
     @Query("select d from Duty d where d.member.username = :username and d.day = :day")
     Duty findByDutyAndDay(@Param("username") String username, @Param("day") LocalDate day);
 

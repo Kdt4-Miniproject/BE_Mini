@@ -8,23 +8,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.vacation.back.common.PositionStatus;
 import org.vacation.back.common.Search;
-import org.vacation.back.domain.Department;
-import org.vacation.back.domain.Member;
-import org.vacation.back.domain.Position;
-import org.vacation.back.domain.Role;
+import org.vacation.back.common.VacationStatus;
+import org.vacation.back.domain.*;
+import org.vacation.back.domain.id.PositionAndDepartmentId;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.member.RegisterMemberDTO;
 import org.vacation.back.exception.CommonException;
 import org.vacation.back.exception.ErrorCode;
-import org.vacation.back.repository.DepartmentRepository;
-import org.vacation.back.repository.MemberRepository;
-import org.vacation.back.repository.PositionRepository;
+import org.vacation.back.repository.*;
 import org.vacation.back.service.MemberService;
 import org.vacation.back.service.TestService;
+import org.vacation.back.utils.AssignUtils;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -46,9 +46,17 @@ class BackApplicationTests {
 	MemberRepository memberRepository;
 
 	@Autowired
+	DutyRepository dutyRepository;
+
+	@Autowired
 	PasswordEncoder encoder;
 
+	@Autowired
+	VacationRepository vacationRepository;
 
+
+	@Autowired
+	AssignUtils assignUtils;
 
 	@Test
 	void contextLoads() {
@@ -171,14 +179,41 @@ class BackApplicationTests {
 //			memberRepository.save(member);
 //		});
 		// when
-		memberRepository.findAll().forEach(
-				member ->
-				{
-					member.changePassword(encoder.encode("1234"));
-					memberRepository.save(member);
-				}
-		);
+//		Member member = memberRepository.findById("user2").get(); //Member 개발
+//		Member member2 = memberRepository.findById("user7").get();	//Member2 인사
+//
+//
+//		Vacation vacation = Vacation.builder()
+//				.status(VacationStatus.WAITING)
+//				.start(LocalDate.now().minusDays(7L))
+//				.end(LocalDate.now().minusDays(3L))
+//				.member(member)
+//				.build();
+//		Vacation vacation2 = Vacation.builder()
+//				.status(VacationStatus.WAITING)
+//				.start(LocalDate.now().minusDays(7L))
+//				.end(LocalDate.now().minusDays(3L))
+//				.member(member2)
+//				.build();
+//
+//
+//
+//		vacationRepository.save(vacation);
+//		vacationRepository.save(vacation2);
+		assignUtils.assign();
+	}
+
+
+	@Test
+	void mock_data_insert() {
+	    // given
+
+		//인사
+
+	    // when
+
 	    // then
 	}
+
 
 }

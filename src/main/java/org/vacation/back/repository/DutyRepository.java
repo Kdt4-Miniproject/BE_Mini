@@ -31,18 +31,9 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.day = :day")
     Duty findByDay(@Param("day") LocalDate day);
 
-    @Query("select d from Duty d where d.member.username = :username")
-    Duty findByUsername(@Param("username") String username);
 
-    @Query("SELECT d FROM Duty d WHERE d.day IS NOT NULL")
-    List<Duty> findByApplicant();
-
-    @Query("SELECT d FROM Duty d WHERE d.day IS NULL")
-    List<Duty> findByNull();
-
-
-    @Query("SELECT m FROM Member m WHERE m.username NOT IN (SELECT d.member.username FROM Duty d)")
-    List<Member> findAllMembersWithoutDuty();
+    @Query("Select d from Duty d where d.member.username = :username and d.day = :day")
+    Duty findByDutyDay(@Param("username") String username, @Param("day") LocalDate day);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Duty findByDuty(@Param("id") Long id);

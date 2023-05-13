@@ -5,6 +5,7 @@ import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @ToString
 @AllArgsConstructor
@@ -22,6 +23,9 @@ public class DutyResponseDTO {
 
     private String departmentName;
 
+    private LocalDateTime createdAt;
+
+
 
     public static DutyResponseDTO toDTO(Duty duty){
 
@@ -29,6 +33,7 @@ public class DutyResponseDTO {
                 .id(duty.getId())
                 .memberName(duty.getMember().getUsername())
                 .day(duty.getDay())
+                .createdAt(duty.getCreatedAt())
                 .status(duty.getStatus())
                 .departmentName(duty.getMember().getDepartment().getDepartmentName())
                 .build();

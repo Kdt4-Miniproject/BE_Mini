@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.VacationStatus;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Data
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class VacationModifyDTO {
+
 
     private Long id;
 

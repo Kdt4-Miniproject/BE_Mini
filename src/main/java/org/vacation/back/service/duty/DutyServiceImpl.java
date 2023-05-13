@@ -35,17 +35,12 @@ public class DutyServiceImpl implements DutyService {
     @Transactional
     public void dutySave(DutySaveRequestDTO dutySaveRequestDTO) {
 
-        Duty duty = dutyRepository.findByUsername(dutySaveRequestDTO.getMemberUsername());
-        if (duty == null) {
-            throw new CommonException(ErrorCode.NOTFOUND_USERNAME, "유저를 찾을 수 없습니다.");
-        }
-
-        Duty dutyDay = dutyRepository.findByDay(dutySaveRequestDTO.getDay());
-        if (dutyDay == null) {
+        if(dutyRepository.findByDutyDay(dutySaveRequestDTO.getUsername(),dutySaveRequestDTO.getDay()) != null){
             throw new CommonException(ErrorCode.EXIST_DUTY, "이미 당직이 존재합니다.");
         }
 
-        Member member = memberRepository.findById(dutySaveRequestDTO.getMemberUsername()).orElseThrow(
+
+        Member member = memberRepository.findById(dutySaveRequestDTO.getUsername()).orElseThrow(
                 () -> new CommonException(ErrorCode.ID_NOT_FOUND,"해당 ID를 찾을 수 없습니다.")
         );
 
@@ -82,6 +77,7 @@ public class DutyServiceImpl implements DutyService {
             dutyResponseDTO.setDay(duty.getDay());
             dutyResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
             dutyResponseDTO.setStatus(duty.getStatus());
+            dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
             dutyResponseDTOList.add(dutyResponseDTO);
         }
 
@@ -103,6 +99,7 @@ public class DutyServiceImpl implements DutyService {
             dutyResponseDTO.setDay(duty.getDay());
             dutyResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
             dutyResponseDTO.setStatus(duty.getStatus());
+            dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
             dutyResponseDTOList.add(dutyResponseDTO);
         }
 
@@ -114,20 +111,27 @@ public class DutyServiceImpl implements DutyService {
         Duty duty = dutyRepository.findById(dutyModifyDTO.getId()).orElseThrow(
                 () -> new CommonException(ErrorCode.NOTFOUND_ID, "ID를 찾을 수 없습니다."));
 
-        LocalDate myDay = duty.getDay();
-        LocalDate yourDay = dutyModifyDTO.getDay();
+        DutyStatus status = dutyRepository.findByDay(dutyModifyDTO.getDay()).getStatus();
+        if(status == DutyStatus.UPDATE_WAITING){
+            throw new CommonException(ErrorCode.DUPLICATED_UPDATE, "이미 수정요청이 있습니다.");
+        }
+        LocalDate currentDay = duty.getDay();
+        LocalDate wantedDay = dutyModifyDTO.getDay();
 
-        Duty duty2 = dutyRepository.findByDay(dutyModifyDTO.getDay());
+        Duty duty2 = dutyRepository.findByDay(wantedDay);
         if(duty2 == null){
-            duty.modifyDuty(yourDay);
+            duty.modifyDuty(wantedDay);
             duty.setStatus(DutyStatus.WAITING);
             // 더티 체킹으로 save 사용 안함
-        }
-        duty.modifyDuty(yourDay);
-        duty.setStatus(DutyStatus.WAITING);
+        }else {
+            duty.modifyDuty(wantedDay);
+            duty.setStatus(DutyStatus.UPDATE_WAITING);
+            duty.setOriginalDay(currentDay);
 
-        duty2.modifyDuty(myDay);
-        duty2.setStatus(DutyStatus.WAITING);
+            duty2.modifyDuty(currentDay);
+            duty2.setStatus(DutyStatus.UPDATE_WAITING);
+            duty2.setOriginalDay(wantedDay);
+        }
     }
 
     @Transactional
@@ -143,6 +147,7 @@ public class DutyServiceImpl implements DutyService {
 
     }
 
+    @Transactional
     public void dutyOk(Long id) {
         Duty duty = dutyRepository.findById(id).orElseThrow(
                 () -> new CommonException(ErrorCode.NOTFOUND_ID, "ID를 찾을 수 없습니다."));
@@ -158,6 +163,7 @@ public class DutyServiceImpl implements DutyService {
         }
     }
 
+    @Transactional
     public void dutyRejected(Long id) {
         Duty duty = dutyRepository.findById(id).orElseThrow(
                 () -> new CommonException(ErrorCode.NOTFOUND_ID, "ID를 찾을 수 없습니다."));
@@ -166,11 +172,15 @@ public class DutyServiceImpl implements DutyService {
             throw new CommonException(ErrorCode.ALREADY_DELETED_DUTY, "이미 삭제된 당직입니다.");
         } else if (duty.getStatus() == DutyStatus.REJECTED) {
             throw new CommonException(ErrorCode.ALREADY_REJECTED_DUTY, "이미 거절된 당직입니다.");
-        } else {
+        } else if(duty.getStatus() == DutyStatus.UPDATE_WAITING){
 
+            duty.setDay(duty.getOriginalDay());
+            duty.setStatus(DutyStatus.OK);
+
+        }else{
             duty.setStatus(DutyStatus.REJECTED);
-
         }
+
     }
 
 

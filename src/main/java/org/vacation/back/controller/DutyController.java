@@ -36,11 +36,11 @@ public class DutyController {
     public ResponseEntity<CommonResponse> save(
             @RequestBody DutySaveRequestDTO dutySaveRequestDTO, HttpServletRequest request){
 
-        if(dutySaveRequestDTO.getMemberUsername() == null || dutySaveRequestDTO.getDay() == null || dutySaveRequestDTO.getStatus() == null){
+        if(dutySaveRequestDTO.getUsername() == null || dutySaveRequestDTO.getDay() == null){
             throw new CommonException(ErrorCode.DTO_IS_NULL, "입력을 완료하세요");
         }
 
-        dutySaveRequestDTO.setMemberUsername((String) request.getAttribute("username"));
+        dutySaveRequestDTO.setUsername((String) request.getAttribute("username"));
         dutyService.dutySave(dutySaveRequestDTO);
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -86,7 +86,7 @@ public class DutyController {
     }
 
 
-    @PostMapping("modify/{id}")
+    @PostMapping("modify")
     public ResponseEntity<CommonResponse> modify(
             @RequestBody DutyModifyDTO dutyModifyDTO){
         //TODO: 맞 트레이드 하는 로직

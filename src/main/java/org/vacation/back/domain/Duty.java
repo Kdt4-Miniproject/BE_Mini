@@ -37,11 +37,12 @@ public class Duty extends BaseEntity{
     public void modifyDuty(LocalDate day){
         this.day = day;
     }
-//    public void setStatus(Enum dutyStatus){
-//        this.status = (DutyStatus) dutyStatus;
-//    }
+    public void setStatus(Enum dutyStatus){
+        this.status = (DutyStatus) dutyStatus;
+    }
 
-//    public void setDay(LocalDate day) {
-//        this.day = day;
-//    }
+    public void setDay(LocalDate day) {
+        this.day = day;
+    }
+    
 }

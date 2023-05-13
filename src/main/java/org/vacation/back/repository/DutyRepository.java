@@ -50,5 +50,7 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("SELECT d FROM Duty d WHERE d.status = :status AND MONTH(d.day) = :month")
     List<Duty> findDutiesByStatusAndMonth(@Param("status") DutyStatus status, @Param("month") int month);
 
+    @Query("SELECT d FROM Duty d WHERE d.status = :status")
+    List<Duty> findAllByStatus(@Param("status") DutyStatus status);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.vacation.back.common.DutyStatus;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 import org.vacation.back.repository.DutyRepository;
@@ -35,38 +36,39 @@ public class AssignUtilsTest {
 
     @BeforeEach
     public void setUp() {
-        // Member 객체 생성 및 저장
-        Member member1 = new Member();
-        member1.setUsername("Member1");
-        memberRepository.save(member1);
 
-        // Member2 객체 생성 및 저장
-        Member member2 = new Member();
-        member2.setUsername("Member2");
-        memberRepository.save(member2);
+        dutyRepository.deleteAll();
 
-        // Duty 객체 생성 및 저장
-        Duty duty1 = new Duty();
-        duty1.setDay(LocalDate.now().withDayOfMonth(1));
-        duty1.setMember(member1);
-        duty1.setStatus(DutyStatus.WAITING);
-        dutyRepository.save(duty1);
+        for (int i = 1; i <= 10; i++) {
+            Member member = new Member();
+            member.setUsername("Member" + i);
+            member.setMemberStatus(MemberStatus.ACTIVATION);
+            memberRepository.save(member);
 
-        Duty duty2 = new Duty();
-        duty2.setDay(LocalDate.now().withDayOfMonth(2));
-        duty2.setMember(member2);
-        duty2.setStatus(DutyStatus.UPDATE_WAITING);
-        dutyRepository.save(duty2);
+            Duty duty = new Duty();
+            duty.setDay(LocalDate.now().withDayOfMonth(i));
+            duty.setMember(member);
+            duty.setStatus(DutyStatus.WAITING);
+            dutyRepository.save(duty);
+        }
     }
 
     @Test
-    public void TestAssign() {
+    public void testAssign() {
+        // 기존 데이터의 상태 확인
+        List<Duty> originalDuties = dutyRepository.findAllByStatus(DutyStatus.WAITING);
+        for (Duty duty : originalDuties) {
+            System.out.println("기존 데이터 - 날짜: " + duty.getDay() + " | 유저네임: " + duty.getMember().getUsername() + " | 상태: " + duty.getStatus());
+
+            System.out.println("=============================================");
+        }
+
         assignUtils.assign();
 
-        // 테스트 결과 확인
-        List<Duty> duties = dutyRepository.findAll();
-        for (Duty duty : duties) {
-            System.out.println("날짜: " + duty.getDay() + ", | 유저네임: " + duty.getMember().getUsername() + " | 상태: " + duty.getStatus());
+        // 변경된 데이터의 상태 확인
+        List<Duty> updatedDuties = dutyRepository.findAllByStatus(DutyStatus.OK);
+        for (Duty duty : updatedDuties) {
+            System.out.println("변경된 데이터 - 날짜: " + duty.getDay() + " | 유저네임: " + duty.getMember().getUsername() + " | 상태: " + duty.getStatus());
         }
     }
 }

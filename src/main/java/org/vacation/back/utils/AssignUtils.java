@@ -83,7 +83,6 @@ public class AssignUtils {
     private static List<Integer> getAvailableKeys(List<Integer> excludeList, int lastDayOfMonth) {
         List<Integer> availableKeys = new ArrayList<>();
         for (int i = 1; i <= lastDayOfMonth; i++) {
-
                     if (!excludeList.contains(i)) {
                         availableKeys.add(i);
                     }

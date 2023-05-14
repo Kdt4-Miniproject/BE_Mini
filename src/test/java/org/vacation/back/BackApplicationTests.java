@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.PositionStatus;
 import org.vacation.back.common.Search;
 import org.vacation.back.common.VacationStatus;
@@ -60,70 +61,70 @@ class BackApplicationTests {
 
 	@Test
 	void contextLoads() {
-		CommonResponse commonResponse = new CommonResponse(ErrorCode.DUPLICATED_MEMBER_NAME);
-
-
-		try{
-			testService.test();
-		}catch (CommonException e){
-			System.out.println(e.getErrorCode().getHttpStatus().value());
-			System.out.println(e.getMessage());
-			/*
-			* 409
-				Member name is duplicatged. 테스트임
-			*
-			* */
-		}
+//		CommonResponse commonResponse = new CommonResponse(ErrorCode.DUPLICATED_MEMBER_NAME);
+//
+//
+//		try{
+//			testService.test();
+//		}catch (CommonException e){
+//			System.out.println(e.getErrorCode().getHttpStatus().value());
+//			System.out.println(e.getMessage());
+//			/*
+//			* 409
+//				Member name is duplicatged. 테스트임
+//			*
+//			* */
+//		}
 	}
 
 
 	@Test
 	@Transactional
 	void mmember_insert_data() {
-		Department department = departmentRepository.save(Department.builder()
-				.departmentName("인사")
-				.departmentPersonal(10)
-				.build());
-
-		Department department2 = departmentRepository.save(Department.builder()
-				.departmentName("개발")
-				.departmentPersonal(10)
-				.build());
-
-
-
-		Position position = positionRepository.save(Position.builder()
-				.positionName("대리")
-				.vacation("40")
-				.build());
-		Position position2 = positionRepository.save(Position.builder()
-				.positionName("과장")
-				.vacation("40")
-				.build());
-
-		IntStream.rangeClosed(1,5).forEach(i -> {
-			RegisterMemberDTO dto = RegisterMemberDTO.builder()
-					.username("admin"+i)
-					.password("1234")
-					.birthDate("2023-04-26")
-					.phoneNumber("010-1234-1234")
-					.positionName("과장")
-					.departmentName("개발")
-					.fileName("404.jpg")
-					.name("김독자")
-					.joiningDay("2020-01-01")
-					.years("3")
-					.email("test@naver.com")
-					.build();
-
-			memberService.join(dto);
-
-		});
+//		Department department = departmentRepository.save(Department.builder()
+//				.departmentName("인사")
+//				.departmentPersonal(10)
+//				.build());
+//
+//		Department department2 = departmentRepository.save(Department.builder()
+//				.departmentName("개발")
+//				.departmentPersonal(10)
+//				.build());
+//
+//
+//
+//		Position position = positionRepository.save(Position.builder()
+//				.positionName("대리")
+//				.vacation("40")
+//				.build());
+//		Position position2 = positionRepository.save(Position.builder()
+//				.positionName("과장")
+//				.vacation("40")
+//				.build());
+//
+//		IntStream.rangeClosed(1,5).forEach(i -> {
+//			RegisterMemberDTO dto = RegisterMemberDTO.builder()
+//					.username("admin"+i)
+//					.password("1234")
+//					.birthDate("2023-04-26")
+//					.phoneNumber("010-1234-1234")
+//					.positionName("과장")
+//					.departmentName("개발")
+//					.fileName("404.jpg")
+//					.name("김독자")
+//					.joiningDay("2020-01-01")
+//					.years("3")
+//					.email("test@naver.com")
+//					.build();
+//
+//			memberService.join(dto);
+//
+//		});
 	}
 
 	@Test
 	void query_page() {
-	    // given
+		// given
 //		Department department = departmentRepository.save(Department.builder()
 //				.departmentName("인사")
 //				.departmentPersonal(10)
@@ -200,9 +201,21 @@ class BackApplicationTests {
 //
 //		vacationRepository.save(vacation);
 //		vacationRepository.save(vacation2);
-		assignUtils.assign();
-	}
 
+//
+//		memberRepository.save(Member.builder()
+//						.username("admin")
+//						.password(encoder.encode("1234"))
+//						.role(Role.ADMIN)
+//						.memberStatus(MemberStatus.ACTIVATION)
+//						.name("나는야 어드민")
+//						.employeeNumber("20220103")
+//				.build());}
+//		vacationRepository.save(Vacation.builder()
+//						.member(memberRepository.findById(u))
+//				.build());
+
+	}
 
 	@Test
 	void mock_data_insert() {

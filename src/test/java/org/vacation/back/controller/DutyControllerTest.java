@@ -67,7 +67,7 @@ public class DutyControllerTest extends MyWithRTestDoc {
     @Autowired
     private DutyService dutyService;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzODY2MDI3LCJ1c2VybmFtZSI6ImFkbWluIn0.MqF_PijPAxUrerEy_38kM_Fu2C_x5JGuAHQueGLHEEcj_4_oNXipR0Tda3s8aXvzzJK1UHLVe5-jcmEi4ZeiZg";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiTEVBREVSIiwibmFtZSI6Iuq5gOuPheyekCIsInBvc2l0aW9uIjoi6rO87J6lIiwiZXhwIjoxNjg2NjI1MzAwLCJkZXBhcnRtZW50Ijoi6rCc67CcIiwiaWF0IjoxNjg0MDMzMzAwLCJ1c2VybmFtZSI6InVzZXIxIn0.y90D3Z86p1pwZHrtJ5geI-i9nZ0m8lysXWgipVnz28b8CmfFEWgtF_4dr3LgsuTrpY6poOZJ-kPrqESK-ahb_A";
     final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg2MzcxNjI3LCJ1c2VybmFtZSI6ImFkbWluIn0.Ne0sxMJqJULkQrhrK8mVO2aTUAJreBfC8xbGbA9cs_IFG9buCTNjXkuyAVKj7-WF8jaQmf9O7_P9eYIe8NZ_RQ";
 
 
@@ -336,7 +336,7 @@ public class DutyControllerTest extends MyWithRTestDoc {
         //then
         resultActions.andExpect(jsonPath("$.data").value(true));
         resultActions.andExpect(jsonPath("$.status").value(200));
-        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+       resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
 }

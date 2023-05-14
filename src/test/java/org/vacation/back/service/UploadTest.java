@@ -44,7 +44,7 @@ public class UploadTest {
     void test() {
         // given
           String filePath = "C:\\PROJECT\\api\\test.jpg";
-          String uploadName = s3Uploder.upload(filePath);
+        //  String uploadName = s3Uploder.upload(filePath);
         // when
 
         // then

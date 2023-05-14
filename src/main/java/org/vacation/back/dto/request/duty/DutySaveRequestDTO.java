@@ -16,9 +16,7 @@ import java.time.LocalDate;
 @Builder
 public class DutySaveRequestDTO {
 
-    private Long id;
-
-    private String memberUsername;
+    private String username;
     private LocalDate day;
     private DutyStatus status;
     public Duty toEntity(Member member){
@@ -26,7 +24,7 @@ public class DutySaveRequestDTO {
         return Duty.builder()
                 .member(member)
                 .day(this.day)
-                .status(this.status)
+                .status(DutyStatus.WAITING)
                 .build();
     }
 }

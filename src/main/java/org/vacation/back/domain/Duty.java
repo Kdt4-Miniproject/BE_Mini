@@ -1,15 +1,13 @@
 package org.vacation.back.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +30,9 @@ public class Duty extends BaseEntity{
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Column(name = "original_day")
+    private LocalDate originalDay;
+
 
     public void modifyDuty(LocalDate day){
         this.day = day;
@@ -43,4 +44,5 @@ public class Duty extends BaseEntity{
     public void setDay(LocalDate day) {
         this.day = day;
     }
+
 }

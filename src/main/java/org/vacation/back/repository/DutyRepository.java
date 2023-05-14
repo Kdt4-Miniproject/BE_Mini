@@ -20,8 +20,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.member.username = :username and d.day = :day")
     Duty findByDutyAndDay(@Param("username") String username, @Param("day") LocalDate day);
 
-    @Query("select d from Duty d join fetch d.member m where d.status = :status AND d.status <> 'DELETED'")
-    List<Duty> findAllByDutyStatus(@Param("status") DutyStatus status);
+    @Query("select d from Duty d join fetch d.member m where d.status <> 'DELETED'")
+    List<Duty> findAllByDutyStatus();
 
     @Query("select d from Duty d join fetch d.member m where month(d.day) = :month AND d.status <> 'DELETED'")
     List<Duty> findAllByDutyMonth(@Param("month") Integer month);
@@ -32,18 +32,9 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.day = :day")
     Duty findByDay(@Param("day") LocalDate day);
 
-    @Query("select d from Duty d where d.member.username = :username")
-    Duty findByUsername(@Param("username") String username);
 
-    @Query("SELECT d FROM Duty d WHERE d.day IS NOT NULL")
-    List<Duty> findByApplicant();
-
-    @Query("SELECT d FROM Duty d WHERE d.day IS NULL")
-    List<Duty> findByNull();
-
-
-    @Query("SELECT m FROM Member m WHERE m.username NOT IN (SELECT d.member.username FROM Duty d)")
-    List<Member> findAllMembersWithoutDuty();
+    @Query("Select d from Duty d where d.member.username = :username and d.day = :day")
+    Duty findByDutyDay(@Param("username") String username, @Param("day") LocalDate day);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Duty findByDuty(@Param("id") Long id);
@@ -56,5 +47,11 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
 
     @Query("SELECT DISTINCT m FROM Member m JOIN FETCH m.duties")
     List<Member> findByAllduties();
+
+    @Query("SELECT d FROM Duty d WHERE d.status = :status AND MONTH(d.day) = :month")
+    List<Duty> findDutiesByStatusAndMonth(@Param("status") DutyStatus status, @Param("month") int month);
+
+    @Query("SELECT d FROM Duty d WHERE d.status = :status")
+    List<Duty> findAllByStatus(@Param("status") DutyStatus status);
 
 }

@@ -9,13 +9,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.vacation.back.common.DepartClassification;
 import org.vacation.back.common.DepartmentStatus;
+
 import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.*;
+import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.repository.DepartmentRepository;
+import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.repository.PositionRepository;
 
 import java.util.stream.IntStream;
+
 
 
 @EnableJpaAuditing
@@ -27,7 +31,8 @@ public class BackApplication {
 	CommandLineRunner initData(MemberRepository memberRepository,
 							   PasswordEncoder passwordEncoder,
 							   PositionRepository positionRepository,
-							   DepartmentRepository departmentRepository
+							   DepartmentRepository departmentRepository,
+							   DutyRepository dutyrepository
 							){
 		return (args)->{
 				departmentRepository.save(Department.builder()
@@ -77,6 +82,9 @@ public class BackApplication {
 						.employeeNumber("20221235")
 						.phoneNumber("010-1234-1234")
 						.build());
+
+
+
 		};
 	}
 	@Profile("prod")

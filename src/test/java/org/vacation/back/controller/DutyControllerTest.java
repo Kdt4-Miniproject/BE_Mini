@@ -124,21 +124,21 @@ public class DutyControllerTest extends MyWithRTestDoc {
         String username = "user";
 
         DutySaveRequestDTO save_test1 = DutySaveRequestDTO.builder()
-                .memberUsername("user")
+                .username("user")
                 .day(LocalDate.parse("2023-05-12"))
                 .status(DutyStatus.WAITING)
                 .build();
         dutyService.dutySave(save_test1);
 
         DutySaveRequestDTO save_test2 = DutySaveRequestDTO.builder()
-                .memberUsername("user")
+                .username("user")
                 .day(LocalDate.parse("2023-05-13"))
                 .status(DutyStatus.WAITING)
                 .build();
         dutyService.dutySave(save_test2);
 
         DutySaveRequestDTO save_test3 = DutySaveRequestDTO.builder()
-                .memberUsername("user")
+                .username("user")
                 .day(LocalDate.parse("2023-05-14"))
                 .status(DutyStatus.WAITING)
                 .build();
@@ -153,7 +153,7 @@ public class DutyControllerTest extends MyWithRTestDoc {
         CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
 
         DutySaveRequestDTO dutySaveRequestDTO = DutySaveRequestDTO.builder()
-                .memberUsername("user")
+                .username("user")
                 .day(LocalDate.parse("2023-05-13"))
                 .status(DutyStatus.WAITING)
                 .build();

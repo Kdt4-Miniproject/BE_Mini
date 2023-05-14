@@ -10,12 +10,16 @@ import org.vacation.back.dto.request.Position.PositionModifyDTO;
 import org.vacation.back.dto.request.Position.PositionSaveDTO;
 import org.vacation.back.exception.CommonException;
 import org.vacation.back.exception.ErrorCode;
+import org.vacation.back.exception.NotFoundPositionException;
+import org.vacation.back.exception.PositionDuplicateException;
 import org.vacation.back.repository.PositionRepository;
 import org.vacation.back.service.PositionService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class PositionServiceImpl implements PositionService {
@@ -24,21 +28,23 @@ public class PositionServiceImpl implements PositionService {
 
     @Transactional
     public boolean positionSave(PositionSaveDTO dto) {
-        try {
-            positionRepository.save(dto.toEntity());
-        } catch (Exception e) {
-            throw new CommonException(ErrorCode.DUPLICATED_MEMBER_NAME, "입력값을 확인해 주세요");
+        Optional<Position> positionOP = positionRepository.findById(dto.getPositionName());
+        if (positionOP.isPresent()) {
+            throw new PositionDuplicateException("이미 존재하는 직급입니다");
+        } else {
+            try {
+                positionRepository.save(dto.toEntity());
+                return true;
+            } catch (Exception e) {
+                throw new CommonException(ErrorCode.DTO_IS_NULL);
+            }
         }
-        return true;
     }
-
 
     public PositionDTO positionDetail(String id) {
-        Position dtoPS = positionRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.DUPLICATED_MEMBER_NAME, "없는 부서입니다.(조회)"));
+        Position dtoPS = positionRepository.findById(id).orElseThrow(NotFoundPositionException::new);
         return new PositionDTO(dtoPS);
     }
-
 
     public List<PositionDTO> positionList() {
         List<Position> positionList = positionRepository.findAll();
@@ -51,16 +57,14 @@ public class PositionServiceImpl implements PositionService {
 
     @Transactional
     public PositionDTO positionModify(String id, PositionModifyDTO dto) {
-        Position positionPS = positionRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.DUPLICATED_MEMBER_NAME, "없는 부서입니다(수정)"));
+        Position positionPS = positionRepository.findById(id).orElseThrow(NotFoundPositionException::new);
         positionPS.modify(dto.getVacation());
         return new PositionDTO(positionPS);
     }
 
     @Transactional
     public boolean positionDelete(String id) {
-        Position positionPS = positionRepository.findById(id)
-                .orElseThrow(() -> new CommonException(ErrorCode.DUPLICATED_MEMBER_NAME, "없는 부서입니다(삭제)"));
+        Position positionPS = positionRepository.findById(id).orElseThrow(NotFoundPositionException::new);
         positionPS.setStatus(PositionStatus.DEACTIVATION);
         return true;
     }

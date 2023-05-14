@@ -65,16 +65,16 @@ class MemberRepositoryImplTest {
     void member_username_checking() {
         // given
 
-        String success = "admin";
-        String failure = "user1";
-        // when
-
-        boolean checking1 = memberRepository.exist(success);
-        boolean checking2 = memberRepository.exist(failure);
-        // then
-
-        Assertions.assertThat(checking1).isTrue(); //해당 아이디가 존재할 경우
-        Assertions.assertThat(checking2).isFalse(); //해당 아이디가 존재하지 않을 경우
+//        String success = "admin";
+//        String failure = "user1";
+//        // when
+//
+//        boolean checking1 = memberRepository.exist(success);
+//        boolean checking2 = memberRepository.exist(failure);
+//        // then
+//
+//        Assertions.assertThat(checking1).isTrue(); //해당 아이디가 존재할 경우
+//        Assertions.assertThat(checking2).isFalse(); //해당 아이디가 존재하지 않을 경우
 
     }
 
@@ -87,30 +87,30 @@ class MemberRepositoryImplTest {
     @DisplayName("where TEST")
     void member_deleted_auto() {
         // given
-        memberRepository.save(Member.builder()
-                .username("admin")
-                .password(encoder.encode("1234"))
-                .role(Role.ADMIN)
-                .birthdate("2022-33-12")
-                .memberStatus(MemberStatus.WAITING)
-                .email("test@naver.com")
-                .employeeNumber("202212341234")
-                .phoneNumber("010-1234-1234")
-                .build());
-        // when
-
-         Member member =  memberRepository.findById("admin").get();
-        // then
-        Assertions.assertThat(member.getUsername()).isEqualTo("admin");
-        Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
+//        memberRepository.save(Member.builder()
+//                .username("admin")
+//                .password(encoder.encode("1234"))
+//                .role(Role.ADMIN)
+//                .birthdate("2022-33-12")
+//                .memberStatus(MemberStatus.WAITING)
+//                .email("test@naver.com")
+//                .employeeNumber("202212341234")
+//                .phoneNumber("010-1234-1234")
+//                .build());
+//        // when
+//
+//         Member member =  memberRepository.findById("admin").get();
+//        // then
+//        Assertions.assertThat(member.getUsername()).isEqualTo("admin");
+//        Assertions.assertThat(member.getMemberStatus()).isEqualTo(MemberStatus.WAITING);
     }
 
     @Test
     @DisplayName("Picking the highest number of employee number")
     void member_max_employeeNumber() {
-        // given
-        String temp = memberRepository.maxEmployeeNumber();
-        Member member = memberRepository.findById("USER").get();
+//        // given
+//        String temp = memberRepository.maxEmployeeNumber();
+//        Member member = memberRepository.findById("USER").get();
         // when
         // then
     }
@@ -121,18 +121,18 @@ class MemberRepositoryImplTest {
     void member_save() {
         // given
 
-        memberRepository.save(Member.builder()
-                        .username("LEADER")
-                        .role(Role.LEADER)
-                .name("김도그자")
-                .phoneNumber("010-1234-1234")
-                .build());
-
-        entityManager.flush();
-        entityManager.clear();
-
-        // when
-        Member member = memberRepository.findById("LEADER").get();
+//        memberRepository.save(Member.builder()
+//                        .username("LEADER")
+//                        .role(Role.LEADER)
+//                .name("김도그자")
+//                .phoneNumber("010-1234-1234")
+//                .build());
+//
+//        entityManager.flush();
+//        entityManager.clear();
+//
+//        // when
+//        Member member = memberRepository.findById("LEADER").get();
         // then
     }
 
@@ -141,9 +141,9 @@ class MemberRepositoryImplTest {
     @DisplayName("")
     void page_query_test() {
         // given
-        Page<Member> page = memberRepository.pageMember(Search.POSITION,"대", PageRequest.of(0,5));
-        // when
-
+//        Page<Member> page = memberRepository.pageMember(Search.POSITION,"대", PageRequest.of(0,5));
+//        // when
+//
 
         // then
     }

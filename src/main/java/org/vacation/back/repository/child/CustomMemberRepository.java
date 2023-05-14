@@ -2,9 +2,13 @@ package org.vacation.back.repository.child;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.Member;
+import org.vacation.back.domain.Vacation;
 import org.vacation.back.dto.common.MemberDTO;
+import org.vacation.back.dto.common.UameAndPositionDTO;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -40,5 +44,9 @@ public interface CustomMemberRepository {
 
     public Optional<Member> removeByusername(String username);
 
-    public Optional<List<String>> memberBydepartmentName(String departmentName);
+    public Optional<List<Member>> memberBydepartmentName(String departmentName);
+
+    public Page<Vacation> vacationByUsername(List<String> usernames,Pageable pageable);
+
+    public List<Member> findAllActivation();
 }

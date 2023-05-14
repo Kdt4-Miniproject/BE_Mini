@@ -13,6 +13,7 @@ import org.vacation.back.security.JwtAuthenticationToken;
 import org.vacation.back.utils.JWTUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,7 +36,12 @@ public class TokenSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = jwtUtils.create(memberDTO,true);
 
         response.setHeader("Authorization",accessToken);
-        response.setHeader("X-Auth-Refresh-Token",refreshToken);
+
+        Cookie cookie = new Cookie("X-Auth-Refresh-Token",refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60*60*24*30); // 30 일
+
+        response.addCookie(cookie);
 
         Gson gson = new Gson();
         CommonResponse<?> commonResponse = CommonResponse.builder()

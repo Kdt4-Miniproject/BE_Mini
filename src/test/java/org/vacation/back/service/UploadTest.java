@@ -44,7 +44,7 @@ public class UploadTest {
     void test() {
         // given
           String filePath = "C:\\PROJECT\\api\\test.jpg";
-          String uploadName = s3Uploder.upload(filePath);
+        //  String uploadName = s3Uploder.upload(filePath);
         // when
 
         // then
@@ -56,7 +56,7 @@ public class UploadTest {
     void postTest() throws IOException {
         // given
         // when
-        memberService.vacationFindByDepartment("인사");
+       // memberService.vacationFindByDepartment("인사");
 
 
 

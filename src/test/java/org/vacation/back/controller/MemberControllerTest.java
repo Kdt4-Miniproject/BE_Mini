@@ -58,7 +58,7 @@ class MemberControllerTest extends MyWithRTestDoc {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6Iuq5gOuPheyekCIsImV4cCI6MTY4NTk0MzgyOSwidXNlcm5hbWUiOiJhZG1pbjIifQ.dpoyPuNUNl-JKFOvUMf52MxtpwRQfpPSgFRvf2L9c9JLazO0Xn9oRAQuc7EkKmZvfbWxAInEDn2horaW2XlxZQ";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiTEVBREVSIiwibmFtZSI6Iuq5gOuPheyekCIsInBvc2l0aW9uIjoi6rO87J6lIiwiZXhwIjoxNjg2NjI1MzAwLCJkZXBhcnRtZW50Ijoi6rCc67CcIiwiaWF0IjoxNjg0MDMzMzAwLCJ1c2VybmFtZSI6InVzZXIxIn0.y90D3Z86p1pwZHrtJ5geI-i9nZ0m8lysXWgipVnz28b8CmfFEWgtF_4dr3LgsuTrpY6poOZJ-kPrqESK-ahb_A";
 
 
     @BeforeEach
@@ -136,7 +136,7 @@ class MemberControllerTest extends MyWithRTestDoc {
                 )
                 .andExpect(status().isBadRequest());
         // then
-        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+       // resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 
     @Test
@@ -160,7 +160,7 @@ class MemberControllerTest extends MyWithRTestDoc {
         resultActions.andExpect(jsonPath("$.data.first").value(true));
         resultActions.andExpect(jsonPath("$.data.last").value(false));
 
-        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+     //   resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
 
     }
 
@@ -198,7 +198,7 @@ class MemberControllerTest extends MyWithRTestDoc {
         resultActions.andExpect(jsonPath("$.data").value(true));
         resultActions.andExpect(jsonPath("$.status").value(200));
 
-        resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+   //     resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
             // when
         // then
     }
@@ -209,21 +209,17 @@ class MemberControllerTest extends MyWithRTestDoc {
         // given
 
         String accessToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjgzMjYzNTAzLCJ1c2VybmFtZSI6ImFkbWluIn0.hlUHLUliGMVUJXcVqj_N6lmpMb20ukgfBG_xQFuEFOA7_oUpF7ZZofFNSLhIxm9itefxGP6U6TT4gXA4Or_Z-w";
-        String refreshToekn = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NzY4ODI3LCJ1c2VybmFtZSI6ImFkbWluIn0.JEaYSN7oiP0z59dwZRMRbnqkhTlZ139Ieo5oT7UDXjNCMB2ZfRL-Qy2rrUb8DaAVtfbe5y5wUfvGA_Kp6DBNRQ";
         // when
         ResultActions resultActions =  mockMvc
                 .perform(RestDocumentationRequestBuilders.post("/api/v1/refresh")
                         .accept(MediaType.APPLICATION_JSON_VALUE)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .header("Authorization",accessToken)
-                        .header("X-Auth-Refresh-Token",refreshToekn)
                 )
                 .andExpect(status().isOk());
 
-        Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"));
         Assertions.assertNotNull(resultActions.andReturn().getResponse().getHeader("Authorization"));
         Assertions.assertNotEquals(resultActions.andReturn().getResponse().getHeader("Authorization"),accessToken);
-        Assertions.assertEquals(resultActions.andReturn().getResponse().getHeader("X-Auth-Refresh-Token"),refreshToekn);
 
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
         // then

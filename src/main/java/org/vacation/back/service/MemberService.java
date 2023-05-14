@@ -1,6 +1,7 @@
 package org.vacation.back.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.vacation.back.common.Search;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
@@ -39,5 +40,5 @@ public interface MemberService {
 
     public boolean memberRemove(String username);
 
-    public List<VacationResponseDTO> vacationFindByDepartment(String departmentName);
+    public PageResponseDTO<?> vacationFindByDepartment(Pageable pageable, String departmentName);
 }

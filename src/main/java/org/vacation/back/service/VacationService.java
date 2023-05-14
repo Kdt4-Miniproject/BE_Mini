@@ -1,7 +1,10 @@
 package org.vacation.back.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
 
 import javax.servlet.http.HttpServlet;
@@ -14,9 +17,9 @@ public interface VacationService {
 
     public VacationResponseDTO vacationDetail(Long id);
 
-    public List<VacationResponseDTO> vacationListMonth(String month);
+    public Page<VacationResponseDTO> vacationListMonth(String month, Pageable pageable);
 
-    public List<VacationResponseDTO> vacationListStatus();
+    public Page<VacationResponseDTO> vacationListStatus(Pageable pageable);
 
     public void vacationModify(VacationModifyDTO dto);
 

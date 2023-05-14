@@ -40,7 +40,7 @@ public class PositionControllerTest extends MyWithRTestDoc {
     @Autowired
     private EntityManager em;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IiIsInJvbGUiOiJBRE1JTiIsIm5hbWUiOiLqtIDrpqzsnpAiLCJwb3NpdGlvbiI6IuuMgOumrCIsImV4cCI6MTY4Mzk1OTg0MCwiZGVwYXJ0bWVudCI6IuyduOyCrCIsImlhdCI6MTY4Mzg3MzQ0MCwidXNlcm5hbWUiOiJhZG1pbiJ9.njvOYiPgpynXOwaNZq3VgAH7VX6WasscwdPJUKpL7fwqa0FcRQGRDKVOdTgn7uGZRkaVewdDRhyLAvClgXEqiQ";
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiTEVBREVSIiwibmFtZSI6Iuq5gOuPheyekCIsInBvc2l0aW9uIjoi6rO87J6lIiwiZXhwIjoxNjg2NjI1MzAwLCJkZXBhcnRtZW50Ijoi6rCc67CcIiwiaWF0IjoxNjg0MDMzMzAwLCJ1c2VybmFtZSI6InVzZXIxIn0.y90D3Z86p1pwZHrtJ5geI-i9nZ0m8lysXWgipVnz28b8CmfFEWgtF_4dr3LgsuTrpY6poOZJ-kPrqESK-ahb_A";
 
     @BeforeEach
     public void setUp() {

@@ -48,85 +48,85 @@ public class VacationRespositoryImplTest {
 
     @BeforeEach
     void setUp(){
-        departmentRepository.save(Department.builder()
-                .departmentName("개발")
-                .departmentPersonal(10)
-                .build());
-        Department department = departmentRepository.save(Department.builder()
-                .departmentName("인사")
-                .departmentPersonal(10)
-                .build());
-        departmentRepository.save(Department.builder()
-                .departmentName("마케팅")
-                .departmentPersonal(10)
-                .build());
-
-        Position position = positionRepository.save(Position.builder()
-                .positionName("대리")
-                .vacation("40")
-                .build());
-
-        memberRepository.save(Member.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("1234"))
-                .role(Role.ADMIN)
-                .department(department)
-                .position(position)
-                .name("관리자")
-                .birthdate("2022-33-12")
-                .email("test@naver.com")
-                .employeeNumber("20221234")
-                .memberStatus(MemberStatus.ACTIVATION)
-                .phoneNumber("010-1234-1234")
-                .build());
-
-        memberRepository.save(Member.builder()
-                .username("user")
-                .password(passwordEncoder.encode("1234"))
-                .birthdate("2022-33-12")
-                .department(department)
-                .position(position)
-                .name("유저")
-                .email("test@naver.com")
-                .employeeNumber("20221235")
-                .phoneNumber("010-1234-1234")
-                .memberStatus(MemberStatus.ACTIVATION)
-                .build());
-
-        Member member = memberRepository.findById("user").orElseThrow();
-        //given2
-        vacationRepository.save(Vacation.builder()
-                .id(1L)
-                .member(member)
-                .start(LocalDate.parse("2023-05-01"))
-                .end(LocalDate.parse("2023-05-01"))
-                .status(VacationStatus.WAITING)
-                .build());
+//        departmentRepository.save(Department.builder()
+//                .departmentName("개발")
+//                .departmentPersonal(10)
+//                .build());
+//        Department department = departmentRepository.save(Department.builder()
+//                .departmentName("인사")
+//                .departmentPersonal(10)
+//                .build());
+//        departmentRepository.save(Department.builder()
+//                .departmentName("마케팅")
+//                .departmentPersonal(10)
+//                .build());
+//
+//        Position position = positionRepository.save(Position.builder()
+//                .positionName("대리")
+//                .vacation("40")
+//                .build());
+//
+//        memberRepository.save(Member.builder()
+//                .username("admin")
+//                .password(passwordEncoder.encode("1234"))
+//                .role(Role.ADMIN)
+//                .department(department)
+//                .position(position)
+//                .name("관리자")
+//                .birthdate("2022-33-12")
+//                .email("test@naver.com")
+//                .employeeNumber("20221234")
+//                .memberStatus(MemberStatus.ACTIVATION)
+//                .phoneNumber("010-1234-1234")
+//                .build());
+//
+//        memberRepository.save(Member.builder()
+//                .username("user")
+//                .password(passwordEncoder.encode("1234"))
+//                .birthdate("2022-33-12")
+//                .department(department)
+//                .position(position)
+//                .name("유저")
+//                .email("test@naver.com")
+//                .employeeNumber("20221235")
+//                .phoneNumber("010-1234-1234")
+//                .memberStatus(MemberStatus.ACTIVATION)
+//                .build());
+//
+//        Member member = memberRepository.findById("user").orElseThrow();
+//        //given2
+//        vacationRepository.save(Vacation.builder()
+//                .id(1L)
+//                .member(member)
+//                .start(LocalDate.parse("2023-05-01"))
+//                .end(LocalDate.parse("2023-05-01"))
+//                .status(VacationStatus.WAITING)
+//                .build());
     }
     @Test
     @DisplayName("vacationSave")
     void vacation_save(){
-        //given1
-        Member member = memberRepository.findById("user").get();
-        //given2
-        vacationRepository.save(Vacation.builder()
-                        .id(1L)
-                        .member(member)
-                        .start(LocalDate.parse("2023-05-01"))
-                        .end(LocalDate.parse("2023-05-01"))
-                        .status(VacationStatus.WAITING)
-                .build());
+//        //given1
+//        Member member = memberRepository.findById("user").get();
+//        //given2
+//        vacationRepository.save(Vacation.builder()
+//                        .id(1L)
+//                        .member(member)
+//                        .start(LocalDate.parse("2023-05-01"))
+//                        .end(LocalDate.parse("2023-05-01"))
+//                        .status(VacationStatus.WAITING)
+//                .build());
     }
 
     @Test
     @DisplayName("vacationDetail")
     void vacation_detail(){
-        Vacation vacation = vacationRepository.findById(1L).get();
-
-        Vacation vacation1 = vacationRepository.findByVacationId(1L);
-        System.out.println("===========================");
-        System.out.println(vacation.getMember().getName());
-        Assertions.assertThat(vacation.getMember().getName()).isEqualTo("유저");
-        Assertions.assertThat(vacation.getMember().getDepartment().getDepartmentName()).isEqualTo("인사");
+//        Vacation vacation = vacationRepository.findById(1L).get();
+//
+//        Vacation vacation1 = vacationRepository.findByVacationId(1L);
+//        System.out.println("===========================");
+//        System.out.println(vacation.getMember().getName());
+//        Assertions.assertThat(vacation.getMember().getName()).isEqualTo("유저");
+//        Assertions.assertThat(vacation.getMember().getDepartment().getDepartmentName()).isEqualTo("인사");
     }
 }

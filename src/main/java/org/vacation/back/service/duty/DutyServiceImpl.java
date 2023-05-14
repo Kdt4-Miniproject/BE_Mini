@@ -145,21 +145,21 @@ public class DutyServiceImpl implements DutyService {
     @Transactional
     public void dutyOk(Long id) {
         Duty duty = dutyRepository.findById(id).orElseThrow(NotFoundDutyException::new);
-
+        LocalDate currentDay = duty.getDay();
         if (duty.getStatus() == DutyStatus.DELETED) {
             throw new AlreadyDeletedException("이미 삭제된 당직입니다.");
         } else if (duty.getStatus() == DutyStatus.REJECTED) {
             throw new AlreadyRejectedException("이미 거절된 당직입니다.");
         } else if (duty.getStatus() == DutyStatus.UPDATE_WAITING) {
             LocalDate originalDay = duty.getOriginalDay();
-            Duty existingDuty = dutyRepository.findByDayAndOk(originalDay, DutyStatus.OK);
+            Duty existingDuty = dutyRepository.findByDayAndOk(currentDay, DutyStatus.OK);
             if (existingDuty != null) {
                 throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");
             } else {
                 duty.setStatus(DutyStatus.OK);
             }
         } else if (duty.getStatus() == DutyStatus.WAITING) {
-            LocalDate currentDay = duty.getDay();
+
             Duty existingDuty = dutyRepository.findByDayAndOk(currentDay, DutyStatus.OK);
             if (existingDuty != null) {
                 throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");

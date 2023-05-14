@@ -1,10 +1,13 @@
 package org.vacation.back.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.MemberStatus;
+import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 
@@ -20,11 +23,13 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.member.username = :username and d.day = :day")
     Duty findByDutyAndDay(@Param("username") String username, @Param("day") LocalDate day);
 
-    @Query("select d from Duty d join fetch d.member m where d.status <> 'DELETED'")
-    List<Duty> findAllByDutyStatus();
+    @Query(value = "select d from Duty d join fetch d.member m where d.status = :status AND d.status <> 'DELETED'",
+            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
+    Page<Duty> findAllByDutyStatus(@Param("status") DutyStatus status, Pageable pageable);
 
-    @Query("select d from Duty d join fetch d.member m where month(d.day) = :month AND d.status <> 'DELETED'")
-    List<Duty> findAllByDutyMonth(@Param("month") Integer month);
+    @Query(value = "select d from Duty d join fetch d.member m where month(d.day) = :month AND d.status <> 'DELETED'",\
+            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
+    Page<Duty> findAllByDutyMonth(@Param("month") Integer month, Pageable pageable);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Duty findByDutyId(@Param("id") Long id);

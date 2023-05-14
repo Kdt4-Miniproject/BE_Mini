@@ -30,6 +30,7 @@ public enum ErrorCode {
     DUPLICATED_UPDATE(HttpStatus.BAD_REQUEST, "이미 수정요청이 있습니다."),
     INVALID_DUTY_DATE(HttpStatus.BAD_REQUEST, "이미 수정요청이 있습니다."),
     ACCESS_RESOURCES_WITHOUT_PERMISSION(HttpStatus.FORBIDDEN,"권한이 없습니다.");
+
     private HttpStatus httpStatus;
 
     private String message;

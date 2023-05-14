@@ -8,7 +8,9 @@ public enum CodeEnum {
     UNAUTHORIZED(401, "The operation requires authentication."),
     FORBIDDEN(403, "The operation is forbidden."),
     INTERNAL_SERVER_ERROR(500, "An internal server error has occurred."),
-    LOGIN_FAIL(401,"비밀번호 혹은 아이디가 틀렸습니다");
+    LOGIN_FAIL(401,"비밀번호 혹은 아이디가 틀렸습니다"),
+    ALREADY_DUTY(400, "중복된 당직신청입니다.");
+
 
 
     private final int code;

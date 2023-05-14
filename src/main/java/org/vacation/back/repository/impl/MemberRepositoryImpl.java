@@ -68,8 +68,8 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
 
             Member memberEntity = queryFactory.select(member)
                     .from(member)
-                    .innerJoin(member.position,position).fetchJoin()
-                    .innerJoin(member.department,department).fetchJoin()
+                    .leftJoin(member.position,position).fetchJoin()
+                    .leftJoin(member.department,department).fetchJoin()
                     .where(member.memberStatus.eq(MemberStatus.ACTIVATION),member.username.eq(username))
                     .fetchOne();
 
@@ -299,6 +299,8 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
             return position.positionName.contains(keyword);
         } else if(text.equals(Search.DEPARTMENT)){
             return department.departmentName.contains(keyword);
+        } else if(text.equals(Search.USERNAME)){
+            return member.username.contains(keyword);
         }
 
         return null;

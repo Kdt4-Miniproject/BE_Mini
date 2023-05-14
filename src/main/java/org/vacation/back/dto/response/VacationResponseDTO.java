@@ -6,6 +6,7 @@ import org.vacation.back.domain.Department;
 import org.vacation.back.domain.Vacation;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
@@ -29,6 +30,9 @@ public class VacationResponseDTO {
 
     private String positionName;
 
+    private LocalDateTime createdAt;
+
+
     //부서 추가
 
     public static VacationResponseDTO toDTO(Vacation vacation){
@@ -50,6 +54,7 @@ public class VacationResponseDTO {
                 .status(vacation.getStatus())
                 .departmentName(departmentName)
                 .positionName(positionName)
+                .createdAt(vacation.getCreatedAt())
                 .build();
     }
 }

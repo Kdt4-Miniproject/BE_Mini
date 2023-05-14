@@ -41,7 +41,7 @@ public class MemberController {
     private final VacationService vacationService;
 
     /**
-     * TODO: API 설명 작성예정
+     * @apiNote  username 중복을 체크한다.
      * */
     @GetMapping("/api/v1/join/check")
     public ResponseEntity<CommonResponse<?>> checking(@RequestParam String username){
@@ -55,10 +55,7 @@ public class MemberController {
                 .build());
     }
     /**
-     *
-     *
-     *
-     * TODO: API 설명 작성예정
+     * @apiNote 검색
      * */
     @GetMapping("/api/v1/member/page/search")
     public ResponseEntity<CommonResponse<?>> page(@RequestParam(defaultValue = "ALL") Search text,
@@ -75,7 +72,7 @@ public class MemberController {
                 .build());
     }
     /**
-     * TODO: API 설명 작성예정
+     * @apiNote 자세히보기
      * */
     @GetMapping("/api/v1/member/detail")
     public ResponseEntity<CommonResponse<?>> detail(HttpServletRequest request){
@@ -95,14 +92,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @PostMapping("/api/v1/join")
-    public ResponseEntity<CommonResponse<?>> join(@RequestBody RegisterMemberDTO registerMemberDTO){
-
-        //TODO: 파라미터에서 Valid가 필요하고,
-        //TODO: 등록시 실패 Exception 처리가 필요하고,
-        //TODO: 해당 username이 PK인지 체크 조회,
-        //TODO: Exception은 ExceptionHandler로 처리할 것임
-
-
+    public ResponseEntity<CommonResponse<?>> join(@RequestBody @Valid RegisterMemberDTO registerMemberDTO){
 
         return ResponseEntity.ok(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)

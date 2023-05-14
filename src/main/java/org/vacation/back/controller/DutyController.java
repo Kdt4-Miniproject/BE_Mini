@@ -38,10 +38,10 @@ public class DutyController {
     @ExceptionHandler(CommonException.class)
     @PostMapping("save")
     public ResponseEntity<CommonResponse> save(
-            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO, HttpServletRequest request){
+            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO){
 
 
-        dutyService.dutySave(dutySaveRequestDTO, request);
+        dutyService.dutySave(dutySaveRequestDTO);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -143,15 +143,25 @@ public class DutyController {
                 .build());
     }
 
-    @ExceptionHandler(dutyException.class)
-    public ResponseEntity<CommonResponse<?>> dutyException() {
+    @ExceptionHandler(DutyMemberNotFoundException.class)
+    public ResponseEntity<CommonResponse<?>> dutyMemberNotFoundException() {
         return ResponseEntity
                 .badRequest()
                 .body(CommonResponse.builder()
-                        .codeEnum(CodeEnum.OVERD_VACATION)
+                        .codeEnum(CodeEnum.NOTFOUND_DUTY)
                         .data(false)
                         .build());
     }
+    @ExceptionHandler(PastDateForDutyException.class)
+    public ResponseEntity<CommonResponse<?>> pastDateForDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.PASTDATE_DUTY)
+                        .data(false)
+                        .build());
+    }
+
     @ExceptionHandler(AlreadyDutyException.class)
     public ResponseEntity<CommonResponse<?>> alreadyDutyException() {
         return ResponseEntity
@@ -167,10 +177,55 @@ public class DutyController {
         return ResponseEntity
                 .badRequest()
                 .body(CommonResponse.builder()
-                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .codeEnum(CodeEnum.UNREGISTERDE_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyDeletedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyDeletedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_DELETED_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyOkException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyOkDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_OK_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyRejectedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyRejectedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_REJECTED_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyModifyException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyModifyDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_MODIFY_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(DuplicatedDutyException.class)
+    public ResponseEntity<CommonResponse<?>> duplicatedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.DUPLICATED_DUTY)
                         .data(false)
                         .build());
     }
 }
 
-}

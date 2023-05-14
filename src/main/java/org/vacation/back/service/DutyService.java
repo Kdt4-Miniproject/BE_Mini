@@ -13,7 +13,7 @@ import java.util.List;
 public interface DutyService {
 
 
-    public void dutySave(DutySaveRequestDTO dutySaveRequestDTO, HttpServletRequest request);
+    public void dutySave(DutySaveRequestDTO dutySaveRequestDTO);
 
     public DutyResponseDTO dutyDetail(Long id);
 

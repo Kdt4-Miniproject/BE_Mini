@@ -1,9 +1,7 @@
 package org.vacation.back.dto.response;
-
 import lombok.*;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

@@ -1,5 +1,4 @@
 package org.vacation.back.dto.request.duty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

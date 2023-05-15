@@ -11,6 +11,7 @@ import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
+import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
 import javax.validation.Valid;
@@ -59,22 +60,41 @@ public class DutyController {
         PageRequest pageable = PageRequest.of(page, size);
 
         Page<DutyResponseDTO> dutyPage;
+        PageResponseDTO <?> pageResponseDTO;
 
         if(month != null){
             if(!"0".equals(month)) {
                 dutyPage =  dutyService.dutyListMonth(month, pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(dutyPage.isFirst())
+                        .last(dutyPage.isLast())
+                        .content(dutyPage.getContent())
+                        .total(dutyPage.getTotalElements())
+                        .build();
 
             }else{
                 dutyPage = dutyService.dutyListStatus(pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(dutyPage.isFirst())
+                        .last(dutyPage.isLast())
+                        .content(dutyPage.getContent())
+                        .total(dutyPage.getTotalElements())
+                        .build();
             }
         }else{
             int currentMonth = LocalDate.now().getMonthValue();
             dutyPage = dutyService.dutyListMonth(String.valueOf(currentMonth), pageable);
+            pageResponseDTO = PageResponseDTO.builder()
+                    .first(dutyPage.isFirst())
+                    .last(dutyPage.isLast())
+                    .content(dutyPage.getContent())
+                    .total(dutyPage.getTotalElements())
+                    .build();
         }
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyPage)
+                .data(pageResponseDTO)
                 .build());
     }
 

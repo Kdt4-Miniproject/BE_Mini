@@ -82,7 +82,7 @@ public class DutyServiceImpl implements DutyService {
     }
 
     public Page<DutyResponseDTO> dutyListStatus(Pageable pageable) {
-        Page<Duty> dutyList =  dutyRepository.findAllByDutyStatus(DutyStatus.WAITING, pageable);
+        Page<Duty> dutyList =  dutyRepository.findAllByDutyStatus( pageable);
         Page<DutyResponseDTO> dutyResponseList = dutyList.map(duty -> {
 
             DutyResponseDTO dutyResponseDTO = new DutyResponseDTO();

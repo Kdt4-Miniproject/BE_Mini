@@ -24,9 +24,9 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.member.username = :username and d.day = :day")
     Duty findByDutyAndDay(@Param("username") String username, @Param("day") LocalDate day);
 
-    @Query(value = "select d from Duty d join fetch d.member m where d.status = :status AND d.status <> 'DELETED'",
-            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
-    Page<Duty> findAllByDutyStatus(@Param("status") DutyStatus status, Pageable pageable);
+    @Query(value = "select d from Duty d join fetch d.member m where d.status = 'WAITING' or d.status = 'UPDATE_WAITING' ",
+            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month")
+    Page<Duty> findAllByDutyStatus(Pageable pageable);
 
     @Query(value = "select d from Duty d join fetch d.member m where month(d.day) = :month AND d.status <> 'DELETED'",
             countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")

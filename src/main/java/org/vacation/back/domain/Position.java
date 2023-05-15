@@ -6,8 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.PositionStatus;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,8 @@ public class Position {
     private String vacation; // 직급에 맞는 휴가 개수
 
     @Column(name = "position_status")
-    private PositionStatus status;
+    @Builder.Default
+    private PositionStatus status = PositionStatus.ACTIVATION;
 
     @OneToMany(mappedBy = "position")
     @Builder.Default
@@ -35,7 +38,7 @@ public class Position {
     @Builder.Default
     private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
 
-    public void modify(String vacation){
+    public void modify(String vacation) {
         this.vacation = vacation;
     }
 

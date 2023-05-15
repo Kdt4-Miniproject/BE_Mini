@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class VacationModifyDTO {
 
 
-    @NotBlank(message = "연차 ID 정보가 비어 있습니다.")
+    @NotNull(message = "연차 ID 정보가 비어 있습니다.")
     private Long id;
 
     @NotNull(message = "휴가 시작일자가 비어 있습니다.")

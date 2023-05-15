@@ -19,6 +19,7 @@ import org.vacation.back.service.VacationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -27,33 +28,33 @@ public class VacationServiceImpl implements VacationService {
 
     private final VacationRepository vacationRepository;
 
-    private final MemberRepository memberRepository;
-        // limit : 3          ||            start = 05-12 end = 05-14      date 0512 저장 0513 저장 0514저장
-
     @Transactional
     public void vacationSave(VacationSaveRequestDTO dto, HttpServletRequest request) {
-        Member member = vacationRepository.findBymember((String) request.getAttribute("username"), MemberStatus.ACTIVATION);
+        Member member = vacationRepository.findBymember("test", MemberStatus.ACTIVATION);
 
         List<Vacation> vacationList = vacationRepository.findAllByDepartment(member.getDepartment().getDepartmentName());
-
+        System.out.println(member.getDepartment().getDepartmentName());
         LocalDate temp = dto.getStart();
-        while(temp.getDayOfMonth() <= dto.getEnd().getDayOfMonth()) { // 부서별 연차 횟수 조회 반복문
-            int cnt = 0;
-            for (int i = 0; i < vacationList.size(); i++) {
-                LocalDate current = vacationList.get(i).getStart();
-                while (!current.isAfter(vacationList.get(i).getEnd())) {
-                    if (current.getDayOfMonth() == temp.getDayOfMonth()) {
-                        cnt++;
-                        break;
-                    }
-                    current = current.plusDays(1L);
-                }
+        LocalDate currentDate = LocalDate.now();
+        int lastDayOfMonth = currentDate.lengthOfMonth();
+        int arr[] = new int[lastDayOfMonth];
+
+        for (int i = 0;i < vacationList.size();i++){
+            LocalDate current = vacationList.get(i).getStart();
+            while(!current.isAfter(vacationList.get(i).getEnd())){
+                arr[current.getDayOfMonth()]++;
+                current = currentDate.plusDays(1L);
             }
-            if (cnt >= member.getDepartment().getVacationLimit()) {
-                throw new OveredVacationException("보유한 연차 초과");
-            }
-            temp = temp.plusDays(1L);
         }
+
+        while (!temp.isAfter(dto.getEnd())){
+            if(arr[temp.getDayOfMonth()] >= member.getDepartment().getVacationLimit()){
+                throw new AlreadyVacationException("보유 연차 초과");
+            }
+            temp.plusDays(1L);
+        }
+
+
         List<Vacation> vacationListByUserName = vacationRepository.findByVacationUserName((String) request.getAttribute("username"));
         if (vacationListByUserName.size() >= Integer.valueOf(member.getPosition().getVacation())){
             throw new OveredVacationException("보유한 연차 초과");

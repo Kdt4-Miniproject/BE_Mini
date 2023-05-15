@@ -12,7 +12,7 @@ public enum CodeEnum {
     LOGIN_FAIL(401,"비밀번호 혹은 아이디가 틀렸습니다"),
 
     OVERD_VACATION(400, "초과 연차 사용"),
-    ALREADY_VACATION(400, "중복된 신청입니다");
+    ALREADY_VACATION(400, "중복된 신청입니다"),
 
     ALREADY_DELETED_DUTY(400, "이미 삭제된 당직신청입니다."),
     ALREADY_OK_DUTY(400, "이미 승인된 당직신청입니다."),

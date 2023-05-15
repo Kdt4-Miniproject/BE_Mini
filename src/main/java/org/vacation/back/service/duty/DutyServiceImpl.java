@@ -111,19 +111,22 @@ public class DutyServiceImpl implements DutyService {
     public void dutyModify(DutyModifyDTO dutyModifyDTO) {
         Duty duty = dutyRepository.findById(dutyModifyDTO.getId()).orElseThrow(NotFoundDutyException::new);
 
-        DutyStatus status = dutyRepository.findByDay(dutyModifyDTO.getDay()).getStatus();
-        if(status == DutyStatus.UPDATE_WAITING){
-            throw new AlreadyModifyException("이미 수정요청된 당직 신청입니다.");
-        }
+
         LocalDate currentDay = duty.getDay();
         LocalDate wantedDay = dutyModifyDTO.getDay();
+        
 
         Duty duty2 = dutyRepository.findByDay(wantedDay);
         if(duty2 == null){
             duty.modifyDuty(wantedDay);
             duty.setStatus(DutyStatus.WAITING);
             // 더티 체킹으로 save 사용 안함
-        }else {
+        }else if(duty2.getStatus() == DutyStatus.UPDATE_WAITING) {
+
+            throw new AlreadyModifyException("이미 수정요청된 당직 신청입니다.");
+
+        }else{
+
             duty.modifyDuty(wantedDay);
             duty.setStatus(DutyStatus.UPDATE_WAITING);
             duty.setOriginalDay(currentDay);
@@ -132,6 +135,7 @@ public class DutyServiceImpl implements DutyService {
             duty2.setStatus(DutyStatus.UPDATE_WAITING);
             duty2.setOriginalDay(wantedDay);
         }
+
     }
 
     @Transactional
@@ -185,6 +189,7 @@ public class DutyServiceImpl implements DutyService {
             throw new AlreadyRejectedException("이미 거절된 당직입니다.");
         } else if (duty.getStatus() == DutyStatus.UPDATE_WAITING) {
             LocalDate originalDay = duty.getOriginalDay();
+            duty.setStatus(DutyStatus.OK);
             Duty existingDuty = dutyRepository.findByDayAndOk(originalDay, DutyStatus.OK);
             if (existingDuty != null) {
                 throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");

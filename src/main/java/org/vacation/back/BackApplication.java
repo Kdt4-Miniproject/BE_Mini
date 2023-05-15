@@ -11,13 +11,17 @@ import org.vacation.back.common.DepartClassification;
 import org.vacation.back.common.DepartmentStatus;
 
 import org.vacation.back.common.MemberStatus;
-import org.vacation.back.common.PositionStatus;
+import org.vacation.back.common.VacationStatus;
+
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.repository.DepartmentRepository;
 import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.repository.PositionRepository;
+import org.vacation.back.repository.VacationRepository;
+
+import java.time.LocalDate;
 
 import java.util.stream.IntStream;
 
@@ -35,6 +39,7 @@ public class BackApplication {
 							   DepartmentRepository departmentRepository,
 							   DutyRepository dutyrepository
 							){
+
 		return (args)->{
 			departmentRepository.save(Department.builder()
 					.departmentName("개발")
@@ -65,19 +70,55 @@ public class BackApplication {
 
 
 
-				memberRepository.save(Member.builder()
-						.username("admin")
-						.password(passwordEncoder.encode("1234"))
-						.role(Role.ADMIN)
-						.department(department)
-						.position(position)
-						.name("관리자")
-						.birthdate("2022-33-12")
-						.email("test@naver.com")
-						.employeeNumber("20221234")
-						.memberStatus(MemberStatus.ACTIVATION)
-						.phoneNumber("010-1234-1234")
-						.build());
+		return (args)->{
+			departmentRepository.save(Department.builder()
+					.departmentName("개발")
+					.departmentPersonal(10)
+					.build());
+			Department department = departmentRepository.save(Department.builder()
+					.departmentName("인사")
+					.departmentPersonal(10)
+					.vacationLimit(2)
+					.build());
+			departmentRepository.save(Department.builder()
+					.departmentName("마케팅")
+					.departmentPersonal(10)
+					.build());
+
+			Position position = positionRepository.save(Position.builder()
+					.positionName("대리")
+					.vacation("40")
+					.build());
+
+
+			memberRepository.save(Member.builder()
+					.username("admin")
+					.password(passwordEncoder.encode("1234"))
+					.role(Role.ADMIN)
+					.department(department)
+					.position(position)
+					.name("관리자")
+					.birthdate("2022-33-12")
+					.email("test@naver.com")
+					.employeeNumber("20221234")
+					.memberStatus(MemberStatus.ACTIVATION)
+					.phoneNumber("010-1234-1234")
+					.build());
+
+			Member member1 = memberRepository.save(Member.builder()
+					.username("user")
+					.name("김독자")
+					.password(passwordEncoder.encode("1234"))
+					.birthdate("2022-33-12")
+					.department(department)
+					.position(position)
+					.role(Role.ADMIN)
+					.email("test@naver.com")
+					.memberStatus(MemberStatus.ACTIVATION)
+					.employeeNumber("20221235")
+					.phoneNumber("010-1234-1234")
+					.build());
+
 
 				memberRepository.save(Member.builder()
 						.username("user")

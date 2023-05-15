@@ -32,9 +32,13 @@ public class JWTUtils {
                 .withClaim("name",user.getName())
                 .withClaim("role", user.getRole().toString())
                 .withClaim("image",user.getFileName())
+                .withClaim("position",user.getPositionName())
+                .withClaim("department",user.getDepartmentName())
+                .withIssuedAt(new Date(System.currentTimeMillis()))
                 .sign(Algorithm.HMAC512(SECRET));
 
-        return TOKEN_PREFIX + jwt;
+        if(!refresh) return TOKEN_PREFIX + jwt;
+        else return jwt;
     }
     public DecodedJWT verify(String jwt) throws SignatureVerificationException, TokenExpiredException {
 

@@ -1,10 +1,12 @@
 package org.vacation.back.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.vacation.back.common.Search;
 import org.vacation.back.dto.common.MemberDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
 
 import java.util.List;
 
@@ -35,4 +37,8 @@ public interface MemberService {
     public boolean adminStatusModify(AdminStatusModifyRequest request);
 
     public boolean changePwd(String username , PasswordModifyRequest passwordModifyRequest);
+
+    public boolean memberRemove(String username);
+
+    public PageResponseDTO<?> vacationFindByDepartment(Pageable pageable, String departmentName);
 }

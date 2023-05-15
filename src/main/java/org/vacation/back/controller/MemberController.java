@@ -3,9 +3,11 @@ package org.vacation.back.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.vacation.back.annotation.Leader;
 import org.vacation.back.annotation.Permission;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.Role;
@@ -16,6 +18,7 @@ import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.MemberService;
+import org.vacation.back.service.VacationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,14 +38,16 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    private final VacationService vacationService;
+
     /**
-     * TODO: API 설명 작성예정
+     * @apiNote  username 중복을 체크한다.
      * */
     @GetMapping("/api/v1/join/check")
     public ResponseEntity<CommonResponse<?>> checking(@RequestParam String username){
         // TODO: PathVariable로 들어온 username이 PK로 겹치는게 있는지 확인한다.
 
-        if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
+    //    if(!isValidEmail(username)) throw new EmailNotValidException("Invalid email format");
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -50,10 +55,7 @@ public class MemberController {
                 .build());
     }
     /**
-     *
-     *
-     *
-     * TODO: API 설명 작성예정
+     * @apiNote 검색
      * */
     @GetMapping("/api/v1/member/page/search")
     public ResponseEntity<CommonResponse<?>> page(@RequestParam(defaultValue = "ALL") Search text,
@@ -70,7 +72,7 @@ public class MemberController {
                 .build());
     }
     /**
-     * TODO: API 설명 작성예정
+     * @apiNote 자세히보기
      * */
     @GetMapping("/api/v1/member/detail")
     public ResponseEntity<CommonResponse<?>> detail(HttpServletRequest request){
@@ -90,14 +92,7 @@ public class MemberController {
      * TODO: API 설명 작성예정
      * */
     @PostMapping("/api/v1/join")
-    public ResponseEntity<CommonResponse<?>> join(@RequestBody RegisterMemberDTO registerMemberDTO){
-
-        //TODO: 파라미터에서 Valid가 필요하고,
-        //TODO: 등록시 실패 Exception 처리가 필요하고,
-        //TODO: 해당 username이 PK인지 체크 조회,
-        //TODO: Exception은 ExceptionHandler로 처리할 것임
-
-
+    public ResponseEntity<CommonResponse<?>> join(@RequestBody @Valid RegisterMemberDTO registerMemberDTO){
 
         return ResponseEntity.ok(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)
@@ -233,6 +228,44 @@ public class MemberController {
                 .body(commonResponse);
 
     }
+
+    @Permission
+    @PostMapping("/api/v1/member/admin/remove")
+    public ResponseEntity<CommonResponse<?>> memberRemove(@RequestBody MemberRemoveRequest request){
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.memberRemove(request.getUsername()))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+
+    }
+
+    @Leader
+    @GetMapping("/api/v1/member/vacation")
+    public ResponseEntity<CommonResponse<?>> departmentMVacation(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+            ,HttpServletRequest request){
+
+        String departmentName = request.getAttribute("department").toString();
+
+        CommonResponse<?> commonResponse = CommonResponse.builder()
+                .data(memberService.vacationFindByDepartment(PageRequest.of(page,size), departmentName))
+                .codeEnum(CodeEnum.SUCCESS)
+                .build();
+
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+    }
+
+
+
+
 
 
 

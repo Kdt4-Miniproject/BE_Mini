@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.PositionStatus;
+import org.vacation.back.domain.Position;
 
 @Data
 @Builder
@@ -16,5 +17,12 @@ public class PositionSaveDTO {
 
     private String vacation;
 
-    private PositionStatus status;
+    public Position toEntity() {
+        return Position.builder()
+                .positionName(this.positionName)
+                .vacation(this.vacation)
+                .status(PositionStatus.ACTIVATION)
+                .build();
+    }
+
 }

@@ -1,5 +1,7 @@
 package org.vacation.back.repository.impl;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -13,11 +15,13 @@ import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.Search;
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.common.MemberDTO;
+import org.vacation.back.dto.common.UameAndPositionDTO;
 import org.vacation.back.repository.child.CustomMemberRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -53,6 +57,25 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
           if(member != null) return Optional.of(member);
           else return Optional.empty();
     }
+
+    @Override
+    public Optional<Member> findByUserWithAll(String username) {
+
+            QMember member = QMember.member;
+            QPosition position = QPosition.position;
+            QDepartment department = QDepartment.department;
+
+
+            Member memberEntity = queryFactory.select(member)
+                    .from(member)
+                    .leftJoin(member.position,position).fetchJoin()
+                    .leftJoin(member.department,department).fetchJoin()
+                    .where(member.memberStatus.eq(MemberStatus.ACTIVATION),member.username.eq(username))
+                    .fetchOne();
+
+            if(memberEntity != null) return Optional.of(memberEntity);
+            else return Optional.empty();
+        }
 
     public boolean existsByEmployNumber(String number){
             QMember member = QMember.member;
@@ -154,7 +177,7 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                 .from(QMember.member)
                 .innerJoin(QMember.member.position,QPosition.position).fetchJoin()
                 .innerJoin(QMember.member.department,QDepartment.department).fetchJoin()
-                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.DEACTIVATION))
+                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.WAITING))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -167,19 +190,96 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
                 .from(QMember.member)
                 .innerJoin(QMember.member.position,QPosition.position)
                 .innerJoin(QMember.member.department,QDepartment.department)
-                .where(typeSearch(text,keyword))
+                .where(typeSearch(text,keyword),QMember.member.memberStatus.eq(MemberStatus.WAITING))
                 .fetch().get(0));
     }
 
     @Override
     public Optional<Member> findByDeactiveMember(String username) {
+
+
         Member member = queryFactory.select(QMember.member)
                 .from(QMember.member)
-                .where(QMember.member.memberStatus.eq(MemberStatus.DEACTIVATION),QMember.member.username.eq(username))
+                .innerJoin(QMember.member.department,QDepartment.department).fetchJoin()
+                .where(QMember.member.username.eq(username))
                 .fetchOne();
 
         if(member != null) return Optional.of(member);
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Member> removeByusername(String username) {
+        QMember member = QMember.member;
+        QDepartment department = QDepartment.department;
+
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        booleanBuilder.or(member.memberStatus.eq(MemberStatus.WAITING));
+        booleanBuilder.or(member.memberStatus.eq(MemberStatus.ACTIVATION));
+
+
+        Member memberEntity = queryFactory.select(member)
+                .from(member)
+                .where(booleanBuilder,member.username.eq(username))
+                .innerJoin(member.department,department).fetchJoin()
+                .fetchOne();
+
+        if(memberEntity != null) return Optional.of(memberEntity);
+        return Optional.empty();
+    }
+
+    public Optional<List<Member>> memberBydepartmentName(String departmentName){
+        QMember member = QMember.member;
+        QPosition position = QPosition.position;
+
+        List<Member> list = queryFactory.select(member)
+                .from(member)
+                .innerJoin(member.position,position).fetchJoin()
+                .where(member.department.departmentName.eq(departmentName)
+                        .and(member.memberStatus.eq(MemberStatus.ACTIVATION)))
+                .fetch();
+
+
+
+        if(list != null) return Optional.of(list);
+        else return Optional.empty();
+    }
+
+    @Override
+    public Page<Vacation> vacationByUsername(List<String> usernames,Pageable pageable) {
+
+        QMember member = QMember.member;
+        QVacation vacation = QVacation.vacation;
+
+        JPAQuery<Vacation> query = queryFactory
+                .select(vacation)
+                .from(vacation)
+                .innerJoin(vacation.member, member).fetchJoin()
+                .where(vacation.member.username.in(usernames))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        List<Vacation> content = query.fetch();
+
+
+        return PageableExecutionUtils.getPage(content, pageable, () ->
+                queryFactory.select(Wildcard.count)
+                        .innerJoin(vacation.member, member).fetchJoin()
+                        .where(vacation.member.username.in(usernames)).fetch().get(0));
+
+    }
+
+    @Override
+    public List<Member> findAllActivation() {
+        QMember member = QMember.member;
+
+
+        return queryFactory
+                .select(member)
+                .from(member)
+                .where(member.memberStatus.eq(MemberStatus.ACTIVATION))
+                .fetch();
     }
 
 
@@ -199,6 +299,8 @@ public class MemberRepositoryImpl implements CustomMemberRepository {
             return position.positionName.contains(keyword);
         } else if(text.equals(Search.DEPARTMENT)){
             return department.departmentName.contains(keyword);
+        } else if(text.equals(Search.USERNAME)){
+            return member.username.contains(keyword);
         }
 
         return null;

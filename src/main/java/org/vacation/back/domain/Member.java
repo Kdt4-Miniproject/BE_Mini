@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
 @Getter
 @Builder
 @NoArgsConstructor
@@ -74,7 +75,8 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "department_name")
     private Department department;
 
-
+    @JoinColumn(name = "department_vacationLimit")
+    private String vacationLimit;
 
 
 

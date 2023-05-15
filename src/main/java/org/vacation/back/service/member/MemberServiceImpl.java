@@ -12,13 +12,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.Search;
-import org.vacation.back.domain.Department;
-import org.vacation.back.domain.Member;
-import org.vacation.back.domain.Position;
-import org.vacation.back.domain.Role;
+import org.vacation.back.domain.*;
 import org.vacation.back.dto.common.MemberDTO;
+import org.vacation.back.dto.common.UameAndPositionDTO;
 import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.repository.DepartmentRepository;
 import org.vacation.back.repository.MemberRepository;
@@ -243,6 +242,17 @@ public class MemberServiceImpl implements MemberService {
 
         if(optional.isPresent()){
            Member member =  optional.get();
+           Department department = member.getDepartment();
+
+           if(!member.getMemberStatus().equals(MemberStatus.ACTIVATION)
+                   && request.getMemberStatus().equals(MemberStatus.ACTIVATION)) department.plusPersonal();
+
+           if(member.getMemberStatus().equals(MemberStatus.ACTIVATION)
+                   && request.getMemberStatus().equals(MemberStatus.WAITING)) department.minusPersonal();
+
+           if(member.getMemberStatus().equals(MemberStatus.ACTIVATION)
+                   && request.getMemberStatus().equals(MemberStatus.DEACTIVATION)) department.minusPersonal();
+
            member.changeStatus(request.getMemberStatus());
         }else{
             return false;
@@ -267,6 +277,47 @@ public class MemberServiceImpl implements MemberService {
               return true;
           }
         }
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public boolean memberRemove(String username) {
+        Optional<Member> optional = memberRepository.removeByusername(username);
+
+        if(optional.isPresent()){
+            Member member = optional.get();
+            Department department =member.getDepartment();
+
+            if(member.getMemberStatus().equals(MemberStatus.ACTIVATION))  department.minusPersonal();
+
+            member.changeStatus(MemberStatus.DEACTIVATION);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    public PageResponseDTO<?> vacationFindByDepartment(Pageable pageable, String departmentName) {
+
+        List<Member> memberList = memberRepository.memberBydepartmentName(departmentName)
+                .orElseThrow(MemberNotFoundException::new);
+
+        Page<Vacation> vacations = memberRepository.vacationByUsername(memberList.stream()
+                        .map(Member::getUsername).toList(),pageable);
+
+        List<VacationResponseDTO> content = vacations.getContent()
+                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation, departmentName,
+                vacation.getMember().getPosition().getPositionName())).toList();
+
+       PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
+               .content(content)
+               .last(vacations.isLast())
+               .first(vacations.isFirst())
+               .total(vacations.getTotalElements())
+               .build();
+
+        return pageResponseDTO;
     }
 
 

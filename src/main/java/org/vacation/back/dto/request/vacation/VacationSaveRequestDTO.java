@@ -5,6 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.VacationStatus;
+import org.vacation.back.domain.Member;
+import org.vacation.back.domain.Vacation;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -12,13 +18,19 @@ import org.vacation.back.common.VacationStatus;
 @Builder
 public class VacationSaveRequestDTO {
 
-    String username;
+    @NotNull(message = "휴가 시작일자가 비어 있습니다.")
+    private LocalDate start;
 
-    String start;
+    @NotNull(message = "연차 끝 날짜가 비어 있습니다.")
+    private LocalDate end;
 
-    String end;
+    public Vacation toEntity(Member member){
 
-    boolean deleted;
-
-    VacationStatus status;
+        return Vacation.builder()
+                .member(member)
+                .start(this.start)
+                .end(this.end)
+                .status(VacationStatus.WAITING)
+                .build();
+    }
 }

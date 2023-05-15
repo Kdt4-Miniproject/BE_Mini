@@ -10,21 +10,39 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.vacation.back.MyWithRTestDoc;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.VacationStatus;
+import org.vacation.back.domain.*;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
-import org.vacation.back.dto.common.VacationTempDTO;
+import org.vacation.back.dto.request.member.RegisterMemberDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
-import org.vacation.back.dto.request.vacation.VacationOkAndRejectedDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.repository.DepartmentRepository;
+import org.vacation.back.repository.MemberRepository;
+import org.vacation.back.repository.PositionRepository;
+import org.vacation.back.repository.VacationRepository;
+import org.vacation.back.service.MemberService;
+import org.vacation.back.service.VacationService;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,8 +59,98 @@ public class VacationControllerTest extends MyWithRTestDoc{
     @Autowired
     private ObjectMapper objectMapper;
 
-    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1MzQwMjM4LCJ1c2VybmFtZSI6ImFkbWluIn0.0G2NT_fcgR2_I6mgf7inJVqxsWcFcTBqOYewmo8iCO_Lgusw5NleIpf1Etd-zerMiFwv9HBqGmZUdwQIyRTlRQ";
-    final String RefreshToken = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6bnVsbCwicm9sZSI6IkFETUlOIiwibmFtZSI6bnVsbCwiZXhwIjoxNjg1NTA2ODIyLCJ1c2VybmFtZSI6ImFkbWluIn0.IUsPdcR6VUe4lX1f10W7vCx74Siw2Q85Yz6tFuyqf9-8_un0J4n0Ut8U7KP44x1F-lOxttp1emAS5i9JhIOamw";
+    @Autowired
+    private VacationService vacationService;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PositionRepository positionRepository;
+    @Autowired
+    private VacationRepository vacationRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
+    final String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QiLCJpbWFnZSI6IjQwNC5qcGciLCJyb2xlIjoiTEVBREVSIiwibmFtZSI6Iuq5gOuPheyekCIsInBvc2l0aW9uIjoi6rO87J6lIiwiZXhwIjoxNjg2NjI1MzAwLCJkZXBhcnRtZW50Ijoi6rCc67CcIiwiaWF0IjoxNjg0MDMzMzAwLCJ1c2VybmFtZSI6InVzZXIxIn0.y90D3Z86p1pwZHrtJ5geI-i9nZ0m8lysXWgipVnz28b8CmfFEWgtF_4dr3LgsuTrpY6poOZJ-kPrqESK-ahb_A";
+
+
+    @BeforeEach
+    void vacation_saveBefore() {
+        departmentRepository.save(Department.builder()
+                .departmentName("개발")
+                        .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+        Department department = departmentRepository.save(Department.builder()
+                .departmentName("인사")
+                .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+        departmentRepository.save(Department.builder()
+                .departmentName("마케팅")
+                .vacationLimit(2)
+                .departmentPersonal(10)
+                .build());
+
+        Position position = positionRepository.save(Position.builder()
+                .positionName("대리")
+                .vacation("40")
+                .build());
+
+        memberRepository.save(Member.builder()
+                .username("admin")
+                .password(passwordEncoder.encode("1234"))
+                .role(Role.ADMIN)
+                .department(department)
+                .position(position)
+                .name("관리자")
+                .birthdate("2022-33-12")
+                .email("test@naver.com")
+                .employeeNumber("20221234")
+                .memberStatus(MemberStatus.ACTIVATION)
+                .phoneNumber("010-1234-1234")
+                .build());
+
+        memberRepository.save(Member.builder()
+                .username("user")
+                .password(passwordEncoder.encode("1234"))
+                .birthdate("2022-33-12")
+                .department(department)
+                .position(position)
+                .name("유저")
+                .email("test@naver.com")
+                .employeeNumber("20221235")
+                .phoneNumber("010-1234-1234")
+                .memberStatus(MemberStatus.ACTIVATION)
+                .build());
+
+        Member member = memberRepository.findById("user").orElseThrow();
+        //given2
+        String username = "user";
+
+//        VacationSaveRequestDTO save_test1 = VacationSaveRequestDTO.builder()
+//                .start(LocalDate.parse("2023-05-01"))
+//                .end(LocalDate.parse("2023-05-01"))
+//                .build();
+//        vacationService.vacationSave(save_test1);
+//
+//        VacationSaveRequestDTO save_test2 = VacationSaveRequestDTO.builder()
+//                .start(LocalDate.parse("2023-05-02"))
+//                .end(LocalDate.parse("2023-05-02"))
+//                .build();
+//        vacationService.vacationSave(save_test2);
+//
+//        VacationSaveRequestDTO save_test3 = VacationSaveRequestDTO.builder()
+//                .start(LocalDate.parse("2023-06-01"))
+//                .end(LocalDate.parse("2023-06-02"))
+//                .status(VacationStatus.WAITING)
+//                .build();
+//        vacationService.vacationSave(save_test3);
+    }
+
 
     @Test
     @DisplayName("/api/v1/vacation/save")
@@ -52,11 +160,8 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         VacationSaveRequestDTO dto = VacationSaveRequestDTO.builder()
-                .username("admin")
-                .start("2023-05-01")
-                .end("2023-05-01")
-                .deleted(false)
-                .status(VacationStatus.WAITING)
+                .start(LocalDate.parse("2023-05-09"))
+                .end(LocalDate.parse("2023-05-10"))
                 .build();
 
         //when
@@ -74,13 +179,15 @@ public class VacationControllerTest extends MyWithRTestDoc{
         resultActions.andExpect(jsonPath("$.data").value(true));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
+
+
     }
+
 
     @Test
     @DisplayName("/api/v1/vacation/detail/{id}")
     void vacation_detail() throws Exception {
         // given
-        CommonResponse.builder().data("String").codeEnum(CodeEnum.SUCCESS).build();
         Long id = 1L;
 
         //when
@@ -98,14 +205,13 @@ public class VacationControllerTest extends MyWithRTestDoc{
     }
 
     @Test
-    @DisplayName("/api/v1/vacation/list")
+    @DisplayName("/api/v1/vacation/list/{month}")
     void vacation_list() throws Exception {
         // given
-
+        String month = "0";
         //when
-
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders
-                .get("/api/v1/vacation/list")
+                .get("/api/v1/vacation/list/{month}", month)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .header("Authorization",token)
         ).andExpect(status().isOk());
@@ -125,8 +231,8 @@ public class VacationControllerTest extends MyWithRTestDoc{
         Long id = 1L;
 
         VacationModifyDTO dto = VacationModifyDTO.builder()
-                .start("2023-05-01")
-                .end("2023-05-01")
+                .start(LocalDate.parse("2023-05-02"))
+                .end(LocalDate.parse("2023-05-07"))
                 .build();
 
         //when
@@ -141,7 +247,10 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data").value(true));
+
+
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.data.start").value("2023-05-02"));
+        resultActions.andExpect(MockMvcResultMatchers.jsonPath("$.data.end").value("2023-05-07"));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
@@ -162,7 +271,6 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data").value(true));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
@@ -185,7 +293,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data").value(true));
+        resultActions.andExpect(jsonPath("$.data.status").value("OK"));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
@@ -208,7 +316,7 @@ public class VacationControllerTest extends MyWithRTestDoc{
 
 
         //then
-        resultActions.andExpect(jsonPath("$.data").value(true));
+        resultActions.andExpect(jsonPath("$.data.status").value("REJECTED"));
         resultActions.andExpect(jsonPath("$.status").value(200));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }

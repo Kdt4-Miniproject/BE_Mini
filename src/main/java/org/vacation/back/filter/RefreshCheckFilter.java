@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.vacation.back.domain.Role;
 import org.vacation.back.dto.CodeEnum;
@@ -18,6 +19,7 @@ import org.vacation.back.utils.JWTUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -53,7 +55,19 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
         }
 
         log.info("=== REFRESH FILTER ===");
-        String refreshToken = request.getHeader("X-Auth-Refresh-Token").substring(7);
+
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = "";
+        for (Cookie cookie : cookies) {
+            if(cookie.getName().equals("X-Auth-Refresh-Token")){
+               refreshToken = cookie.getValue();
+               log.info(refreshToken);
+            }
+        }
+
+        if(!StringUtils.hasText(refreshToken)) sendError(response, TokenException.TOKEN_ERROR.UNACCEPT);
+
+        refreshToken = refreshToken.toString();
 
       try{
           DecodedJWT decodedRefresh = jwtUtils.verify(refreshToken);
@@ -63,6 +77,8 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
           String refreshImage = decodedRefresh.getClaim("image").asString();
           String refreshName = decodedRefresh.getClaim("name").asString();
 
+          String refreshPosition = decodedRefresh.getClaim("position").asString();
+          String refreshDepartment = decodedRefresh.getClaim("department").asString();
           Integer exp = decodedRefresh.getClaim("exp").asInt();
 
 
@@ -72,11 +88,15 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
 
           long gapTime = (expTime.getTime() - current.getTime());
 
+          boolean time = false;
+
           MemberDTO dto = MemberDTO.builder()
                   .username(refreshUsername)
                   .name(refreshName)
                   .fileName(refreshImage)
                   .role(refreshRole)
+                  .positionName(refreshPosition)
+                  .departmentName(refreshDepartment)
                   .build();
 
 
@@ -85,21 +105,32 @@ public class RefreshCheckFilter extends OncePerRequestFilter {
           if(gapTime < (1000 * 60 * 60 * 24 * 3)){ //3일
               log.info("new RefreshToken required...");
               refreshToken = jwtUtils.create(dto,true);
+              time = true;
           }
 
-          sendTokens(accessToken,refreshToken,response);
+          Cookie cookie = new Cookie("X-Auth-Refresh-Token", refreshToken);
+          cookie.setMaxAge((int)(gapTime/1000));
+          cookie.setHttpOnly(true);
+
+          sendTokens(accessToken,cookie,response,time);
       }catch (TokenExpiredException tokenExpiredException){
           sendError(response, TokenException.TOKEN_ERROR.EXPIRED);
       }catch (SignatureVerificationException signatureVerificationException){
           sendError(response, TokenException.TOKEN_ERROR.BADSIGN);
+      }catch (Exception e){
+          sendError(response, TokenException.TOKEN_ERROR.BADSIGN);
       }
 
     }
-    private void sendTokens(String accesTokenValue,String refreshTokenValue, HttpServletResponse response){
+    private void sendTokens(String accesTokenValue,Cookie cookie, HttpServletResponse response,boolean time){
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setHeader("Authorization",accesTokenValue);
-        response.setHeader("X-Auth-Refresh-Token","Bearer "+ refreshTokenValue);
+
+
+        if(time)  cookie.setMaxAge(60*60*24*30); // 30 일
+
+        response.addCookie(cookie);
 
         Gson gson = new Gson();
 

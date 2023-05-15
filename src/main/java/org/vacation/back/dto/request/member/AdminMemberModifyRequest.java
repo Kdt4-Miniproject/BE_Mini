@@ -29,7 +29,4 @@ public class AdminMemberModifyRequest {
 
     private String fileName;
 
-
-
-
 }

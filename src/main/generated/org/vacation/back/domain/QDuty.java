@@ -33,7 +33,9 @@ public class QDuty extends EntityPathBase<Duty> {
 
     public final QMember member;
 
-    public final EnumPath<org.vacation.back.common.VacationStatus> status = createEnum("status", org.vacation.back.common.VacationStatus.class);
+    public final DatePath<java.time.LocalDate> originalDay = createDate("originalDay", java.time.LocalDate.class);
+
+    public final EnumPath<org.vacation.back.common.DutyStatus> status = createEnum("status", org.vacation.back.common.DutyStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

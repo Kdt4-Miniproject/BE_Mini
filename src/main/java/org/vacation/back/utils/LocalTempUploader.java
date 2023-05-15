@@ -16,8 +16,9 @@ import java.util.UUID;
 @Component
 public class LocalTempUploader {
 
-    @Value("${FILEPATH}")
-    private String path;
+
+    //    @Value("${FILEPATH}")
+    private String path = "FILEPATH";
 
     public List<String> uploadLocal(FileDTO fileDTO){
         if(!fileDTO.getFileNames().isEmpty()){

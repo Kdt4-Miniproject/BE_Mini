@@ -18,6 +18,7 @@ import org.vacation.back.service.DutyService;
 import org.vacation.back.utils.AssignUtils;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -41,6 +42,7 @@ public class DutyServiceImpl implements DutyService {
         }
 
         LocalDate currentDate = LocalDate.now();
+
 
         if (dutyRepository.findByDutyDay(dutySaveRequestDTO.getDay()) != null) {
             throw new AlreadyDutyException("이미 당직이 존재합니다.");
@@ -124,7 +126,7 @@ public class DutyServiceImpl implements DutyService {
         }else if (duty.getStatus() == DutyStatus.OK) {
             throw new AlreadyOkException("이미 승인된 당직입니다.");
         }
-        
+
         Duty duty2 = dutyRepository.findByDay(wantedDay);
         if(duty2 == null){
             duty.modifyDuty(wantedDay);

@@ -19,6 +19,7 @@ import org.vacation.back.service.VacationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -97,10 +98,11 @@ public class VacationServiceImpl implements VacationService {
     }
 
 
-    public Page<VacationResponseDTO> vacationListStatus(Pageable pageable) {
+    public List<VacationResponseDTO> vacationListStatus() {
 
-        Page<Vacation> vacationList = vacationRepository.findAllByVacationStatus(pageable);
-        Page<VacationResponseDTO> vacationResponseList = vacationList.map(vacation -> {
+        List<Vacation> vacationList = vacationRepository.findAllByVacationStatus();
+        List<VacationResponseDTO> vacationResponseList = new ArrayList<>();
+        for (Vacation vacation: vacationList) {
             VacationResponseDTO dto = new VacationResponseDTO();
             dto.setId(vacation.getId());
             dto.setMemberName(vacation.getMember().getName());
@@ -110,8 +112,8 @@ public class VacationServiceImpl implements VacationService {
             dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
             dto.setPositionName(vacation.getMember().getPosition().getPositionName());
             dto.setStatus(vacation.getStatus());
-            return dto;
-        });
+            vacationResponseList.add(dto);
+        }
         return vacationResponseList;
     }
 

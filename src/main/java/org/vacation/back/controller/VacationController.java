@@ -22,6 +22,7 @@ import org.vacation.back.service.VacationService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -75,13 +76,12 @@ public class VacationController {
                         .total(vacationPage.getTotalElements())
                         .build();
             }else {
-                vacationPage = vacationService.vacationListStatus(pageable);
-                pageResponseDTO = PageResponseDTO.builder()
-                        .first(vacationPage.isFirst())
-                        .last(vacationPage.isLast())
-                        .content(vacationPage.getContent())
-                        .total(vacationPage.getTotalElements())
-                        .build();
+                List<VacationResponseDTO> vacationListStatus = vacationService.vacationListStatus();
+
+                return ResponseEntity.ok(CommonResponse.builder()
+                                .codeEnum(CodeEnum.SUCCESS)
+                                .data(vacationListStatus)
+                        .build());
             }
         }else { // month가 없을 경우 이번달 정보만 가져오기
             int currentMonth = LocalDate.now().getMonthValue();

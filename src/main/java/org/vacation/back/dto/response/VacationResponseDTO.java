@@ -24,6 +24,8 @@ public class VacationResponseDTO {
 
     private LocalDate end;
 
+    private LocalDateTime createAt;
+
     private VacationStatus status;
 
     private String departmentName;
@@ -42,6 +44,7 @@ public class VacationResponseDTO {
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
+                .createAt(vacation.getCreatedAt())
                 .departmentName(vacation.getMember().getDepartment().getDepartmentName())
                 .build();
     }

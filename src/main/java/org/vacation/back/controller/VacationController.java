@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.AdminAndLeader;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
+import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
@@ -62,21 +63,41 @@ public class VacationController {
         PageRequest pageable = PageRequest.of(page, size);
 
         Page<VacationResponseDTO> vacationPage;
+        PageResponseDTO<?> pageResponseDTO;
 
         if (month != null){
             if (!"0".equals(month)) { // month가 0일때 WAITING 상태인 data만 불러옴
                 vacationPage = vacationService.vacationListMonth(month, pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(vacationPage.isFirst())
+                        .last(vacationPage.isLast())
+                        .content(vacationPage.getContent())
+                        .total(vacationPage.getTotalElements())
+                        .build();
             }else {
                 vacationPage = vacationService.vacationListStatus(pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(vacationPage.isFirst())
+                        .last(vacationPage.isLast())
+                        .content(vacationPage.getContent())
+                        .total(vacationPage.getTotalElements())
+                        .build();
             }
         }else { // month가 없을 경우 이번달 정보만 가져오기
             int currentMonth = LocalDate.now().getMonthValue();
             vacationPage = vacationService.vacationListMonth(String.valueOf(currentMonth), pageable);
+            pageResponseDTO = PageResponseDTO.builder()
+                    .first(vacationPage.isFirst())
+                    .last(vacationPage.isLast())
+                    .content(vacationPage.getContent())
+                    .total(vacationPage.getTotalElements())
+                    .build();
         }
+
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(vacationPage)
+                .data(pageResponseDTO)
                 .build());
     }
 
@@ -115,8 +136,30 @@ public class VacationController {
     }
 
     @AdminAndLeader
+    @PostMapping("updateok/{id}")
+    public ResponseEntity<CommonResponse> updateOk(
+            @PathVariable(value = "id") Long id){
+        vacationService.vacationOk(id);
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
+    @AdminAndLeader
     @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
+            @PathVariable(value = "id") Long id){
+        vacationService.vacationRejected(id);
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
+    @AdminAndLeader
+    @PostMapping("updaterejected/{id}")
+    public ResponseEntity<CommonResponse> updateRejected(
             @PathVariable(value = "id") Long id){
         vacationService.vacationRejected(id);
         return ResponseEntity.ok(CommonResponse.builder()

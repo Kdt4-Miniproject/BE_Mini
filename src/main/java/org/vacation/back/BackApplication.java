@@ -36,10 +36,10 @@ public class BackApplication {
 							   PositionRepository positionRepository,
 							   DepartmentRepository departmentRepository,
 							   DutyRepository dutyrepository
-							){
-
+	) {
 
 		return (args)->{
+
 			departmentRepository.save(Department.builder()
 					.departmentName("개발")
 					.departmentPersonal(10)
@@ -89,33 +89,47 @@ public class BackApplication {
 					.build());
 
 
-				memberRepository.save(Member.builder()
-						.username("user")
-						.name("김독자")
-						.password(passwordEncoder.encode("1234"))
-						.birthdate("2022-33-12")
-						.department(department)
-						.position(position)
-						.role(Role.ADMIN)
-						.email("test@naver.com")
-						.memberStatus(MemberStatus.ACTIVATION)
-						.employeeNumber("20221235")
-						.phoneNumber("010-1234-1234")
-						.build());
+			memberRepository.save(Member.builder()
+					.username("user")
+					.name("김독자")
+					.password(passwordEncoder.encode("1234"))
+					.birthdate("2022-33-12")
+					.department(department)
+					.position(position)
+					.role(Role.ADMIN)
+					.email("test@naver.com")
+					.memberStatus(MemberStatus.ACTIVATION)
+					.employeeNumber("20221235")
+					.phoneNumber("010-1234-1234")
+					.build());
 
+			memberRepository.save(Member.builder()
+					.username("test")
+					.name("김독자")
+					.password(passwordEncoder.encode("1234"))
+					.birthdate("2022-33-12")
+					.department(department)
+					.position(position)
+					.role(Role.ADMIN)
+					.email("test@naver.com")
+					.memberStatus(MemberStatus.ACTIVATION)
+					.employeeNumber("20221235")
+					.phoneNumber("010-1234-1234")
+					.build());
 
 
 		};
 	}
+
 	@Profile("prod")
 	@Bean
 	CommandLineRunner initDataProduct(MemberRepository memberRepository,
-							   PasswordEncoder passwordEncoder,
-							   PositionRepository positionRepository,
-							   DepartmentRepository departmentRepository
-	){
-		return (args)->{
-			if(memberRepository.findAll().isEmpty()){
+									  PasswordEncoder passwordEncoder,
+									  PositionRepository positionRepository,
+									  DepartmentRepository departmentRepository
+	) {
+		return (args) -> {
+			if (memberRepository.findAll().isEmpty()) {
 				Department department1 = departmentRepository.save(Department.builder()
 						.departmentName("관리")
 						.departmentPersonal(1)
@@ -169,7 +183,6 @@ public class BackApplication {
 						.build());
 
 
-
 				memberRepository.save(Member.builder()
 						.username("admin")
 						.password(passwordEncoder.encode("1234"))
@@ -184,9 +197,9 @@ public class BackApplication {
 						.phoneNumber("010-1234-1234")
 						.build());
 
-				IntStream.rangeClosed(1,10).forEach(value -> {
+				IntStream.rangeClosed(1, 10).forEach(value -> {
 					memberRepository.save(Member.builder()
-							.username("user"+value)
+							.username("user" + value)
 							.password(passwordEncoder.encode("1234"))
 							.role(Role.STAFF)
 							.department(department2)
@@ -200,9 +213,9 @@ public class BackApplication {
 							.build());
 				});
 
-				IntStream.rangeClosed(11,20).forEach(value -> {
+				IntStream.rangeClosed(11, 20).forEach(value -> {
 					memberRepository.save(Member.builder()
-							.username("user"+value)
+							.username("user" + value)
 							.password(passwordEncoder.encode("1234"))
 							.role(Role.STAFF)
 							.department(department3)
@@ -222,5 +235,4 @@ public class BackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackApplication.class, args);
 	}
-
 }

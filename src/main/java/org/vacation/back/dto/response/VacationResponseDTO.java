@@ -24,7 +24,7 @@ public class VacationResponseDTO {
 
     private LocalDate end;
 
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
     private VacationStatus status;
 
@@ -32,7 +32,6 @@ public class VacationResponseDTO {
 
     private String positionName;
 
-    private LocalDateTime createdAt;
 
 
     //부서 추가
@@ -44,8 +43,9 @@ public class VacationResponseDTO {
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
-                .createAt(vacation.getCreatedAt())
+                .createdAt(vacation.getCreatedAt())
                 .departmentName(vacation.getMember().getDepartment().getDepartmentName())
+                .positionName(vacation.getMember().getPosition().getPositionName())
                 .build();
     }
     public static VacationResponseDTO toDTOv(Vacation vacation,String departmentName,String positionName){

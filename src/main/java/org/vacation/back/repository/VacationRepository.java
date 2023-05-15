@@ -29,9 +29,9 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>{
 
 
     //inner join
-    @Query(value = "select v from Vacation v join fetch v.member m WHERE v.status = :status AND v.status <> 'DELETED'",
-            countQuery = "select count(v) from Vacation v join v.member m WHERE FUNCTION('MONTH', v.start) = :month AND v.status <> 'DELETED'")
-    Page<Vacation> findAllByVacationStatus(@Param("status") VacationStatus status, Pageable pageable);
+    @Query(value = "select v from Vacation v join fetch v.member m WHERE v.status = 'WAITING' or v.status = 'UPDATE_WAITING'",
+            countQuery = "select count(v) from Vacation v join v.member m WHERE FUNCTION('MONTH', v.start) = :month")
+    Page<Vacation> findAllByVacationStatus(@Param("status")Pageable pageable);
 
     @Query("select v from Vacation v where v.member.username = :userName AND v.status <> 'DELETED'")
     List<Vacation> findByVacationUserName(@Param("userName") String userName);

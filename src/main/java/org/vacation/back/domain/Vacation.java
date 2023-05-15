@@ -33,6 +33,7 @@ public class Vacation extends BaseEntity{
 
 
     public void modifyVacation(LocalDate start, LocalDate end){
+        this.status=VacationStatus.UPDATE_WAITING;
         this.start=start;
         this.end=end;
     }

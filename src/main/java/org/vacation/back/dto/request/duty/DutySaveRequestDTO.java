@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
-
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 

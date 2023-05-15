@@ -1,32 +1,20 @@
 package org.vacation.back.controller;
-
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
-import org.vacation.back.common.DutyStatus;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
-import org.vacation.back.dto.common.DutyDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
-import org.vacation.back.dto.response.VacationResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -142,6 +130,18 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+    @Permission
+    @GetMapping("assign")
+    public ResponseEntity<CommonResponse> assign(){
+
+        dutyService.dutyAssign();
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
 
     @ExceptionHandler(DutyMemberNotFoundException.class)
     public ResponseEntity<CommonResponse<?>> dutyMemberNotFoundException() {
@@ -226,6 +226,17 @@ public class DutyController {
                         .codeEnum(CodeEnum.DUPLICATED_DUTY)
                         .data(false)
                         .build());
+    }
+    @ExceptionHandler(IntialDutyException.class)
+    public ResponseEntity<CommonResponse<?>> intialDutyException() {
+         CommonResponse<?> commonResponse = CommonResponse
+                 .builder()
+                 .codeEnum(CodeEnum.NOT_FOUND)
+                 .data(false)
+                 .build();
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
     }
 }
 

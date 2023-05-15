@@ -90,7 +90,7 @@ public class BackApplication {
 
 
 			memberRepository.save(Member.builder()
-					.username("user")
+					.username("user1")
 					.name("김독자")
 					.password(passwordEncoder.encode("1234"))
 					.birthdate("2022-33-12")

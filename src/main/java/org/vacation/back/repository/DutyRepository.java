@@ -39,8 +39,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     Duty findByDay(@Param("day") LocalDate day);
 
 
-    @Query("Select d from Duty d where d.member.username = :username and d.day = :day")
-    Duty findByDutyDay(@Param("username") String username, @Param("day") LocalDate day);
+    @Query("Select d from Duty d where d.day = :day")
+    Duty findByDutyDay(@Param("day") LocalDate day);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Optional<Duty> findByDuty(@Param("id") Long id);

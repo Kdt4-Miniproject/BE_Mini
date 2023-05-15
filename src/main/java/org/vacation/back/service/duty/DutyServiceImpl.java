@@ -39,7 +39,7 @@ public class DutyServiceImpl implements DutyService {
 
         LocalDate currentDate = LocalDate.now();
 
-        if (dutyRepository.findByDutyDay(dutySaveRequestDTO.getUsername(), dutySaveRequestDTO.getDay()) != null) {
+        if (dutyRepository.findByDutyDay(dutySaveRequestDTO.getDay()) != null) {
             throw new AlreadyDutyException("이미 당직이 존재합니다.");
         }
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
@@ -16,7 +17,7 @@ public class DutyModifyDTO {
 
     @NotBlank(message = "당직 ID 정보를 입력하세요")
     private Long id;
-    @NotBlank(message = "변경할 당직 날짜를 입력하세요")
+    @NotNull(message = "변경할 당직 날짜를 입력하세요")
     private LocalDate day;
 
 

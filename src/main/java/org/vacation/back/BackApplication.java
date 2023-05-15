@@ -12,6 +12,7 @@ import org.vacation.back.common.DepartmentStatus;
 
 import org.vacation.back.common.MemberStatus;
 import org.vacation.back.common.VacationStatus;
+
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.repository.DepartmentRepository;
@@ -38,6 +39,36 @@ public class BackApplication {
 							   DepartmentRepository departmentRepository,
 							   DutyRepository dutyrepository
 							){
+
+		return (args)->{
+			departmentRepository.save(Department.builder()
+					.departmentName("개발")
+					.vacationLimit(3)
+					.departmentPersonal(10)
+					.build());
+			Department department = departmentRepository.save(Department.builder()
+					.departmentName("인사")
+					.vacationLimit(3)
+					.departmentPersonal(10)
+					.build());
+			departmentRepository.save(Department.builder()
+					.departmentName("마케팅")
+					.vacationLimit(3)
+					.departmentPersonal(10)
+					.build());
+
+			Position position = positionRepository.save(Position.builder()
+					.positionName("대리")
+					.vacation("40")
+					.build());
+
+			positionRepository.save(Position.builder()
+					.positionName("사원")
+					.vacation("10")
+					.status(PositionStatus.ACTIVATION)
+					.build());
+
+
 
 		return (args)->{
 			departmentRepository.save(Department.builder()

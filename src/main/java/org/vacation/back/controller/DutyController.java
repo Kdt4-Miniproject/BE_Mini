@@ -3,6 +3,8 @@ package org.vacation.back.controller;
 import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -15,11 +17,12 @@ import org.vacation.back.dto.common.DutyDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
-import org.vacation.back.exception.CommonException;
-import org.vacation.back.exception.ErrorCode;
+import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +35,12 @@ import java.util.Optional;
 public class DutyController {
     public final DutyService dutyService;
 
+    @ExceptionHandler(CommonException.class)
     @PostMapping("save")
     public ResponseEntity<CommonResponse> save(
-            @RequestBody DutySaveRequestDTO dutySaveRequestDTO, HttpServletRequest request){
+            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO){
 
-        if(dutySaveRequestDTO.getUsername() == null || dutySaveRequestDTO.getDay() == null){
-            throw new CommonException(ErrorCode.DTO_IS_NULL, "입력을 완료하세요");
-        }
 
-        dutySaveRequestDTO.setUsername((String) request.getAttribute("username"));
         dutyService.dutySave(dutySaveRequestDTO);
 
         return ResponseEntity.ok(CommonResponse.builder()
@@ -64,24 +64,29 @@ public class DutyController {
 
 
     @GetMapping({"list/{month}","list"})
-    public ResponseEntity<CommonResponse> dutyList(@PathVariable(value = "month", required = false) String month){
-        //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
-        List<DutyResponseDTO> dutyResponseDTOList;
+    public ResponseEntity<CommonResponse> dutyList(@PathVariable(value = "month", required = false) String month,
+                                                   @RequestParam(name = "page", defaultValue = "0")int page,
+                                                   @RequestParam(name = "size", defaultValue = "10")int size){
+
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<DutyResponseDTO> dutyPage;
+
         if(month != null){
             if(!"0".equals(month)) {
-                dutyResponseDTOList = dutyService.dutyListMonth(month);
+                dutyPage =  dutyService.dutyListMonth(month, pageable);
 
             }else{
-                dutyResponseDTOList = dutyService.dutyListStatus();
+                dutyPage = dutyService.dutyListStatus(pageable);
             }
         }else{
             int currentMonth = LocalDate.now().getMonthValue();
-            dutyResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
+            dutyPage = dutyService.dutyListMonth(String.valueOf(currentMonth), pageable);
         }
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyResponseDTOList)
+                .data(dutyPage)
                 .build());
     }
 
@@ -89,10 +94,7 @@ public class DutyController {
     @PostMapping("modify")
     public ResponseEntity<CommonResponse> modify(
             @RequestBody DutyModifyDTO dutyModifyDTO){
-        //TODO: 맞 트레이드 하는 로직
-        if (dutyModifyDTO.getDay() == null) {
-            throw new CommonException(ErrorCode.DTO_IS_NULL, "입력을 완료하세요");
-        }
+
 
         dutyService.dutyModify(dutyModifyDTO);
 
@@ -115,6 +117,7 @@ public class DutyController {
                 .build());
     }
 
+
     @Permission
     @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
@@ -126,6 +129,8 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+
+
     @Permission
     @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
@@ -138,17 +143,89 @@ public class DutyController {
                 .build());
     }
 
-    //당직 임의 배정
-    @Permission
-    @GetMapping("assign")
-    public ResponseEntity<CommonResponse> assign() {
+    @ExceptionHandler(DutyMemberNotFoundException.class)
+    public ResponseEntity<CommonResponse<?>> dutyMemberNotFoundException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.NOTFOUND_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(PastDateForDutyException.class)
+    public ResponseEntity<CommonResponse<?>> pastDateForDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.PASTDATE_DUTY)
+                        .data(false)
+                        .build());
+    }
 
-        List<DutyResponseDTO> dutyResponseDTO = dutyService.dutyAssign();
+    @ExceptionHandler(AlreadyDutyException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_DUTY)
+                        .data(false)
+                        .build());
+    }
 
-        return ResponseEntity.ok(CommonResponse.builder()
-                .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyResponseDTO)
-                .build());
+    @ExceptionHandler(NotFoundDutyException.class)
+    public ResponseEntity<CommonResponse<?>> notFoundId() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.UNREGISTERDE_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyDeletedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyDeletedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_DELETED_DUTY)
+                        .data(false)
+                        .build());
+    }
 
+    @ExceptionHandler(AlreadyOkException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyOkDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_OK_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyRejectedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyRejectedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_REJECTED_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyModifyException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyModifyDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_MODIFY_DUTY)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(DuplicatedDutyException.class)
+    public ResponseEntity<CommonResponse<?>> duplicatedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.DUPLICATED_DUTY)
+                        .data(false)
+                        .build());
     }
 }
+

@@ -1,9 +1,12 @@
 package org.vacation.back.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -14,9 +17,9 @@ public interface DutyService {
 
     public DutyResponseDTO dutyDetail(Long id);
 
-    public List<DutyResponseDTO> dutyListStatus();
+    public Page<DutyResponseDTO> dutyListStatus(Pageable pageable);
 
-    public List<DutyResponseDTO> dutyListMonth(String month);
+    public Page<DutyResponseDTO> dutyListMonth(String month, Pageable pageable);
 
     public void dutyModify(DutyModifyDTO dutyModifyDTO);
 
@@ -25,8 +28,6 @@ public interface DutyService {
     public void dutyOk(Long id);
 
     public void dutyRejected(Long id);
-
-    public List<DutyResponseDTO> dutyAssign();
 
 
 }

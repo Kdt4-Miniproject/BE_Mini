@@ -125,21 +125,21 @@ public class DutyControllerTest extends MyWithRTestDoc {
 
         DutySaveRequestDTO save_test1 = DutySaveRequestDTO.builder()
                 .username("user")
-                .day(LocalDate.parse("2023-05-12"))
+                .day(LocalDate.parse("2023-05-15"))
                 .status(DutyStatus.WAITING)
                 .build();
         dutyService.dutySave(save_test1);
 
         DutySaveRequestDTO save_test2 = DutySaveRequestDTO.builder()
                 .username("user")
-                .day(LocalDate.parse("2023-05-13"))
+                .day(LocalDate.parse("2023-05-16"))
                 .status(DutyStatus.WAITING)
                 .build();
         dutyService.dutySave(save_test2);
 
         DutySaveRequestDTO save_test3 = DutySaveRequestDTO.builder()
                 .username("user")
-                .day(LocalDate.parse("2023-05-14"))
+                .day(LocalDate.parse("2023-05-17"))
                 .status(DutyStatus.WAITING)
                 .build();
         dutyService.dutySave(save_test3);
@@ -154,7 +154,7 @@ public class DutyControllerTest extends MyWithRTestDoc {
 
         DutySaveRequestDTO dutySaveRequestDTO = DutySaveRequestDTO.builder()
                 .username("user")
-                .day(LocalDate.parse("2023-05-13"))
+                .day(LocalDate.parse("2023-05-15"))
                 .status(DutyStatus.WAITING)
                 .build();
 
@@ -168,12 +168,12 @@ public class DutyControllerTest extends MyWithRTestDoc {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dutySaveRequestDTO))
                 .header("Authorization",token)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isBadRequest());
 
 
         //then
         resultActions.andExpect(jsonPath("$.data").value(true));
-        resultActions.andExpect(jsonPath("$.status").value(200));
+        resultActions.andExpect(jsonPath("$.status").value(400));
         resultActions.andDo(MockMvcResultHandlers.print()).andDo(document);
     }
 

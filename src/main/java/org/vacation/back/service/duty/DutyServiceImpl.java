@@ -1,7 +1,5 @@
 package org.vacation.back.service.duty;
-
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,7 +8,6 @@ import org.vacation.back.common.DutyStatus;
 import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
-import org.vacation.back.dto.request.duty.DutyAssignDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
@@ -18,11 +15,10 @@ import org.vacation.back.exception.*;
 import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.service.DutyService;
+import org.vacation.back.utils.AssignUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -30,6 +26,8 @@ public class DutyServiceImpl implements DutyService {
     private final DutyRepository dutyRepository;
 
     private final MemberRepository memberRepository;
+
+    private final AssignUtils assignUtils;
 
     @Transactional
     public void dutySave(DutySaveRequestDTO dutySaveRequestDTO) {
@@ -192,4 +190,18 @@ public class DutyServiceImpl implements DutyService {
             duty.setStatus(DutyStatus.REJECTED);
         }
     }
+
+
+    @Transactional
+    public void dutyAssign(){
+
+        List<Duty> duty = dutyRepository.findAll();
+        if (duty.isEmpty()) {
+            assignUtils.assign();
+
+        }else{
+            throw new IntialDutyException("없음");
+        }
+    }
+
 }

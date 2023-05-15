@@ -28,6 +28,7 @@ public interface DutyService {
     public void dutyOk(Long id);
 
     public void dutyRejected(Long id);
+    public void dutyAssign();
 
 
 }

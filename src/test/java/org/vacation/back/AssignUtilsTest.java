@@ -59,7 +59,6 @@ public class AssignUtilsTest {
         List<Duty> originalDuties = dutyRepository.findAllByStatus(DutyStatus.WAITING);
         for (Duty duty : originalDuties) {
             System.out.println("기존 데이터 - 날짜: " + duty.getDay() + " | 유저네임: " + duty.getMember().getUsername() + " | 상태: " + duty.getStatus());
-
             System.out.println("=============================================");
         }
 

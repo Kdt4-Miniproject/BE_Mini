@@ -30,10 +30,9 @@ public class VacationServiceImpl implements VacationService {
 
     @Transactional
     public void vacationSave(VacationSaveRequestDTO dto, HttpServletRequest request) {
-        Member member = vacationRepository.findBymember("test", MemberStatus.ACTIVATION);
+        Member member = vacationRepository.findBymember(request.getAttribute("username").toString(), MemberStatus.ACTIVATION);
 
         List<Vacation> vacationList = vacationRepository.findAllByDepartment(member.getDepartment().getDepartmentName());
-        System.out.println(member.getDepartment().getDepartmentName());
         LocalDate temp = dto.getStart();
         LocalDate currentDate = LocalDate.now();
         int lastDayOfMonth = currentDate.lengthOfMonth();
@@ -51,7 +50,7 @@ public class VacationServiceImpl implements VacationService {
             if(arr[temp.getDayOfMonth()] >= member.getDepartment().getVacationLimit()){
                 throw new AlreadyVacationException("보유 연차 초과");
             }
-            temp.plusDays(1L);
+            temp = temp.plusDays(1L);
         }
 
 
@@ -87,8 +86,9 @@ public class VacationServiceImpl implements VacationService {
             dto.setMemberName(vacation.getMember().getName());
             dto.setStart(vacation.getStart());
             dto.setEnd(vacation.getEnd());
-            dto.setCreateAt(vacation.getCreatedAt());
+            dto.setCreatedAt(vacation.getCreatedAt());
             dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
+            dto.setPositionName(vacation.getMember().getPosition().getPositionName());
             dto.setStatus(vacation.getStatus());
             return dto;
         });
@@ -99,15 +99,16 @@ public class VacationServiceImpl implements VacationService {
 
     public Page<VacationResponseDTO> vacationListStatus(Pageable pageable) {
 
-        Page<Vacation> vacationList = vacationRepository.findAllByVacationStatus(VacationStatus.WAITING, pageable);
+        Page<Vacation> vacationList = vacationRepository.findAllByVacationStatus(pageable);
         Page<VacationResponseDTO> vacationResponseList = vacationList.map(vacation -> {
             VacationResponseDTO dto = new VacationResponseDTO();
             dto.setId(vacation.getId());
             dto.setMemberName(vacation.getMember().getName());
             dto.setStart(vacation.getStart());
             dto.setEnd(vacation.getEnd());
-            dto.setCreateAt(vacation.getCreatedAt());
+            dto.setCreatedAt(vacation.getCreatedAt());
             dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
+            dto.setPositionName(vacation.getMember().getPosition().getPositionName());
             dto.setStatus(vacation.getStatus());
             return dto;
         });

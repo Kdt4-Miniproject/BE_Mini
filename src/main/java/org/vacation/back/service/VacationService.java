@@ -19,7 +19,7 @@ public interface VacationService {
 
     public Page<VacationResponseDTO> vacationListMonth(String month, Pageable pageable);
 
-    public Page<VacationResponseDTO> vacationListStatus(Pageable pageable);
+    public List<VacationResponseDTO> vacationListStatus();
 
     public void vacationModify(VacationModifyDTO dto);
 

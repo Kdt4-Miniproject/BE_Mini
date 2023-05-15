@@ -42,12 +42,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     public DepartmentDTO departmentDetail(String id) {
-        Department dtoPS = departmentRepository.findById(id).orElseThrow(NotFoundDepartmentException::new);
-        return new DepartmentDTO(dtoPS);
+        try {
+            Department dtoPS = departmentRepository.findByDepartmentId(id);
+            return new DepartmentDTO(dtoPS);
+        } catch (Exception e) {
+            throw new NotFoundDepartmentException();
+        }
     }
 
     public List<DepartmentDTO> departmentList() {
-        List<Department> departmentList = departmentRepository.findAll();
+        List<Department> departmentList = departmentRepository.findByDepartmentAll();
         List<DepartmentDTO> departmentDTOList = new ArrayList<>();
         for (Department department : departmentList) {
             departmentDTOList.add(new DepartmentDTO(department));

@@ -55,10 +55,20 @@ public class BackApplication {
 					.build());
 
 			Position position = positionRepository.save(Position.builder()
-					.positionName("대리")
-					.vacation("40")
+					.positionName("사원")
+					.vacation("4")
+					.status(PositionStatus.ACTIVATION)
 					.build());
-
+			positionRepository.save(Position.builder()
+					.positionName("대리")
+					.vacation("20")
+					.status(PositionStatus.ACTIVATION)
+					.build());
+			positionRepository.save(Position.builder()
+					.positionName("과장")
+					.vacation("40")
+					.status(PositionStatus.ACTIVATION)
+					.build());
 
 			memberRepository.save(Member.builder()
 					.username("admin")

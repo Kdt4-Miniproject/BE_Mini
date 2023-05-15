@@ -6,12 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.vacation.back.common.DepartClassification;
-import org.vacation.back.common.DepartmentStatus;
-
-import org.vacation.back.common.MemberStatus;
-import org.vacation.back.common.VacationStatus;
+import org.vacation.back.common.*;
 
 import org.vacation.back.domain.*;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
@@ -27,6 +24,7 @@ import java.util.stream.IntStream;
 
 
 
+@EnableScheduling
 @EnableJpaAuditing
 @SpringBootApplication
 public class BackApplication {
@@ -39,35 +37,6 @@ public class BackApplication {
 							   DepartmentRepository departmentRepository,
 							   DutyRepository dutyrepository
 							){
-
-		return (args)->{
-			departmentRepository.save(Department.builder()
-					.departmentName("개발")
-					.vacationLimit(3)
-					.departmentPersonal(10)
-					.build());
-			Department department = departmentRepository.save(Department.builder()
-					.departmentName("인사")
-					.vacationLimit(3)
-					.departmentPersonal(10)
-					.build());
-			departmentRepository.save(Department.builder()
-					.departmentName("마케팅")
-					.vacationLimit(3)
-					.departmentPersonal(10)
-					.build());
-
-			Position position = positionRepository.save(Position.builder()
-					.positionName("대리")
-					.vacation("40")
-					.build());
-
-			positionRepository.save(Position.builder()
-					.positionName("사원")
-					.vacation("10")
-					.status(PositionStatus.ACTIVATION)
-					.build());
-
 
 
 		return (args)->{
@@ -150,45 +119,53 @@ public class BackApplication {
 				Department department1 = departmentRepository.save(Department.builder()
 						.departmentName("관리")
 						.departmentPersonal(1)
+						.vacationLimit(3)
 						.status(DepartmentStatus.ACTIVATION)
 						.build());
 
 				Department department2 = departmentRepository.save(Department.builder()
 						.departmentName("개발")
 						.departmentPersonal(10)
+						.vacationLimit(3)
 						.status(DepartmentStatus.ACTIVATION)
 						.build());
 				Department department3 = departmentRepository.save(Department.builder()
 						.departmentName("인사")
 						.departmentPersonal(10)
+						.vacationLimit(3)
 						.status(DepartmentStatus.ACTIVATION)
 						.build());
 				Department department4 = departmentRepository.save(Department.builder()
 						.departmentName("마케팅")
 						.departmentPersonal(10)
+						.vacationLimit(3)
 						.status(DepartmentStatus.ACTIVATION)
 						.build());
 
 				Position position2 = positionRepository.save(Position.builder()
 						.positionName("사원")
 						.vacation("40")
+						.status(PositionStatus.ACTIVATION)
 						.build());
 
 
 				Position position3 = positionRepository.save(Position.builder()
 						.positionName("대리")
 						.vacation("40")
+						.status(PositionStatus.ACTIVATION)
 						.build());
 
 				Position position4 = positionRepository.save(Position.builder()
-						.positionName("과장")
+						.positionName("팀장")
 						.vacation("40")
+						.status(PositionStatus.ACTIVATION)
 						.build());
 
 
 				Position position1 = positionRepository.save(Position.builder()
 						.positionName("어드민")
 						.vacation("40")
+						.status(PositionStatus.ACTIVATION)
 						.build());
 
 

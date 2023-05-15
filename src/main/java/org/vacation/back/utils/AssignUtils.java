@@ -2,6 +2,7 @@ package org.vacation.back.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.vacation.back.common.DutyStatus;
 
@@ -14,6 +15,7 @@ import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,8 +32,12 @@ public class AssignUtils {
 
     /**
      * 매달 1일에 해당 메소드 실행된다.
-<<<<<<< HEAD
+
      */
+
+
+
+    @Scheduled(cron = "0 0 0 1 * ?")
     public void assign() {
         LocalDate now = LocalDate.now();
         int currentMonth = now.getMonthValue(); // 현재 몇월인지

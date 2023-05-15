@@ -145,10 +145,15 @@ public class DutyServiceImpl implements DutyService {
 
         if (duty.getStatus() == DutyStatus.DELETED) {
             throw new AlreadyDeletedException("이미 삭제된 당직입니다.");
+        } else if (duty.getStatus() == DutyStatus.REJECTED) {
+            throw new AlreadyRejectedException("이미 거절된 당직입니다.");
+        } else if (duty.getStatus() == DutyStatus.OK) {
+            throw new AlreadyOkException("이미 승인된 당직입니다.");
+        } else {
+
+            duty.setStatus(DutyStatus.DELETED);
+
         }
-
-        duty.setStatus(DutyStatus.DELETED);
-
     }
 
     @Transactional

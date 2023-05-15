@@ -26,7 +26,7 @@ import java.util.List;
 public class DutyController {
     public final DutyService dutyService;
 
-    @ExceptionHandler(CommonException.class)
+
     @PostMapping("save")
     public ResponseEntity<CommonResponse> save(
             @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO){
@@ -258,6 +258,15 @@ public class DutyController {
         return ResponseEntity
                 .status(commonResponse.getStatus())
                 .body(commonResponse);
+    }
+    @ExceptionHandler(SameDayException.class)
+    public ResponseEntity<CommonResponse<?>> sameDayException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SAME_DAY_DUTY)
+                        .data(false)
+                        .build());
     }
 }
 

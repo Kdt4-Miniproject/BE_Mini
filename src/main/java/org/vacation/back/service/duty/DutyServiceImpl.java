@@ -112,11 +112,19 @@ public class DutyServiceImpl implements DutyService {
     public void dutyModify(DutyModifyDTO dutyModifyDTO) {
         Duty duty = dutyRepository.findById(dutyModifyDTO.getId()).orElseThrow(NotFoundDutyException::new);
 
-
         LocalDate currentDay = duty.getDay();
         LocalDate wantedDay = dutyModifyDTO.getDay();
 
-
+        if(currentDay.equals(wantedDay)) {
+            throw new SameDayException("같은 날짜로 수정을 요청하였습니다.");
+        }else if(duty.getStatus() == DutyStatus.DELETED) {
+            throw new AlreadyDeletedException("이미 삭제된 당직입니다.");
+        }else if (duty.getStatus() == DutyStatus.REJECTED) {
+            throw new AlreadyRejectedException("이미 거절된 당직입니다.");
+        }else if (duty.getStatus() == DutyStatus.OK) {
+            throw new AlreadyOkException("이미 승인된 당직입니다.");
+        }
+        
         Duty duty2 = dutyRepository.findByDay(wantedDay);
         if(duty2 == null){
             duty.modifyDuty(wantedDay);

@@ -29,6 +29,12 @@ public class DutyServiceImpl implements DutyService {
 
     private final AssignUtils assignUtils;
 
+
+    @Transactional
+    public List<DutyResponseDTO> findAllOk() {
+        return dutyRepository.findAllOk().stream().map(DutyResponseDTO::toDTO).toList();
+    }
+
     @Transactional
     public void dutySave(DutySaveRequestDTO dutySaveRequestDTO) {
 

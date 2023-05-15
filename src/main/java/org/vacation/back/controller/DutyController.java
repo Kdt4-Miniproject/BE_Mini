@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
+import org.vacation.back.domain.Duty;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
@@ -16,6 +17,7 @@ import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -83,13 +85,12 @@ public class DutyController {
             }
         }else{
             int currentMonth = LocalDate.now().getMonthValue();
-            dutyPage = dutyService.dutyListMonth(String.valueOf(currentMonth), pageable);
-            pageResponseDTO = PageResponseDTO.builder()
-                    .first(dutyPage.isFirst())
-                    .last(dutyPage.isLast())
-                    .content(dutyPage.getContent())
-                    .total(dutyPage.getTotalElements())
-                    .build();
+            List<DutyResponseDTO> dutyList = dutyService.findAllOk();
+
+            return ResponseEntity.ok(CommonResponse.builder()
+                    .codeEnum(CodeEnum.SUCCESS)
+                    .data(dutyList)
+                    .build());
         }
 
         return ResponseEntity.ok(CommonResponse.builder()

@@ -11,6 +11,7 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Vacation;
+import org.vacation.back.dto.response.DutyResponseDTO;
 
 
 import java.time.LocalDate;
@@ -70,5 +71,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
 
     @Query("SELECT m FROM Member m WHERE m.username = :username AND m.memberStatus = :memberStatus")
     Member findByUsernameAndMemberStatus(@Param("username") String username, @Param("memberStatus") MemberStatus memberStatus);
+
+    @Query("select d from Duty d join fetch d.member m where d.status = 'OK'")
+    List<Duty> findAllOk();
 
 }

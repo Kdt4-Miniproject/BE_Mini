@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.PositionStatus;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +24,7 @@ public class Position {
     private String vacation; // 직급에 맞는 휴가 개수
 
     @Column(name = "position_status")
+    @Enumerated(EnumType.STRING)
     @Builder.Default
     private PositionStatus status = PositionStatus.ACTIVATION;
 

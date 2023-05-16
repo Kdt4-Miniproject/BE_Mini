@@ -108,6 +108,7 @@ public class VacationServiceImpl implements VacationService {
             dto.setMemberName(vacation.getMember().getName());
             dto.setStart(vacation.getStart());
             dto.setEnd(vacation.getEnd());
+            dto.setEmployeeNumber(vacation.getMember().getEmployeeNumber());
             dto.setCreatedAt(vacation.getCreatedAt());
             dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
             dto.setPositionName(vacation.getMember().getPosition().getPositionName());

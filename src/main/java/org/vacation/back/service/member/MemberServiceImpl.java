@@ -307,8 +307,8 @@ public class MemberServiceImpl implements MemberService {
                         .map(Member::getUsername).toList(),pageable);
 
         List<VacationResponseDTO> content = vacations.getContent()
-                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation, departmentName,
-                vacation.getMember().getPosition().getPositionName())).toList();
+                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation,vacation.getMember(),
+                        departmentName, vacation.getMember().getPosition().getPositionName())).toList();
 
        PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
                .content(content)

@@ -60,8 +60,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath username = createString("username");
 
-    public final StringPath vacationLimit = createString("vacationLimit");
-
     public final ListPath<Vacation, QVacation> vacationTemps = this.<Vacation, QVacation>createList("vacationTemps", Vacation.class, QVacation.class, PathInits.DIRECT2);
 
     public QMember(String variable) {

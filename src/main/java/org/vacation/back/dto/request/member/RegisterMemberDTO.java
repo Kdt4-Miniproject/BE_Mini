@@ -39,7 +39,6 @@ public class RegisterMemberDTO {
     private String positionName;    //FK
 
     @NotEmpty
-    @Pattern(regexp = "^01[0-9]{8,9}$")
     private String phoneNumber;
 
     @NotEmpty

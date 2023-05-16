@@ -8,6 +8,7 @@ import org.vacation.back.dto.request.member.*;
 import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MemberService {

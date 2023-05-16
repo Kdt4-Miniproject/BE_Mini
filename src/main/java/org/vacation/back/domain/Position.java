@@ -32,9 +32,7 @@ public class Position {
     @Builder.Default
     private List<Member> memberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "positionName")
-    @Builder.Default
-    private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
+
 
     public void modify(String vacation) {
         this.vacation = vacation;

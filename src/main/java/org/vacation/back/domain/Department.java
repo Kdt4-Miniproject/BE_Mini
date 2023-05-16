@@ -33,9 +33,6 @@ public class Department {
     @Builder.Default
     private List<Member> memberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "departmentName")
-    @Builder.Default
-    private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
 
     public void modify(Integer vacationLimit) {
         this.vacationLimit = vacationLimit;

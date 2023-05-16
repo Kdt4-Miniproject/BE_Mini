@@ -26,6 +26,7 @@ import org.vacation.back.service.FileService;
 import org.vacation.back.service.MemberService;
 
 import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.time.Year;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -133,22 +134,30 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(isolation = Isolation.REPEATABLE_READ)
-    public boolean memberModify(MemberModifyDTO dto, String username) {
+    public boolean memberModify(MemberModifyDTO dto, String username)  {
 
         Optional<Member> optional = memberRepository.findByUsername(username);
         boolean exist = optional.isPresent();
 
         if(exist){
-            Member member = optional.get();
-            if(!passwordEncoder.matches(dto.getOldPassword(),member.getPassword())) throw new PasswordNotMatchException("패스워드가 틀립니다.");
-            //암호화된게 뒤로 와야함
-            if(dto.getOldPassword() != null) member.changePassword(passwordEncoder.encode(dto.getNewPassword()));
-            member.changeEmail(dto.getEmail());
-            member.changePhoneNumber(dto.getPhoneNumber());
-            member.changeFileName(dto.getFileName());
-            member.changeName(dto.getName());
+             try{
+                 Member member = optional.get();
+                 if(!passwordEncoder.matches(dto.getOldPassword(),member.getPassword())) throw new PasswordNotMatchException("패스워드가 틀립니다.");
+                 //암호화된게 뒤로 와야함
+                 if(dto.getOldPassword() != null) member.changePassword(passwordEncoder.encode(dto.getNewPassword()));
+                 member.changeEmail(dto.getEmail());
+                 member.changePhoneNumber(dto.getPhoneNumber());
 
-            return true;
+                 String fileName =  fileService.S3ToTemp(dto.getFileName());
+
+                 member.changeFileName(fileName);
+                 member.changeName(dto.getName());
+
+                 return true;
+
+             }catch (IOException ignored){
+                 return false;
+             }
         }
         else return false;
     }

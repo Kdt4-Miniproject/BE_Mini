@@ -23,14 +23,14 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>{
 
     //해당 달만 정보를 넘겨줘야함
 
-    @Query(value = "select v from Vacation v join fetch v.member m WHERE FUNCTION('MONTH', v.start) = :month AND v.status <> 'DELETED'",
-            countQuery = "select count(v) from Vacation v join v.member m WHERE FUNCTION('MONTH', v.start) = :month AND v.status <> 'DELETED'")
-    Page<Vacation> findAllByVacationMonth(@Param("month") Integer month, Pageable pageable);
+    @Query(value = "select v from Vacation v join fetch v.member m WHERE FUNCTION('MONTH', v.start) = :month AND v.status <> 'DELETED'")
+    List<Vacation> findAllByVacationMonth(@Param("month") Integer month);
 
 
     //inner join
-    @Query(value = "select v from Vacation v join fetch v.member m WHERE v.status = 'WAITING' or v.status = 'UPDATE_WAITING'")
-    List<Vacation> findAllByVacationStatus();
+    @Query(value = "select v from Vacation v join fetch v.member m WHERE v.status = 'WAITING' or v.status = 'UPDATE_WAITING'",
+            countQuery = "select count(v) from Vacation v join v.member m WHERE FUNCTION('MONTH', v.start) = :month")
+    Page<Vacation> findAllByVacationStatus(@Param("status")Pageable pageable);
 
     @Query("select v from Vacation v where v.member.username = :userName AND v.status <> 'DELETED'")
     List<Vacation> findByVacationUserName(@Param("userName") String userName);

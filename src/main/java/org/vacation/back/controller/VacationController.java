@@ -65,39 +65,34 @@ public class VacationController {
 
         Page<VacationResponseDTO> vacationPage;
         PageResponseDTO<?> pageResponseDTO;
+        List<VacationResponseDTO> vacationResponseDTOList;
 
         if (month != null){
-            if (!"0".equals(month)) { // month가 0일때 WAITING 상태인 data만 불러옴
-                vacationPage = vacationService.vacationListMonth(month, pageable);
+            if (!"0".equals(month)) {
+                vacationResponseDTOList = vacationService.vacationListMonth(month);
+
+            }else {// month가 0일때 WAITING 상태인 data만 불러옴
+                vacationPage = vacationService.vacationListStatus(pageable);
                 pageResponseDTO = PageResponseDTO.builder()
                         .first(vacationPage.isFirst())
                         .last(vacationPage.isLast())
                         .content(vacationPage.getContent())
                         .total(vacationPage.getTotalElements())
                         .build();
-            }else {
-                List<VacationResponseDTO> vacationListStatus = vacationService.vacationListStatus();
-
                 return ResponseEntity.ok(CommonResponse.builder()
                                 .codeEnum(CodeEnum.SUCCESS)
-                                .data(vacationListStatus)
+                                .data(pageResponseDTO)
                         .build());
             }
         }else { // month가 없을 경우 이번달 정보만 가져오기
             int currentMonth = LocalDate.now().getMonthValue();
-            vacationPage = vacationService.vacationListMonth(String.valueOf(currentMonth), pageable);
-            pageResponseDTO = PageResponseDTO.builder()
-                    .first(vacationPage.isFirst())
-                    .last(vacationPage.isLast())
-                    .content(vacationPage.getContent())
-                    .total(vacationPage.getTotalElements())
-                    .build();
+            vacationResponseDTOList = vacationService.vacationListMonth(String.valueOf(currentMonth));
         }
 
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(pageResponseDTO)
+                .data(vacationResponseDTOList)
                 .build());
     }
 

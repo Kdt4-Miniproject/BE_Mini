@@ -10,15 +10,14 @@ import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
+import org.vacation.back.dto.response.DutyMainResponseDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.service.DutyService;
 import org.vacation.back.utils.AssignUtils;
-
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,24 +63,24 @@ public class DutyServiceImpl implements DutyService {
         return dutyResponseDTO;
     }
 
-    public List<DutyResponseDTO> dutyListMonth(String month) {
+    public List<DutyMainResponseDTO> dutyListMonth(String month) {
         List<Duty> dutyList = dutyRepository.findAllByDutyMonth(Integer.valueOf(month));
-        List<DutyResponseDTO> dutyResponseList = new ArrayList<>();
+        List<DutyMainResponseDTO> dutyMainResponseList = new ArrayList<>();
         for(Duty duty : dutyList){
-            DutyResponseDTO dutyResponseDTO = new DutyResponseDTO();
+            DutyMainResponseDTO dutyMainResponseDTO = new DutyMainResponseDTO();
 
-            dutyResponseDTO.setId(duty.getId());
-            dutyResponseDTO.setMemberName(duty.getMember().getName());
-            dutyResponseDTO.setDay(duty.getDay());
-            dutyResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
-            dutyResponseDTO.setStatus(duty.getStatus());
-            dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
-            dutyResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
-            dutyResponseList.add(dutyResponseDTO);
+            dutyMainResponseDTO.setId(duty.getId());
+            dutyMainResponseDTO.setMemberName(duty.getMember().getName());
+            dutyMainResponseDTO.setDay(duty.getDay());
+            dutyMainResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
+            dutyMainResponseDTO.setStatus(duty.getStatus());
+            dutyMainResponseDTO.setCreatedAt(duty.getCreatedAt());
+            dutyMainResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
+            dutyMainResponseList.add(dutyMainResponseDTO);
 
         }
 
-        return dutyResponseList;
+        return dutyMainResponseList;
     }
 
     public Page<DutyResponseDTO> dutyListStatus(Pageable pageable) {
@@ -102,11 +101,6 @@ public class DutyServiceImpl implements DutyService {
         });
 
         return dutyResponseList;
-    }
-
-    @Transactional
-    public List<DutyResponseDTO> findAllOk() {
-        return dutyRepository.findAllOk().stream().map(DutyResponseDTO::toDTO).toList();
     }
 
 
@@ -182,13 +176,15 @@ public class DutyServiceImpl implements DutyService {
                 duty.setStatus(DutyStatus.OK);
             }
         }else if (duty.getStatus() == DutyStatus.UPDATE_WAITING) {
-
-            Duty existingDuty = dutyRepository.findByDayAndOk(currentDay, DutyStatus.OK);
-            if (existingDuty != null) {
-                throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");
-            } else {
-                duty.setStatus(DutyStatus.OK);
-            }
+            duty.setStatus(DutyStatus.OK);
+            Duty existingDuty = dutyRepository.findByDayAndOk(originalDay, DutyStatus.UPDATE_WAITING);
+            existingDuty.setStatus(DutyStatus.OK);
+//            Duty existingDuty = dutyRepository.findByDayAndOk(currentDay, DutyStatus.OK);
+//            if (existingDuty != null) {
+//                throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");
+//            } else {
+//                duty.setStatus(DutyStatus.OK);
+//            }
         }else {
             duty.setStatus(DutyStatus.OK);
         }
@@ -206,17 +202,19 @@ public class DutyServiceImpl implements DutyService {
         }else if (duty.getStatus() == DutyStatus.WAITING){
             duty.setStatus(DutyStatus.REJECTED);
         }else if (duty.getStatus() == DutyStatus.UPDATE_WAITING) {
-
-            Duty existingDuty = dutyRepository.findByDayAndOk(originalDay, DutyStatus.OK);
-            if (existingDuty != null) {
-                throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");
-            } else {
-                duty.setDay(originalDay);
-                duty.setStatus(DutyStatus.UPDATE_WAITING);
-        }
-            }else{
             duty.setStatus(DutyStatus.REJECTED);
-            }
+            Duty existingDuty = dutyRepository.findByDayAndOk(originalDay, DutyStatus.UPDATE_WAITING);
+            existingDuty.setStatus(DutyStatus.REJECTED);
+
+//            if (existingDuty != null) {
+//                throw new DuplicatedDutyException("동일한 날짜에 이미 당직이 지정되어 있습니다.");
+//            }else{
+//                duty.setDay(originalDay);
+//                duty.setStatus(DutyStatus.REJECTED);
+//            }
+        }else{
+            duty.setStatus(DutyStatus.REJECTED);
+        }
 
         }
 

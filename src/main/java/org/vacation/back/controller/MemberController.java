@@ -146,8 +146,6 @@ public class MemberController {
     public ResponseEntity<CommonResponse<?>> modifyAdmin(
             @RequestBody AdminMemberModifyRequest adminMemberModifyRequest
     ){
-
-
         return ResponseEntity.ok()
                 .body(CommonResponse.builder()
                         .codeEnum(CodeEnum.SUCCESS)

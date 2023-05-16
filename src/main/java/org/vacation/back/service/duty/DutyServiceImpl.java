@@ -19,6 +19,7 @@ import org.vacation.back.utils.AssignUtils;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -67,10 +68,10 @@ public class DutyServiceImpl implements DutyService {
         return dutyResponseDTO;
     }
 
-    public Page<DutyResponseDTO> dutyListMonth(String month, Pageable pageable) {
-        Page<Duty> dutyList = dutyRepository.findAllByDutyMonth(Integer.valueOf(month), pageable);
-        Page<DutyResponseDTO> dutyResponseList = dutyList.map(duty ->{
-
+    public List<DutyResponseDTO> dutyListMonth(String month) {
+        List<Duty> dutyList = dutyRepository.findAllByDutyMonth(Integer.valueOf(month));
+        List<DutyResponseDTO> dutyResponseList = new ArrayList<>();
+        for(Duty duty : dutyList){
             DutyResponseDTO dutyResponseDTO = new DutyResponseDTO();
 
             dutyResponseDTO.setId(duty.getId());
@@ -79,15 +80,16 @@ public class DutyServiceImpl implements DutyService {
             dutyResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
             dutyResponseDTO.setStatus(duty.getStatus());
             dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
+            dutyResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
+            dutyResponseList.add(dutyResponseDTO);
 
-            return dutyResponseDTO;
-        });
+        }
 
         return dutyResponseList;
     }
 
     public Page<DutyResponseDTO> dutyListStatus(Pageable pageable) {
-        Page<Duty> dutyList =  dutyRepository.findAllByDutyStatus( pageable);
+        Page<Duty> dutyList =  dutyRepository.findAllByDutyStatus(pageable);
         Page<DutyResponseDTO> dutyResponseList = dutyList.map(duty -> {
 
             DutyResponseDTO dutyResponseDTO = new DutyResponseDTO();
@@ -98,6 +100,7 @@ public class DutyServiceImpl implements DutyService {
             dutyResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
             dutyResponseDTO.setStatus(duty.getStatus());
             dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
+            dutyResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
             return dutyResponseDTO;
         });
 

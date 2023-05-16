@@ -63,18 +63,14 @@ public class DutyController {
 
         Page<DutyResponseDTO> dutyPage;
         PageResponseDTO<?> pageResponseDTO;
+        List<DutyResponseDTO> dutyResponseDTOList;
 
         if (month != null) {
             if (!"0".equals(month)) {
-                dutyPage = dutyService.dutyListMonth(month, pageable);
-                pageResponseDTO = PageResponseDTO.builder()
-                        .first(dutyPage.isFirst())
-                        .last(dutyPage.isLast())
-                        .content(dutyPage.getContent())
-                        .total(dutyPage.getTotalElements())
-                        .build();
+                dutyResponseDTOList = dutyService.dutyListMonth(month);
 
-            } else {
+
+            } else { //month가 0일 때 waiting이랑 update waiting 상태인 data만 불러옴
                 dutyPage = dutyService.dutyListStatus(pageable);
                 pageResponseDTO = PageResponseDTO.builder()
                         .first(dutyPage.isFirst())
@@ -82,20 +78,23 @@ public class DutyController {
                         .content(dutyPage.getContent())
                         .total(dutyPage.getTotalElements())
                         .build();
-            }
-        } else {
-            int currentMonth = LocalDate.now().getMonthValue();
-            List<DutyResponseDTO> dutyList = dutyService.findAllOk();
 
-            return ResponseEntity.ok(CommonResponse.builder()
-                    .codeEnum(CodeEnum.SUCCESS)
-                    .data(dutyList)
-                    .build());
+                return ResponseEntity.ok(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SUCCESS)
+                        .data(pageResponseDTO)
+                        .build());
+            }
+        } else { // month가 없을 경우 이번달 정보만 가져옴
+
+            int currentMonth = LocalDate.now().getMonthValue();
+             dutyResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
+
+
         }
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(pageResponseDTO)
+                .data(dutyResponseDTOList)
                 .build());
     }
 

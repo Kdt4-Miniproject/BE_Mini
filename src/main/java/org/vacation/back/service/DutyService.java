@@ -21,7 +21,7 @@ public interface DutyService {
 
     public Page<DutyResponseDTO> dutyListStatus(Pageable pageable);
 
-    public Page<DutyResponseDTO> dutyListMonth(String month, Pageable pageable);
+    public List<DutyResponseDTO> dutyListMonth(String month);
 
     public void dutyModify(DutyModifyDTO dutyModifyDTO);
 

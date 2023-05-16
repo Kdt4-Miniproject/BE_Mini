@@ -11,6 +11,7 @@ import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
+import org.vacation.back.dto.response.DutyMainResponseDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
 import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.exception.*;
@@ -64,10 +65,11 @@ public class DutyController {
         Page<DutyResponseDTO> dutyPage;
         PageResponseDTO<?> pageResponseDTO;
         List<DutyResponseDTO> dutyResponseDTOList;
+        List<DutyMainResponseDTO> dutyMainResponseDTOList;
 
         if (month != null) {
             if (!"0".equals(month)) {
-                dutyResponseDTOList = dutyService.dutyListMonth(month);
+                dutyMainResponseDTOList = dutyService.dutyListMonth(month);
 
 
             } else { //month가 0일 때 waiting이랑 update waiting 상태인 data만 불러옴
@@ -87,14 +89,14 @@ public class DutyController {
         } else { // month가 없을 경우 이번달 정보만 가져옴
 
             int currentMonth = LocalDate.now().getMonthValue();
-             dutyResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
+            dutyMainResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
 
 
         }
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyResponseDTOList)
+                .data(dutyMainResponseDTOList)
                 .build());
     }
 

@@ -11,6 +11,7 @@ import org.vacation.back.annotation.AdminAndLeader;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationMainResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
@@ -66,10 +67,11 @@ public class VacationController {
         Page<VacationResponseDTO> vacationPage;
         PageResponseDTO<?> pageResponseDTO;
         List<VacationResponseDTO> vacationResponseDTOList;
+        List<VacationMainResponseDTO> vacationMainResponseDTOList;
 
         if (month != null){
             if (!"0".equals(month)) {
-                vacationResponseDTOList = vacationService.vacationListMonth(month);
+                vacationMainResponseDTOList = vacationService.vacationListMonth(month);
 
             }else {// month가 0일때 WAITING 상태인 data만 불러옴
                 vacationPage = vacationService.vacationListStatus(pageable);
@@ -86,13 +88,13 @@ public class VacationController {
             }
         }else { // month가 없을 경우 이번달 정보만 가져오기
             int currentMonth = LocalDate.now().getMonthValue();
-            vacationResponseDTOList = vacationService.vacationListMonth(String.valueOf(currentMonth));
+            vacationMainResponseDTOList = vacationService.vacationListMonth(String.valueOf(currentMonth));
         }
 
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(vacationResponseDTOList)
+                .data(vacationMainResponseDTOList)
                 .build());
     }
 

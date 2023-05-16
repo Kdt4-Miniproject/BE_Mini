@@ -11,6 +11,7 @@ import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Vacation;
 import org.vacation.back.dto.request.vacation.VacationModifyDTO;
 import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.dto.response.VacationMainResponseDTO;
 import org.vacation.back.dto.response.VacationResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.repository.MemberRepository;
@@ -78,12 +79,12 @@ public class VacationServiceImpl implements VacationService {
 
 
     @Override
-    public List<VacationResponseDTO> vacationListMonth(String month) {
+    public List<VacationMainResponseDTO> vacationListMonth(String month) {
 
         List<Vacation> vacationList = vacationRepository.findAllByVacationMonth(Integer.valueOf(month));
-        List<VacationResponseDTO> vacationResponseList = new ArrayList<>();
+        List<VacationMainResponseDTO> vacationResponseList = new ArrayList<>();
         for (Vacation vacation: vacationList) {
-            VacationResponseDTO dto = new VacationResponseDTO();
+            VacationMainResponseDTO dto = new VacationMainResponseDTO();
             dto.setId(vacation.getId());
             dto.setMemberName(vacation.getMember().getName());
             dto.setStart(vacation.getStart());

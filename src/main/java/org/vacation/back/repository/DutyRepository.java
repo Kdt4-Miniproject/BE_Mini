@@ -35,8 +35,13 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Duty findByDutyId(@Param("id") Long id);
 
-    @Query("select d from Duty d where d.day = :day")
+    @Query("SELECT d FROM Duty d WHERE d.day = :day AND (d.status = 'WAITING' OR d.status = 'UPDATE_WAITING')")
     Duty findByDay(@Param("day") LocalDate day);
+
+
+    @Query("select d from Duty d where d.day = :day and (d.status = 'WAITING' or d.status = 'UPDATE_WAITING' or d.status = 'OK')")
+    Duty findByDayStatus(@Param("day") LocalDate day);
+
 
 
     @Query("Select d from Duty d where d.day = :day")

@@ -21,12 +21,16 @@ public class AdminMemberModifyRequest {
 
     private String email;
     private String phoneNumber;
-    private String birthDate;
     private String joiningDay;
 
     @JsonIgnore
     private String years;
 
-    private String fileName;
+
+
+    private String departmentName;
+
+    private String positionName;
+
 
 }

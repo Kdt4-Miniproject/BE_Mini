@@ -3,6 +3,7 @@ package org.vacation.back.dto.response;
 import lombok.*;
 import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Department;
+import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Vacation;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class VacationResponseDTO {
 
     private String memberName;
 
+    private String employeeNumber;
     private LocalDate start;
 
     private LocalDate end;
@@ -32,7 +34,6 @@ public class VacationResponseDTO {
 
     private String positionName;
 
-    private String employeeNumber;
 
 
 
@@ -51,10 +52,11 @@ public class VacationResponseDTO {
                 .positionName(vacation.getMember().getPosition().getPositionName())
                 .build();
     }
-    public static VacationResponseDTO toDTOv(Vacation vacation,String departmentName,String positionName){
+    public static VacationResponseDTO toDTOv(Vacation vacation,Member member,String departmentName,String positionName){
         return VacationResponseDTO.builder()
                 .id(vacation.getId())
-                .memberName(vacation.getMember().getName())
+                .memberName(member.getName())
+                .employeeNumber(member.getEmployeeNumber())
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())

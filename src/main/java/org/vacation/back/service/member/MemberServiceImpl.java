@@ -157,6 +157,9 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public boolean adminModify(AdminMemberModifyRequest memberModifyRequest) {
 
+        Department department  = departmentRepository.findById(memberModifyRequest.getDepartmentName()).orElseThrow(NotFoundDepartmentException::new);
+        Position position = positionRepository.findById(memberModifyRequest.getPositionName()).orElseThrow(NotFoundPositionException::new);
+
 
         Integer year = Year.now().getValue() + 1;
         if(memberModifyRequest.getJoiningDay() != null){
@@ -176,10 +179,10 @@ public class MemberServiceImpl implements MemberService {
            member.changeName(memberModifyRequest.getName());
            member.changeEmail(memberModifyRequest.getEmail());
            member.changePhoneNumber(memberModifyRequest.getPhoneNumber());
-           member.changeBirthDate(memberModifyRequest.getBirthDate());
            member.changeJoiningDay(memberModifyRequest.getJoiningDay());
            member.changeYears(memberModifyRequest.getYears());
-           member.changeFileName(memberModifyRequest.getFileName());
+           member.changePosition(position);
+           member.changeDepartment(department);
         }
 
         return true;
@@ -307,8 +310,8 @@ public class MemberServiceImpl implements MemberService {
                         .map(Member::getUsername).toList(),pageable);
 
         List<VacationResponseDTO> content = vacations.getContent()
-                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation, departmentName,
-                vacation.getMember().getPosition().getPositionName())).toList();
+                .stream().map(vacation ->  VacationResponseDTO.toDTOv(vacation,vacation.getMember(),
+                        departmentName, vacation.getMember().getPosition().getPositionName())).toList();
 
        PageResponseDTO<?> pageResponseDTO = PageResponseDTO.builder()
                .content(content)

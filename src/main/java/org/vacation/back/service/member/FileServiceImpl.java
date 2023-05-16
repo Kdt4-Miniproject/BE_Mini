@@ -32,7 +32,7 @@ public class FileServiceImpl implements FileService {
 
 
 
-    @Value("${FILEPATH}")
+    @Value("${fild.path}")
     private String path;
 
     @Override

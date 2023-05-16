@@ -18,7 +18,7 @@ public class LocalTempUploader {
 
 
 
-    @Value("${FILEPATH}")
+    @Value("${fild.path}")
     private String path;
 
     public List<String> uploadLocal(FileDTO fileDTO){

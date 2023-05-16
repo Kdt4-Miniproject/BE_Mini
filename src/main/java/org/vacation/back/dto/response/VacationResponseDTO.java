@@ -34,7 +34,6 @@ public class VacationResponseDTO {
 
     private String positionName;
 
-    private String employeeNumber;
 
 
 

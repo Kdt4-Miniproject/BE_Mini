@@ -1,12 +1,9 @@
 package org.vacation.back.domain;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.DutyStatus;
-import org.vacation.back.common.VacationStatus;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

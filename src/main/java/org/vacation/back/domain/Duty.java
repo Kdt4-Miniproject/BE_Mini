@@ -2,8 +2,6 @@ package org.vacation.back.domain;
 
 import lombok.*;
 import org.vacation.back.common.DutyStatus;
-import org.vacation.back.common.VacationStatus;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 

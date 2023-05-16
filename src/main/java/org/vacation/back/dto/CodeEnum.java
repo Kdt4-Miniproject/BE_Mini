@@ -22,6 +22,8 @@ public enum CodeEnum {
     DUPLICATED_DUTY(400,"동일한 날짜에 이미 당직이 지정되었습니다."),
     NOTFOUND_DUTY(400, "회원을 찾을 수 없습니다."),
     PASTDATE_DUTY(400,"이미 지난 날짜로 당직을 신청할 수 없습니다."),
+    SAME_DAY_DUTY(400,"같은 날짜로 수정을 요청하였습니다."),
+    INVALID_DUTY_DAY(400, "유효하지 않은 당직 날짜입니다."),
     ALREADY_DUTY(400, "중복된 당직신청입니다.");
 
 

@@ -1,5 +1,4 @@
 package org.vacation.back.dto.request.duty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
-
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 

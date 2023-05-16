@@ -17,7 +17,7 @@ public interface VacationService {
 
     public VacationResponseDTO vacationDetail(Long id);
 
-    public Page<VacationResponseDTO> vacationListMonth(String month, Pageable pageable);
+    public List<VacationResponseDTO> vacationListMonth(String month);
 
     public Page<VacationResponseDTO> vacationListStatus(Pageable pageable);
 

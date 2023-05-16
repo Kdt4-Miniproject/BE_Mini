@@ -42,12 +42,16 @@ public class PositionServiceImpl implements PositionService {
     }
 
     public PositionDTO positionDetail(String id) {
-        Position dtoPS = positionRepository.findById(id).orElseThrow(NotFoundPositionException::new);
-        return new PositionDTO(dtoPS);
+        try {
+            Position dtoPS = positionRepository.findByPositionId(id);
+            return new PositionDTO(dtoPS);
+        } catch (Exception e) {
+            throw new NotFoundPositionException();
+        }
     }
 
     public List<PositionDTO> positionList() {
-        List<Position> positionList = positionRepository.findAll();
+        List<Position> positionList = positionRepository.findByPositionAll();
         List<PositionDTO> positionDTOList = new ArrayList<>();
         for (Position position : positionList) {
             positionDTOList.add(new PositionDTO(position));

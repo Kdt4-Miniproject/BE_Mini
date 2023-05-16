@@ -11,6 +11,7 @@ import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 import org.vacation.back.domain.Vacation;
+import org.vacation.back.dto.response.DutyResponseDTO;
 
 
 import java.time.LocalDate;
@@ -24,13 +25,12 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d where d.member.username = :username and d.day = :day")
     Duty findByDutyAndDay(@Param("username") String username, @Param("day") LocalDate day);
 
-    @Query(value = "select d from Duty d join fetch d.member m where d.status = :status AND d.status <> 'DELETED'",
-            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
-    Page<Duty> findAllByDutyStatus(@Param("status") DutyStatus status, Pageable pageable);
+    @Query(value = "select d from Duty d join fetch d.member m where d.status = 'WAITING' or d.status = 'UPDATE_WAITING' ",
+            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month")
+    Page<Duty> findAllByDutyStatus(@Param("status") Pageable pageable);
 
-    @Query(value = "select d from Duty d join fetch d.member m where month(d.day) = :month AND d.status <> 'DELETED'",
-            countQuery = "select count(d) from Duty d join d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
-    Page<Duty> findAllByDutyMonth(@Param("month") Integer month, Pageable pageable);
+    @Query(value = "select d from Duty d join fetch d.member m WHERE FUNCTION('MONTH', d.day) = :month AND d.status <> 'DELETED'")
+    List<Duty> findAllByDutyMonth(@Param("month") Integer month);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Duty findByDutyId(@Param("id") Long id);
@@ -39,8 +39,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     Duty findByDay(@Param("day") LocalDate day);
 
 
-    @Query("Select d from Duty d where d.member.username = :username and d.day = :day")
-    Duty findByDutyDay(@Param("username") String username, @Param("day") LocalDate day);
+    @Query("Select d from Duty d where d.day = :day")
+    Duty findByDutyDay(@Param("day") LocalDate day);
 
     @Query("select d from Duty d join fetch d.member m where d.id = :id")
     Optional<Duty> findByDuty(@Param("id") Long id);
@@ -70,5 +70,8 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
 
     @Query("SELECT m FROM Member m WHERE m.username = :username AND m.memberStatus = :memberStatus")
     Member findByUsernameAndMemberStatus(@Param("username") String username, @Param("memberStatus") MemberStatus memberStatus);
+
+    @Query("select d from Duty d join fetch d.member m where d.status <> 'DELETED'")
+    List<Duty> findAllOk();
 
 }

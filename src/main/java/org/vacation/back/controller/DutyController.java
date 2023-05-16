@@ -1,32 +1,23 @@
 package org.vacation.back.controller;
-
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.annotation.Permission;
-import org.vacation.back.common.DutyStatus;
+import org.vacation.back.domain.Duty;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
-import org.vacation.back.dto.common.DutyDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
-import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.dto.response.PageResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -35,10 +26,10 @@ import java.util.Optional;
 public class DutyController {
     public final DutyService dutyService;
 
-    @ExceptionHandler(CommonException.class)
+
     @PostMapping("save")
     public ResponseEntity<CommonResponse> save(
-            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO){
+            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO) {
 
 
         dutyService.dutySave(dutySaveRequestDTO);
@@ -51,7 +42,7 @@ public class DutyController {
 
     @GetMapping("detail/{id}")
     public ResponseEntity<CommonResponse> detail(
-            @PathVariable(value = "id") Long id){
+            @PathVariable(value = "id") Long id) {
 
         DutyResponseDTO dutyResponseDTO = dutyService.dutyDetail(id);
 
@@ -63,37 +54,54 @@ public class DutyController {
     }
 
 
-    @GetMapping({"list/{month}","list"})
+    @GetMapping({"list/{month}", "list"})
     public ResponseEntity<CommonResponse> dutyList(@PathVariable(value = "month", required = false) String month,
-                                                   @RequestParam(name = "page", defaultValue = "0")int page,
-                                                   @RequestParam(name = "size", defaultValue = "10")int size){
+                                                   @RequestParam(name = "page", defaultValue = "0") int page,
+                                                   @RequestParam(name = "size", defaultValue = "10") int size) {
 
         PageRequest pageable = PageRequest.of(page, size);
 
         Page<DutyResponseDTO> dutyPage;
+        PageResponseDTO<?> pageResponseDTO;
+        List<DutyResponseDTO> dutyResponseDTOList;
 
-        if(month != null){
-            if(!"0".equals(month)) {
-                dutyPage =  dutyService.dutyListMonth(month, pageable);
+        if (month != null) {
+            if (!"0".equals(month)) {
+                dutyResponseDTOList = dutyService.dutyListMonth(month);
 
-            }else{
+
+            } else { //month가 0일 때 waiting이랑 update waiting 상태인 data만 불러옴
                 dutyPage = dutyService.dutyListStatus(pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(dutyPage.isFirst())
+                        .last(dutyPage.isLast())
+                        .content(dutyPage.getContent())
+                        .total(dutyPage.getTotalElements())
+                        .build();
+
+                return ResponseEntity.ok(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SUCCESS)
+                        .data(pageResponseDTO)
+                        .build());
             }
-        }else{
+        } else { // month가 없을 경우 이번달 정보만 가져옴
+
             int currentMonth = LocalDate.now().getMonthValue();
-            dutyPage = dutyService.dutyListMonth(String.valueOf(currentMonth), pageable);
+             dutyResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
+
+
         }
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyPage)
+                .data(dutyResponseDTOList)
                 .build());
     }
 
 
     @PostMapping("modify")
     public ResponseEntity<CommonResponse> modify(
-            @RequestBody DutyModifyDTO dutyModifyDTO){
+            @RequestBody DutyModifyDTO dutyModifyDTO) {
 
 
         dutyService.dutyModify(dutyModifyDTO);
@@ -107,7 +115,7 @@ public class DutyController {
 
     @PostMapping("delete/{id}")
     public ResponseEntity<CommonResponse> delete(
-            @PathVariable(value = "id") Long id){
+            @PathVariable(value = "id") Long id) {
 
         dutyService.dutyDelete(id);
 
@@ -121,7 +129,7 @@ public class DutyController {
     @Permission
     @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
-            @PathVariable(value = "id") Long id){
+            @PathVariable(value = "id") Long id) {
 
         dutyService.dutyOk(id);
         return ResponseEntity.ok(CommonResponse.builder()
@@ -134,7 +142,7 @@ public class DutyController {
     @Permission
     @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
-            @PathVariable(value = "id") Long id){
+            @PathVariable(value = "id") Long id) {
 
         dutyService.dutyRejected(id);
         return ResponseEntity.ok(CommonResponse.builder()
@@ -142,6 +150,19 @@ public class DutyController {
                 .data(true)
                 .build());
     }
+
+    @Permission
+    @GetMapping("assign")
+    public ResponseEntity<CommonResponse> assign() {
+
+        dutyService.dutyAssign();
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
 
     @ExceptionHandler(DutyMemberNotFoundException.class)
     public ResponseEntity<CommonResponse<?>> dutyMemberNotFoundException() {
@@ -152,6 +173,7 @@ public class DutyController {
                         .data(false)
                         .build());
     }
+
     @ExceptionHandler(PastDateForDutyException.class)
     public ResponseEntity<CommonResponse<?>> pastDateForDutyException() {
         return ResponseEntity
@@ -181,6 +203,7 @@ public class DutyController {
                         .data(false)
                         .build());
     }
+
     @ExceptionHandler(AlreadyDeletedException.class)
     public ResponseEntity<CommonResponse<?>> alreadyDeletedDutyException() {
         return ResponseEntity
@@ -200,6 +223,7 @@ public class DutyController {
                         .data(false)
                         .build());
     }
+
     @ExceptionHandler(AlreadyRejectedException.class)
     public ResponseEntity<CommonResponse<?>> alreadyRejectedDutyException() {
         return ResponseEntity
@@ -209,6 +233,7 @@ public class DutyController {
                         .data(false)
                         .build());
     }
+
     @ExceptionHandler(AlreadyModifyException.class)
     public ResponseEntity<CommonResponse<?>> alreadyModifyDutyException() {
         return ResponseEntity
@@ -218,12 +243,35 @@ public class DutyController {
                         .data(false)
                         .build());
     }
+
     @ExceptionHandler(DuplicatedDutyException.class)
     public ResponseEntity<CommonResponse<?>> duplicatedDutyException() {
         return ResponseEntity
                 .badRequest()
                 .body(CommonResponse.builder()
                         .codeEnum(CodeEnum.DUPLICATED_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(IntialDutyException.class)
+    public ResponseEntity<CommonResponse<?>> intialDutyException() {
+        CommonResponse<?> commonResponse = CommonResponse
+                .builder()
+                .codeEnum(CodeEnum.NOT_FOUND)
+                .data(false)
+                .build();
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+    }
+
+    @ExceptionHandler(SameDayException.class)
+    public ResponseEntity<CommonResponse<?>> sameDayException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SAME_DAY_DUTY)
                         .data(false)
                         .build());
     }

@@ -1,23 +1,15 @@
 package org.vacation.back.utils;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.vacation.back.common.DutyStatus;
-
 import org.vacation.back.common.MemberStatus;
-
-import org.vacation.back.common.VacationStatus;
 import org.vacation.back.domain.Duty;
 import org.vacation.back.domain.Member;
 import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
-
-
-import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -32,7 +24,6 @@ public class AssignUtils {
 
     /**
      * 매달 1일에 해당 메소드 실행된다.
-
      */
 
 
@@ -56,7 +47,7 @@ public class AssignUtils {
             }
         }
 
-        Map<Integer, Member> map = new HashMap<>(); // 제외할 날짜 뺴고 넣음
+        Map<Integer, Member> map = new HashMap<>(); // 제외할 날짜 빼고 넣음
         for (int i = 1; i <= lastDayOfMonth; i++) {
             if (!excludeList.contains(i)) {
                 map.put(i, null);
@@ -67,7 +58,7 @@ public class AssignUtils {
         List<Integer> availableKeys = getAvailableKeys(excludeList, lastDayOfMonth);
         Random random = new Random();
 
-        for (int i = 0; i < availableKeys.size(); i++) {
+        for (int i = 0; i < availableKeys.size(); i++) { //제외 날짜 뺴고 값을 넣음
             Integer key = availableKeys.get(i);
             Member member = memberList.get(random.nextInt(memberList.size()));
             map.put(key, member);
@@ -86,7 +77,7 @@ public class AssignUtils {
     }
 
 
-    private static List<Integer> getAvailableKeys(List<Integer> excludeList, int lastDayOfMonth) {
+    private static List<Integer> getAvailableKeys(List<Integer> excludeList, int lastDayOfMonth) { //제외날짜 없애는 메서드
         List<Integer> availableKeys = new ArrayList<>();
         for (int i = 1; i <= lastDayOfMonth; i++) {
                     if (!excludeList.contains(i)) {

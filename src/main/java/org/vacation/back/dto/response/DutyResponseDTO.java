@@ -1,9 +1,7 @@
 package org.vacation.back.dto.response;
-
 import lombok.*;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.domain.Duty;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -24,6 +22,7 @@ public class DutyResponseDTO {
     private String departmentName;
 
     private LocalDateTime createdAt;
+    private String positionName;
 
 
 
@@ -36,6 +35,7 @@ public class DutyResponseDTO {
                 .createdAt(duty.getCreatedAt())
                 .status(duty.getStatus())
                 .departmentName(duty.getMember().getDepartment().getDepartmentName())
+                .positionName(duty.getMember().getPosition().getPositionName())
                 .build();
     }
 }

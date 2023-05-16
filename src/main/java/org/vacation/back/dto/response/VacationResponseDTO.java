@@ -34,6 +34,8 @@ public class VacationResponseDTO {
 
     private String positionName;
 
+    private String employeeNumber;
+
 
 
     //부서 추가
@@ -45,6 +47,7 @@ public class VacationResponseDTO {
                 .start(vacation.getStart())
                 .end(vacation.getEnd())
                 .status(vacation.getStatus())
+                .employeeNumber(vacation.getMember().getEmployeeNumber())
                 .createdAt(vacation.getCreatedAt())
                 .departmentName(vacation.getMember().getDepartment().getDepartmentName())
                 .positionName(vacation.getMember().getPosition().getPositionName())

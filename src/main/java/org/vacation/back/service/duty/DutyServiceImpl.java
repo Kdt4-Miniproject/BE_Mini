@@ -97,6 +97,7 @@ public class DutyServiceImpl implements DutyService {
             dutyResponseDTO.setStatus(duty.getStatus());
             dutyResponseDTO.setCreatedAt(duty.getCreatedAt());
             dutyResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
+            dutyResponseDTO.setEmployeeNumber(duty.getMember().getEmployeeNumber());
             return dutyResponseDTO;
         });
 

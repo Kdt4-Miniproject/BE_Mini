@@ -23,6 +23,7 @@ public class DutyResponseDTO {
 
     private LocalDateTime createdAt;
     private String positionName;
+    private String employeeNumber;
 
 
 
@@ -36,6 +37,7 @@ public class DutyResponseDTO {
                 .status(duty.getStatus())
                 .departmentName(duty.getMember().getDepartment().getDepartmentName())
                 .positionName(duty.getMember().getPosition().getPositionName())
+                .employeeNumber(duty.getMember().getEmployeeNumber())
                 .build();
     }
 }

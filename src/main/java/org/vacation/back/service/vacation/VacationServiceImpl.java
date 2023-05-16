@@ -78,29 +78,9 @@ public class VacationServiceImpl implements VacationService {
 
 
     @Override
-    public Page<VacationResponseDTO> vacationListMonth(String month, Pageable pageable) {
+    public List<VacationResponseDTO> vacationListMonth(String month) {
 
-        Page<Vacation> vacationList = vacationRepository.findAllByVacationMonth(Integer.valueOf(month), pageable);
-        Page<VacationResponseDTO> vacationResponseList = vacationList.map(vacation -> {
-            VacationResponseDTO dto = new VacationResponseDTO();
-            dto.setId(vacation.getId());
-            dto.setMemberName(vacation.getMember().getName());
-            dto.setStart(vacation.getStart());
-            dto.setEnd(vacation.getEnd());
-            dto.setCreatedAt(vacation.getCreatedAt());
-            dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
-            dto.setPositionName(vacation.getMember().getPosition().getPositionName());
-            dto.setStatus(vacation.getStatus());
-            return dto;
-        });
-
-        return vacationResponseList;
-    }
-
-
-    public List<VacationResponseDTO> vacationListStatus() {
-
-        List<Vacation> vacationList = vacationRepository.findAllByVacationStatus();
+        List<Vacation> vacationList = vacationRepository.findAllByVacationMonth(Integer.valueOf(month));
         List<VacationResponseDTO> vacationResponseList = new ArrayList<>();
         for (Vacation vacation: vacationList) {
             VacationResponseDTO dto = new VacationResponseDTO();
@@ -114,6 +94,26 @@ public class VacationServiceImpl implements VacationService {
             dto.setStatus(vacation.getStatus());
             vacationResponseList.add(dto);
         }
+
+        return vacationResponseList;
+    }
+
+
+    public Page<VacationResponseDTO> vacationListStatus(Pageable pageable) {
+
+        Page<Vacation> vacationList = vacationRepository.findAllByVacationStatus(pageable);
+        Page<VacationResponseDTO> vacationResponseList = vacationList.map(vacation -> {
+            VacationResponseDTO dto = new VacationResponseDTO();
+            dto.setId(vacation.getId());
+            dto.setMemberName(vacation.getMember().getName());
+            dto.setStart(vacation.getStart());
+            dto.setEnd(vacation.getEnd());
+            dto.setCreatedAt(vacation.getCreatedAt());
+            dto.setDepartmentName(vacation.getMember().getDepartment().getDepartmentName());
+            dto.setPositionName(vacation.getMember().getPosition().getPositionName());
+            dto.setStatus(vacation.getStatus());
+            return dto;
+        });
         return vacationResponseList;
     }
 

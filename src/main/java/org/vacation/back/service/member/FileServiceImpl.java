@@ -32,8 +32,8 @@ public class FileServiceImpl implements FileService {
 
 
 
-//    @Value("${FILEPATH}")
-    private String path = "FILEPATH";
+    @Value("${FILEPATH}")
+    private String path;
 
     @Override
     public List<String> upload(FileDTO fileDTO) {

@@ -12,18 +12,18 @@ import org.vacation.back.dto.CommonResponse;
 @RestControllerAdvice
 public class RegionControllerAdvice {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<CommonResponse<?>> handleValidationException(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
-
-        // 에러 처리 로직 작성
-        CommonResponse<?> commonResponse = CommonResponse.builder()
-                .codeEnum(CodeEnum.VALID_FAILE)
-                .data(false)
-                .build();
-        return ResponseEntity
-                .status(commonResponse.getStatus())
-                .body(commonResponse);
-    }
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<CommonResponse<?>> handleValidationException(MethodArgumentNotValidException ex) {
+//        BindingResult bindingResult = ex.getBindingResult();
+//
+//        // 에러 처리 로직 작성
+//        CommonResponse<?> commonResponse = CommonResponse.builder()
+//                .codeEnum(CodeEnum.VALID_FAILE)
+//                .data(false)
+//                .build();
+//        return ResponseEntity
+//                .status(commonResponse.getStatus())
+//                .body(commonResponse);
+//    }
 
 }

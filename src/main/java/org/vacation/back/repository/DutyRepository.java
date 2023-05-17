@@ -80,7 +80,7 @@ public interface DutyRepository  extends JpaRepository<Duty, Long> {
     @Query("select d from Duty d join fetch d.member m where d.status <> 'DELETED'")
     List<Duty> findAllOk();
 
-    @Query("select d from Duty d where d.member.username = :username")
+    @Query("select d from Duty d join fetch d.member m where d.member.username = :username")
     List<Duty> findAllByUserName(@Param("username") String username);
 
 }

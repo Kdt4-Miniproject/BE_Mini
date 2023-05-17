@@ -161,27 +161,27 @@ public class BackApplication {
 						.build());
 				Department department4 = departmentRepository.save(Department.builder()
 						.departmentName("마케팅")
-						.departmentPersonal(10)
+						.departmentPersonal(0)
 						.vacationLimit(3)
 						.status(DepartmentStatus.ACTIVATION)
 						.build());
 
 				Position position2 = positionRepository.save(Position.builder()
 						.positionName("사원")
-						.vacation("40")
+						.vacation("5")
 						.status(PositionStatus.ACTIVATION)
 						.build());
 
 
 				Position position3 = positionRepository.save(Position.builder()
 						.positionName("대리")
-						.vacation("40")
+						.vacation("5")
 						.status(PositionStatus.ACTIVATION)
 						.build());
 
 				Position position4 = positionRepository.save(Position.builder()
 						.positionName("팀장")
-						.vacation("40")
+						.vacation("5")
 						.status(PositionStatus.ACTIVATION)
 						.build());
 
@@ -207,6 +207,34 @@ public class BackApplication {
 						.phoneNumber("010-1234-1234")
 						.build());
 
+				memberRepository.save(Member.builder()
+						.username("leader1")
+						.password(passwordEncoder.encode("1234"))
+						.role(Role.LEADER)
+						.department(department2)
+						.position(position4)
+						.name("개발 팀장")
+						.birthdate("2022-33-12")
+						.email("test@naver.com")
+						.employeeNumber("20221111")
+						.memberStatus(MemberStatus.ACTIVATION)
+						.phoneNumber("010-1234-1234")
+						.build());
+
+				memberRepository.save(Member.builder()
+						.username("leader2")
+						.password(passwordEncoder.encode("1234"))
+						.role(Role.LEADER)
+						.department(department3)
+						.position(position4)
+						.name("인사 팀장")
+						.birthdate("2022-33-12")
+						.email("test@naver.com")
+						.employeeNumber("20223333")
+						.memberStatus(MemberStatus.ACTIVATION)
+						.phoneNumber("010-1234-1234")
+						.build());
+
 				IntStream.rangeClosed(1, 10).forEach(value -> {
 					memberRepository.save(Member.builder()
 							.username("user" + value)
@@ -214,7 +242,7 @@ public class BackApplication {
 							.role(Role.STAFF)
 							.department(department2)
 							.position(position2)
-							.name("관리자")
+							.name("사원"+value)
 							.birthdate("2022-33-12")
 							.email("test@naver.com")
 							.employeeNumber("20221234")
@@ -229,8 +257,8 @@ public class BackApplication {
 							.password(passwordEncoder.encode("1234"))
 							.role(Role.STAFF)
 							.department(department3)
-							.position(position4)
-							.name("관리자")
+							.position(position3)
+							.name("대리"+value)
 							.birthdate("2022-33-12")
 							.email("test@naver.com")
 							.employeeNumber("20221234")

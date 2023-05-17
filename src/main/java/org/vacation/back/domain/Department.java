@@ -26,13 +26,27 @@ public class Department {
     private Integer departmentPersonal; //부서총인원
 
     @Enumerated(EnumType.STRING)
-    private DepartmentStatus status;
+    @Builder.Default
+    private DepartmentStatus status = DepartmentStatus.ACTIVATION;
 
     @OneToMany(mappedBy = "department")
     @Builder.Default
     private List<Member> memberList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "departmentName")
-    @Builder.Default
-    private List<PositionAndDepartment> positionAndDepartments = new ArrayList<>();
+
+    public void modify(Integer vacationLimit) {
+        this.vacationLimit = vacationLimit;
+    }
+
+    public void setStatus(DepartmentStatus status) {
+        this.status = status;
+    }
+
+    public void plusPersonal() {
+        this.departmentPersonal = this.departmentPersonal + 1;
+    }
+
+    public void minusPersonal() {
+        this.departmentPersonal = this.departmentPersonal - 1;
+    }
 }

@@ -26,8 +26,6 @@ public class QDepartment extends EntityPathBase<Department> {
 
     public final ListPath<Member, QMember> memberList = this.<Member, QMember>createList("memberList", Member.class, QMember.class, PathInits.DIRECT2);
 
-    public final ListPath<PositionAndDepartment, QPositionAndDepartment> positionAndDepartments = this.<PositionAndDepartment, QPositionAndDepartment>createList("positionAndDepartments", PositionAndDepartment.class, QPositionAndDepartment.class, PathInits.DIRECT2);
-
     public final EnumPath<org.vacation.back.common.DepartmentStatus> status = createEnum("status", org.vacation.back.common.DepartmentStatus.class);
 
     public final NumberPath<Integer> vacationLimit = createNumber("vacationLimit", Integer.class);

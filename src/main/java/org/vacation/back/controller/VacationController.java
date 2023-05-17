@@ -3,10 +3,11 @@ package org.vacation.back.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.vacation.back.common.VacationStatus;
+import org.vacation.back.annotation.AdminAndLeader;
 import org.vacation.back.dto.CodeEnum;
 import org.vacation.back.dto.CommonResponse;
 import org.vacation.back.dto.common.VacationDTO;
@@ -16,46 +17,85 @@ import org.vacation.back.service.VacationService;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationMainResponseDTO;
+import org.vacation.back.dto.response.VacationResponseDTO;
+import org.vacation.back.dto.request.vacation.VacationModifyDTO;
+import org.vacation.back.dto.request.vacation.VacationSaveRequestDTO;
+import org.vacation.back.exception.AlreadyVacationException;
+import org.vacation.back.exception.NotFoundVacationException;
+import org.vacation.back.exception.OveredVacationException;
+import javax.validation.Valid;
+
 import java.util.List;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/vacation/")
 public class VacationController {
 
-    private final VacationService vacationTempService;
 
-    @PostMapping("/api/v1/vacation/save")
-    public ResponseEntity<CommonResponse> save(@RequestBody VacationSaveRequestDTO dto){
-        //TODO: 연차 저장 로직 구현
-        //TODO: 연차 신청 실패시 Exception 처리
-        //TODO: vacation status WAITING 변경
+    private final VacationService vacationService;
+
+    @PostMapping("save")
+    public ResponseEntity<CommonResponse> save(@Valid @RequestBody VacationSaveRequestDTO dto,
+                                               HttpServletRequest request){
+        vacationService.vacationSave(dto, request);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
 
-    @GetMapping("/api/v1/vacation/detail/{id}")
+    @GetMapping("detail/{id}")
     public ResponseEntity<CommonResponse> detail(
-            @PathVariable(value = "id") Long id,
-            HttpServletRequest request){
-        //TODO: 조회하는 유저가 정보 확인
-        VacationDTO dto = new VacationDTO();
+            @PathVariable(value = "id") Long id){
+
+        VacationResponseDTO dto = vacationService.vacationDetail(id);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(dto)
                 .build());
     }
 
-    @GetMapping("/api/v1/vacation/list")
-    public ResponseEntity<CommonResponse> vacationList(
-            HttpServletRequest request){
-        //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
-        List<VacationDTO> vacationTempDTOList = new ArrayList<>();
+
+
+    @GetMapping(value = {"list/{month}", "list"})
+    public ResponseEntity<CommonResponse> vacationList(@PathVariable(value = "month", required = false) String month,
+                                                       @RequestParam(name = "page", defaultValue = "0")int page,
+                                                       @RequestParam(name = "size", defaultValue = "10")int size){
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<VacationResponseDTO> vacationPage;
+        PageResponseDTO<?> pageResponseDTO;
+        List<VacationResponseDTO> vacationResponseDTOList;
+        List<VacationMainResponseDTO> vacationMainResponseDTOList;
+
+        if (month != null){
+            if (!"0".equals(month)) {
+                vacationMainResponseDTOList = vacationService.vacationListMonth(month);
+
+            }else {// month가 0일때 WAITING 상태인 data만 불러옴
+                vacationPage = vacationService.vacationListStatus(pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(vacationPage.isFirst())
+                        .last(vacationPage.isLast())
+                        .content(vacationPage.getContent())
+                        .total(vacationPage.getTotalElements())
+                        .build();
+                return ResponseEntity.ok(CommonResponse.builder()
+                                .codeEnum(CodeEnum.SUCCESS)
+                                .data(pageResponseDTO)
+                        .build());
+            }
+        }else { // month가 없을 경우 이번달 정보만 가져오기
+            int currentMonth = LocalDate.now().getMonthValue();
+            vacationMainResponseDTOList = vacationService.vacationListMonth(String.valueOf(currentMonth));
+        }
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(vacationTempDTOList)
+                .data(vacationMainResponseDTOList)
                 .build());
     }
     /**
@@ -63,50 +103,99 @@ public class VacationController {
      * 그냥 날짜로 받으면 내가 몇 주인지 구하면 됨
      * */
 
-    @PostMapping("/api/v1/vacation/modify/{id}")
+
+    @PostMapping("modify")
     public ResponseEntity<CommonResponse> modify(
-            @PathVariable(value = "id") Long id,
-            @RequestBody VacationModifyDTO dto, HttpServletRequest request){
-        //TODO: 연차 시작일 or 끝나는일 수정 가능(추후 변경가능)
-
+            @Valid @RequestBody VacationModifyDTO dto){
+        vacationService.vacationModify(dto);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
 
-
-    @PostMapping("/api/v1/vacation/delete/{id}")
+    @PostMapping("delete/{id}")
     public ResponseEntity<CommonResponse> delete(
-            @PathVariable(value = "id") Long id,
-            HttpServletRequest request){
-        //TODO: 연차신청 취소시에 사용(관리자 X)
+            @PathVariable(value = "id") Long id){
+
+        vacationService.vacationDelete(id);
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
 
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/api/v1/vacation/ok/{id}")
+    @AdminAndLeader
+    @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
             @PathVariable(value = "id") Long id){
-        //TODO: 연차 승인시 사용
-        //TODO:
+        vacationService.vacationOk(id);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/api/v1/vacation/rejected/{id}")
-    public ResponseEntity<CommonResponse> rejected(
+
+    @AdminAndLeader
+    @PostMapping("updateok/{id}")
+    public ResponseEntity<CommonResponse> updateOk(
             @PathVariable(value = "id") Long id){
-        //TODO: 연차 반려시 사용
-        //TODO:
+        vacationService.vacationOk(id);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
+    }
+
+    @AdminAndLeader
+    @PostMapping("rejected/{id}")
+    public ResponseEntity<CommonResponse> rejected(
+            @PathVariable(value = "id") Long id){
+        vacationService.vacationRejected(id);
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
+    @AdminAndLeader
+    @PostMapping("updaterejected/{id}")
+    public ResponseEntity<CommonResponse> updateRejected(
+            @PathVariable(value = "id") Long id){
+        vacationService.vacationRejected(id);
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
+    @ExceptionHandler(OveredVacationException.class)
+    public ResponseEntity<CommonResponse<?>> overedVacationException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.OVERD_VACATION)
+                        .data(false)
+                        .build());
+    }
+    @ExceptionHandler(AlreadyVacationException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyVacationException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_VACATION)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(NotFoundVacationException.class)
+    public ResponseEntity<CommonResponse<?>> notFoundId() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.INVALID_ARGUMENT)
+                        .data(false)
+                        .build());
     }
 }

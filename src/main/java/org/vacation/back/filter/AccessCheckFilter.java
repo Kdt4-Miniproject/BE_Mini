@@ -31,7 +31,11 @@ public class AccessCheckFilter extends OncePerRequestFilter
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        if(path.startsWith("/api/v1/login") || path.startsWith("/api/v1/join") || path.equalsIgnoreCase("/api/v1/join/check/**")){
+        if(path.startsWith("/api/v1/login") || path.startsWith("/api/v1/join") ||
+                path.equalsIgnoreCase("/api/v1/join/check/**") ||
+                path.startsWith("/api/v1/refresh") || path.startsWith("/h2-console") ||
+                path.startsWith("/api/v1/temp/upload") || path.startsWith("/view")){
+            log.info("TOKEN PASS");
             filterChain.doFilter(request,response);
             return;
         }
@@ -43,7 +47,9 @@ public class AccessCheckFilter extends OncePerRequestFilter
 
             String role = token.get("role").asString();
             String username = token.get("username").asString();
+            String department = token.get("department").asString();
 
+            request.setAttribute("department",department);
             request.setAttribute("role",role);
             request.setAttribute("username",username);
 

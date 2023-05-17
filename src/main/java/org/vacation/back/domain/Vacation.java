@@ -1,15 +1,13 @@
 package org.vacation.back.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.vacation.back.common.VacationStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -25,11 +23,18 @@ public class Vacation extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate end;
 
+
     @Enumerated(EnumType.STRING)
     private VacationStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "member_username")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
+
+    public void modifyVacation(LocalDate start, LocalDate end){
+        this.status=VacationStatus.UPDATE_WAITING;
+        this.start=start;
+        this.end=end;
+    }
 }

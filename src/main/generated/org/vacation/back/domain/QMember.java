@@ -62,8 +62,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final ListPath<Vacation, QVacation> vacationTemps = this.<Vacation, QVacation>createList("vacationTemps", Vacation.class, QVacation.class, PathInits.DIRECT2);
 
-    public final NumberPath<Integer> years = createNumber("years", Integer.class);
-
     public QMember(String variable) {
         this(Member.class, forVariable(variable), INITS);
     }

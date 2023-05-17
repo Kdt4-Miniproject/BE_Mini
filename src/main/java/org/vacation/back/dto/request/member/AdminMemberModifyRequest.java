@@ -1,10 +1,12 @@
 package org.vacation.back.dto.request.member;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.vacation.back.common.MemberStatus;
 import org.vacation.back.domain.Role;
 
 @Data
@@ -15,14 +17,20 @@ public class AdminMemberModifyRequest {
 
 
     private String username;
-
-
-    private String fileName;
+    private String name;
 
     private String email;
+    private String phoneNumber;
+    private String joiningDay;
+
+    @JsonIgnore
+    private String years;
 
 
-    private String oldPassword;
 
-    private String newPassword;
+    private String departmentName;
+
+    private String positionName;
+
+
 }

@@ -1,9 +1,9 @@
 package org.vacation.back.controller;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.vacation.back.common.DutyStatus;
 import org.vacation.back.dto.CodeEnum;
@@ -12,67 +12,108 @@ import org.vacation.back.dto.common.DutyDTO;
 import org.vacation.back.dto.request.duty.DutyModifyDTO;
 import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 
-import javax.servlet.http.HttpServletRequest;
+import org.vacation.back.annotation.Permission;
+import org.vacation.back.domain.Duty;
+import org.vacation.back.dto.CodeEnum;
+import org.vacation.back.dto.CommonResponse;
+import org.vacation.back.dto.request.duty.DutyModifyDTO;
+import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
+import org.vacation.back.dto.response.DutyMainResponseDTO;
+import org.vacation.back.dto.response.DutyResponseDTO;
+import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.exception.*;
+import org.vacation.back.service.DutyService;
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/duty/")
 public class DutyController {
+    public final DutyService dutyService;
 
-    @PostMapping("/duty/save")
-    public ResponseEntity<CommonResponse> save(@RequestBody DutySaveRequestDTO dutySaveRequestDTO){
-        //TODO: 당직 저장 로직 구현
-        //TODO: 당직 신청 실패시 Exception 처리
-        //TODO: Duty status WAITING 변경
+
+    @PostMapping("save")
+    public ResponseEntity<CommonResponse> save(
+            @Valid @RequestBody DutySaveRequestDTO dutySaveRequestDTO) {
+
+
+        dutyService.dutySave(dutySaveRequestDTO);
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
 
-    @GetMapping("/duty/detail/{id}")
+    @GetMapping("detail/{id}")
     public ResponseEntity<CommonResponse> detail(
-            @PathVariable(value = "id") Long id,
-            HttpServletRequest request){
-        //TODO: 조회하는 유저가 정보 확인
-        DutyDTO dutyDTO = DutyDTO.builder()
-                .id(1L)
-                .day(LocalDate.parse("2023-05-02"))
-                .deleted(false)
-                .status(DutyStatus.WAITING)
-                .build();
+            @PathVariable(value = "id") Long id) {
+
+        DutyResponseDTO dutyResponseDTO = dutyService.dutyDetail(id);
+
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyDTO)
+                .data(dutyResponseDTO)
                 .build());
     }
 
-    @GetMapping("/duty/list")
-    public ResponseEntity<CommonResponse> dutyList(
-            HttpServletRequest request){
-        //TODO: 조회하는 유저가 권한 확인 (권한 별로 정보 뿌리기)
-        List<DutyDTO> dutyDTOList = new ArrayList<>();
-        dutyDTOList.add(DutyDTO.builder()
-                .id(1L)
-                .day(LocalDate.parse("2023-05-02"))
-                .deleted(false)
-                .status(DutyStatus.WAITING)
-                .build());
+
+    @GetMapping({"list/{month}", "list"})
+    public ResponseEntity<CommonResponse> dutyList(@PathVariable(value = "month", required = false) String month,
+                                                   @RequestParam(name = "page", defaultValue = "0") int page,
+                                                   @RequestParam(name = "size", defaultValue = "10") int size) {
+
+        PageRequest pageable = PageRequest.of(page, size);
+
+        Page<DutyResponseDTO> dutyPage;
+        PageResponseDTO<?> pageResponseDTO;
+        List<DutyResponseDTO> dutyResponseDTOList;
+        List<DutyMainResponseDTO> dutyMainResponseDTOList;
+
+        if (month != null) {
+            if (!"0".equals(month)) {
+                dutyMainResponseDTOList = dutyService.dutyListMonth(month);
+
+
+            } else { //month가 0일 때 waiting이랑 update waiting 상태인 data만 불러옴
+                dutyPage = dutyService.dutyListStatus(pageable);
+                pageResponseDTO = PageResponseDTO.builder()
+                        .first(dutyPage.isFirst())
+                        .last(dutyPage.isLast())
+                        .content(dutyPage.getContent())
+                        .total(dutyPage.getTotalElements())
+                        .build();
+
+                return ResponseEntity.ok(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SUCCESS)
+                        .data(pageResponseDTO)
+                        .build());
+            }
+        } else { // month가 없을 경우 이번달 정보만 가져옴
+
+            int currentMonth = LocalDate.now().getMonthValue();
+            dutyMainResponseDTOList = dutyService.dutyListMonth(String.valueOf(currentMonth));
+
+
+        }
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
-                .data(dutyDTOList)
+                .data(dutyMainResponseDTOList)
                 .build());
     }
 
-    @PostMapping("/duty/modify/{id}")
+
+    @PostMapping("modify")
     public ResponseEntity<CommonResponse> modify(
-            @PathVariable(value = "id") Long id,
-            @RequestBody DutyModifyDTO dto){
-        //TODO: 당직일 수정 가능
+            @RequestBody DutyModifyDTO dutyModifyDTO) {
+
+
+        dutyService.dutyModify(dutyModifyDTO);
 
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
@@ -81,37 +122,167 @@ public class DutyController {
     }
 
 
-    @PostMapping("/duty/delete/{id}")
+    @PostMapping("delete/{id}")
     public ResponseEntity<CommonResponse> delete(
-            @PathVariable(value = "id") Long id,
-            HttpServletRequest request){
-        //TODO: 당직신청 취소시에 사용(신청자)
+            @PathVariable(value = "id") Long id) {
+
+        dutyService.dutyDelete(id);
+
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
 
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/duty/ok/{id}")
+
+    @Permission
+    @PostMapping("ok/{id}")
     public ResponseEntity<CommonResponse> ok(
-            @PathVariable(value = "id") Long id){
-        //TODO: 당직 승인시 사용
-        //TODO:
+            @PathVariable(value = "id") Long id) {
+
+        dutyService.dutyOk(id);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
     }
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping("/duty/rejected/{id}")
+
+
+    @Permission
+    @PostMapping("rejected/{id}")
     public ResponseEntity<CommonResponse> rejected(
-            @PathVariable(value = "id") Long id){
-        //TODO: 당직 반려시 사용
-        //TODO:
+            @PathVariable(value = "id") Long id) {
+
+        dutyService.dutyRejected(id);
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(true)
                 .build());
+    }
+
+    @Permission
+    @GetMapping("assign")
+    public ResponseEntity<CommonResponse> assign() {
+
+        dutyService.dutyAssign();
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(true)
+                .build());
+    }
+
+
+    @ExceptionHandler(DutyMemberNotFoundException.class)
+    public ResponseEntity<CommonResponse<?>> dutyMemberNotFoundException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.NOTFOUND_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(PastDateForDutyException.class)
+    public ResponseEntity<CommonResponse<?>> pastDateForDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.PASTDATE_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyDutyException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(NotFoundDutyException.class)
+    public ResponseEntity<CommonResponse<?>> notFoundId() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.UNREGISTERDE_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyDeletedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyDeletedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_DELETED_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyOkException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyOkDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_OK_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyRejectedException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyRejectedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_REJECTED_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(AlreadyModifyException.class)
+    public ResponseEntity<CommonResponse<?>> alreadyModifyDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.ALREADY_MODIFY_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(DuplicatedDutyException.class)
+    public ResponseEntity<CommonResponse<?>> duplicatedDutyException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.DUPLICATED_DUTY)
+                        .data(false)
+                        .build());
+    }
+
+    @ExceptionHandler(IntialDutyException.class)
+    public ResponseEntity<CommonResponse<?>> intialDutyException() {
+        CommonResponse<?> commonResponse = CommonResponse
+                .builder()
+                .codeEnum(CodeEnum.NOT_FOUND)
+                .data(false)
+                .build();
+        return ResponseEntity
+                .status(commonResponse.getStatus())
+                .body(commonResponse);
+    }
+
+    @ExceptionHandler(SameDayException.class)
+    public ResponseEntity<CommonResponse<?>> sameDayException() {
+        return ResponseEntity
+                .badRequest()
+                .body(CommonResponse.builder()
+                        .codeEnum(CodeEnum.SAME_DAY_DUTY)
+                        .data(false)
+                        .build());
     }
 }
+

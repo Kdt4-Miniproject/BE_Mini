@@ -1,5 +1,4 @@
 package org.vacation.back.dto.request.duty;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,5 +10,7 @@ import org.vacation.back.common.DutyStatus;
 @Getter
 @Builder
 public class DutyOkAndRejectedDTO {
+
+    private Long id;
     private DutyStatus status;
 }

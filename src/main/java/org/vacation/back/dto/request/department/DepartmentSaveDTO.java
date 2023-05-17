@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.DepartmentStatus;
+import org.vacation.back.domain.Department;
 
 @Data
 @Builder
@@ -12,11 +13,18 @@ import org.vacation.back.common.DepartmentStatus;
 @AllArgsConstructor
 public class DepartmentSaveDTO {
 
-    private DepartmentStatus department;
+    private String departmentName;
 
-    private String vacation_limit; // 부서별 휴가 최대 인원
+    private String vacationLimit;
 
-    private String personal; // 총원
+    public Department toEntity() {
+        return Department.builder()
+                .departmentName(this.departmentName)
+                .vacationLimit(Integer.valueOf(this.vacationLimit))
+                .departmentPersonal(0)
+                .status(DepartmentStatus.ACTIVATION)
+                .build();
+    }
 
-    private boolean deleted; // 등록 : false
 }
+

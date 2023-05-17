@@ -2,6 +2,7 @@ package org.vacation.back.dto.common;
 
 import lombok.*;
 import org.vacation.back.common.DepartmentStatus;
+import org.vacation.back.domain.Department;
 
 @Getter
 @Setter
@@ -10,12 +11,28 @@ import org.vacation.back.common.DepartmentStatus;
 @Builder
 public class DepartmentDTO {
 
-    private DepartmentStatus department;
+    private String departmentName;
 
-    private String vacation_limit; // 부서별 휴가 최대 인원
+    private Integer vacationLimit;
 
-    private String personal; // 총원
+    private Integer departmentPersonal;
 
-    private boolean deleted;
+    private DepartmentStatus status;
+
+    public static DepartmentDTO toDTO(Department department){
+        return DepartmentDTO.builder()
+                .departmentName(department.getDepartmentName())
+                .vacationLimit(department.getVacationLimit())
+                .departmentPersonal(department.getDepartmentPersonal())
+                .status(department.getStatus())
+                .build();
+    }
+
+    public DepartmentDTO(Department department) {
+        this.departmentName = department.getDepartmentName();
+        this.vacationLimit = department.getVacationLimit();
+        this.departmentPersonal = department.getDepartmentPersonal();
+        this.status = department.getStatus();
+    }
 
 }

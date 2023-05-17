@@ -15,8 +15,9 @@ public class MemberDetailsService {
     private final MemberRepository memberRepository;
     public MemberDTO loadUserByUsername(String username)throws UsernameNotFoundException{
 
-        Member member = memberRepository.findById(username)
+        Member member = memberRepository.findByUserWithAll(username)
                 .orElseThrow(() -> new UsernameNotFoundException("USER NOT FOUND"));
+
         return  MemberDTO.toDTO(member);
     }
 }

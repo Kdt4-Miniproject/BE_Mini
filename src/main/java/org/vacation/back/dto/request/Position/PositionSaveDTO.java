@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vacation.back.common.PositionStatus;
+import org.vacation.back.domain.Position;
 
 @Data
 @Builder
@@ -12,9 +13,16 @@ import org.vacation.back.common.PositionStatus;
 @AllArgsConstructor
 public class PositionSaveDTO {
 
-    private PositionStatus position;
+    private String positionName;
 
     private String vacation;
 
-    private boolean deleted; // 등록 : false
+    public Position toEntity() {
+        return Position.builder()
+                .positionName(this.positionName)
+                .vacation(this.vacation)
+                .status(PositionStatus.ACTIVATION)
+                .build();
+    }
+
 }

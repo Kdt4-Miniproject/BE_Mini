@@ -98,6 +98,16 @@ public class VacationController {
                 .data(vacationMainResponseDTOList)
                 .build());
     }
+
+    @GetMapping("mylist")
+    public ResponseEntity<CommonResponse> mylist(HttpServletRequest request){
+        List<VacationMainResponseDTO> list = vacationService.vacationMyList(request);
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(list)
+                .build());
+    }
     /**
      * week를 몇주인지로 받을 때
      * 그냥 날짜로 받으면 내가 몇 주인지 구하면 됨

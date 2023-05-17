@@ -32,5 +32,6 @@ public interface DutyService {
     public void dutyRejected(Long id);
     public void dutyAssign();
 
+    public List<DutyMainResponseDTO> dutyMyList(HttpServletRequest request);
 
 }

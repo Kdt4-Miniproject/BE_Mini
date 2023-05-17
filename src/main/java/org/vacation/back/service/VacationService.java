@@ -29,4 +29,6 @@ public interface VacationService {
     public void vacationOk(Long id);
 
     public void vacationRejected(Long id);
+
+    public List<VacationMainResponseDTO> vacationMyList(HttpServletRequest request);
 }

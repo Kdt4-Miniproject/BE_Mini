@@ -17,6 +17,8 @@ import org.vacation.back.repository.DutyRepository;
 import org.vacation.back.repository.MemberRepository;
 import org.vacation.back.service.DutyService;
 import org.vacation.back.utils.AssignUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +105,24 @@ public class DutyServiceImpl implements DutyService {
         });
 
         return dutyResponseList;
+    }
+
+    public List<DutyMainResponseDTO> dutyMyList(HttpServletRequest request){
+        List<Duty> dutyList = dutyRepository.findAllByUserName(request.getAttribute("username").toString());
+
+        List<DutyMainResponseDTO> dutyMainResponseList = new ArrayList<>();
+        for(Duty duty : dutyList){
+            DutyMainResponseDTO dutyMainResponseDTO = new DutyMainResponseDTO();
+            dutyMainResponseDTO.setId(duty.getId());
+            dutyMainResponseDTO.setMemberName(duty.getMember().getName());
+            dutyMainResponseDTO.setDay(duty.getDay());
+            dutyMainResponseDTO.setDepartmentName(duty.getMember().getDepartment().getDepartmentName());
+            dutyMainResponseDTO.setStatus(duty.getStatus());
+            dutyMainResponseDTO.setCreatedAt(duty.getCreatedAt());
+            dutyMainResponseDTO.setPositionName(duty.getMember().getPosition().getPositionName());
+            dutyMainResponseList.add(dutyMainResponseDTO);
+        }
+        return dutyMainResponseList;
     }
 
 

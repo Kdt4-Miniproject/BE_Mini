@@ -43,4 +43,7 @@ public interface VacationRepository extends JpaRepository<Vacation, Long>{
 
     @Query("select m from Member m join fetch m.department join fetch m.position where m.username = :username and m.memberStatus = :status")
     Member findBymember(@Param("username") String username, @Param("status")MemberStatus status);
+
+    @Query("select v from Vacation v where v.member.username = :username")
+    List<Vacation> findAllByUserName(@Param("username") String username);
 }

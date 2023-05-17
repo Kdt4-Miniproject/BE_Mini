@@ -19,8 +19,8 @@ public class LocalTempUploader {
 
 
 
-    //    @Value("${fild.path}")
-    private String path = "FILEPATH";
+    @Value("${fild.path}")
+    private String path;
 
     public List<String> uploadLocal(FileDTO fileDTO){
         if(!fileDTO.getFileNames().isEmpty()){

@@ -21,8 +21,11 @@ import org.vacation.back.dto.request.duty.DutySaveRequestDTO;
 import org.vacation.back.dto.response.DutyMainResponseDTO;
 import org.vacation.back.dto.response.DutyResponseDTO;
 import org.vacation.back.dto.response.PageResponseDTO;
+import org.vacation.back.dto.response.VacationMainResponseDTO;
 import org.vacation.back.exception.*;
 import org.vacation.back.service.DutyService;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -104,6 +107,16 @@ public class DutyController {
         return ResponseEntity.ok(CommonResponse.builder()
                 .codeEnum(CodeEnum.SUCCESS)
                 .data(dutyMainResponseDTOList)
+                .build());
+    }
+
+    @GetMapping("mylist")
+    public ResponseEntity<CommonResponse> myList(HttpServletRequest request){
+        List<DutyMainResponseDTO> list = dutyService.dutyMyList(request);
+
+        return ResponseEntity.ok(CommonResponse.builder()
+                .codeEnum(CodeEnum.SUCCESS)
+                .data(list)
                 .build());
     }
 

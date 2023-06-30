@@ -1,6 +1,4 @@
-# BE_Mini
-<h1>연차당직 프로젝트</h1>
-
+## 연차당직 프로젝트
 
 
 
@@ -25,6 +23,7 @@
 <hr>
 
 
+![image](https://github.com/Kdt4-Miniproject/BE_Mini/assets/79129475/556ad1a4-8b72-48ad-a9d6-0396064cae60)
 
 
 
@@ -37,7 +36,8 @@
 
 <h2>화면자료</h2>
 <hr>
-![image](https://github.com/Kdt4-Miniproject/BE_Mini/assets/79129475/556ad1a4-8b72-48ad-a9d6-0396064cae60)
+
+
 
 
 ![KakaoTalk_20230517_211114599](https://github.com/Kdt4-Miniproject/BE_Mini/assets/79129475/8668cd18-49c8-4dde-bfae-99ec6a9ed32b)

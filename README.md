@@ -27,6 +27,11 @@
 ![image](https://github.com/Kdt4-Miniproject/BE_Mini/assets/79129475/556ad1a4-8b72-48ad-a9d6-0396064cae60)
 
 
+<h2>ERD</h2>
+
+![image](https://github.com/Kdt4-Miniproject/BE_Mini/assets/79129475/f4e54793-8286-4b80-96b4-13d84e1e572d)
+
+
 
 
 
